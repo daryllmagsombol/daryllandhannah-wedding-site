@@ -33,7 +33,7 @@ export default function ValentineProposal() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-fuchsia-200 to-white-400 text-center p-6">
       <div className="p-8 bg-white shadow-2xl rounded-3xl w-90 text-center border border-red-300">
-        <h1 className="text-4xl font-extrabold mb-6 text-red-600">Hey Hannah babyyy, Will You Be My Valentine? ❤️</h1>
+        <h1 className="text-4xl font-extrabold mb-6 text-red-600">Hey Hannah, Will You Be My Valentine? ❤️</h1>
         {showMessage ? (
             <div className="flex flex-col items-center" >
                 <h2 className="text-2xl font-semibold text-gray-700">You selected <b>{selectedFood}</b> mahal! See you tomorrow in the morning! ☀️</h2>
