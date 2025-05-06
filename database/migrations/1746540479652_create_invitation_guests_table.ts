@@ -1,16 +1,15 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'users'
+  protected tableName = 'invitation_guests'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').notNullable()
-      table.string('full_name').nullable()
-      table.string('email', 254).notNullable().unique()
-      table.string('username').notNullable().unique()
-      table.string('password').notNullable()
-      table.string('role').notNullable()
+      table.increments('id')
+      table.string('guest_names').notNullable()
+      table.boolean('is_attending').defaultTo(null)
+      table.integer('no_of_guests_attending').defaultTo(0)
+      table.boolean('max_guests').notNullable()
       table.string('created_by')
       table.timestamp('created_at')
       table.string('updated_by')
