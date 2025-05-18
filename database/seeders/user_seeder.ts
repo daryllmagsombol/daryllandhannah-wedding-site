@@ -8,8 +8,7 @@ export default class extends BaseSeeder {
         fullName: 'Admin User',
         email: 'admin1@example.com',
         username: 'admin1',
-        password:
-          '$scrypt$n=16384,r=8,p=1$53UpUbWeOm5AyUyU3/EkoA$wHzF4Hs9Hlq1fuR7aBUkZXc1AyuAKRkclf9jw/Llo17jqbE8Q6QUmdUu1FqexxWwCAQnz23QdeRs7O0gmP4wOA',
+        password: '-',
         role: 'admin',
         createdBy: 'admin',
         updatedBy: 'admin',
@@ -18,8 +17,7 @@ export default class extends BaseSeeder {
         fullName: 'Admin User 2',
         email: 'admin2@example.com',
         username: 'admin2',
-        password:
-          '$scrypt$n=16384,r=8,p=1$53UpUbWeOm5AyUyU3/EkoA$wHzF4Hs9Hlq1fuR7aBUkZXc1AyuAKRkclf9jw/Llo17jqbE8Q6QUmdUu1FqexxWwCAQnz23QdeRs7O0gmP4wOA',
+        password: '-',
         role: 'admin',
         createdBy: 'admin',
         updatedBy: 'admin',
