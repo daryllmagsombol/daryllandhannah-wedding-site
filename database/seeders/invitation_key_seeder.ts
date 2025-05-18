@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
   async run() {
-    InvitationKey.createMany([
+    await InvitationKey.createMany([
       {
         code: '1asd4fghj',
         invitationGuestId: 1,
