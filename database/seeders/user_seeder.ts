@@ -8,8 +8,7 @@ export default class extends BaseSeeder {
         fullName: 'Hannah Hadap',
         email: 'hadaphannah@gmail.com',
         username: 'hannah',
-        password:
-          '$scrypt$n=16384,r=8,p=1$53UpUbWeOm5AyUyU3/EkoA$wHzF4Hs9Hlq1fuR7aBUkZXc1AyuAKRkclf9jw/Llo17jqbE8Q6QUmdUu1FqexxWwCAQnz23QdeRs7O0gmP4wOA',
+        password: 'imbabyadmin',
         role: 'admin',
         createdBy: 'admin',
         updatedBy: 'admin',
@@ -18,8 +17,7 @@ export default class extends BaseSeeder {
         fullName: 'Daryll Magsombol',
         email: 'darjosh012@gmail.com',
         username: 'darjosh',
-        password:
-          '$scrypt$n=16384,r=8,p=1$53UpUbWeOm5AyUyU3/EkoA$wHzF4Hs9Hlq1fuR7aBUkZXc1AyuAKRkclf9jw/Llo17jqbE8Q6QUmdUu1FqexxWwCAQnz23QdeRs7O0gmP4wOA',
+        password: 'admin200.',
         role: 'admin',
         createdBy: 'admin',
         updatedBy: 'admin',

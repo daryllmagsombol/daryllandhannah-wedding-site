@@ -18,7 +18,7 @@ export default function AdminLogin() {
     if (res.ok) {
       const data = await res.json()
       localStorage.setItem('token', data.token.token)
-      window.open('/guest', '_self')
+      window.open('/guests', '_self')
     } else {
       const errorData = await res.json()
       setError(errorData.error || 'Login failed')
