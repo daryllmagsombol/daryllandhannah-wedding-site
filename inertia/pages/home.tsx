@@ -17,7 +17,7 @@ export default function Home() {
 }
 
 const MainHome = () => (
-  <div className=" overflow-hidden flex flex-col">
+  <div className="overflow-x-hidden flex flex-col">
     {/* First Section */}
     <div
       className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
@@ -33,7 +33,7 @@ const MainHome = () => (
       </Link>
     </div>
 
-    {/* Second Section (Hidden if it exceeds the viewport) */}
+    {/* Second Section */}
     <div className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white">
       <div className="flex flex-col items-center justify-center min-h-screen text-center p-2">
         <div className="bg-white p-8 rounded-2xl max-w-3xl flex flex-col items-center">
