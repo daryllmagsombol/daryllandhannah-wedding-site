@@ -1,8 +1,8 @@
 import { Head } from '@inertiajs/react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import mainImage from '../assets/images/sampleBG2.jpg'
-import mobileBg from '../assets/images/mobileBG.jpg'
-import daryllhannah from '../assets/images/daryllandhannah-logo.png'
+import mainImage from '../assets/images/sampleBG2.webp'
+import mobileBg from '../assets/images/mobileBG.webp'
+import daryllhannah from '../assets/images/daryllandhannah-logo.webp'
 import { useEffect, useState } from 'react'
 
 import prenupimg1 from '../assets/images/IMG_5356.webp'
