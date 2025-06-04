@@ -5,6 +5,20 @@ import mobileBg from '../assets/images/mobileBG.jpg'
 import darylladmin1 from '../assets/images/daryllandadmin1-logo.png'
 import { useEffect, useState } from 'react'
 
+import prenupimg1 from '../assets/images/IMG_5356.webp'
+import prenupimg2 from '../assets/images/IMG_5357.webp'
+import prenupimg3 from '../assets/images/IMG_5358.webp'
+import prenupimg4 from '../assets/images/IMG_5359.webp'
+import prenupimg5 from '../assets/images/IMG_5361.webp'
+import prenupimg6 from '../assets/images/IMG_5362.webp'
+import prenupimg7 from '../assets/images/IMG_5363.webp'
+import prenupimg8 from '../assets/images/IMG_5364.webp'
+import prenupimg9 from '../assets/images/IMG_5365.webp'
+import prenupimg10 from '../assets/images/IMG_5366.webp'
+import prenupimg11 from '../assets/images/IMG_5367.jpg'
+import prenupimg12 from '../assets/images/IMG_5368.webp'
+import prenupimg13 from '../assets/images/IMG_5369.webp'
+
 export default function Home() {
   return (
     <>
@@ -12,7 +26,6 @@ export default function Home() {
       <Router>
         <Routes>
           <Route path="/" element={<MainHome />} />
-          <Route path="/rsvp" element={<RSVP />} />
         </Routes>
       </Router>
     </>
@@ -21,6 +34,29 @@ export default function Home() {
 
 const MainHome = () => {
   const [bgImage, setBgImage] = useState(mainImage)
+  const prenupiamges = [
+    prenupimg1,
+    prenupimg2,
+    prenupimg3,
+    prenupimg4,
+    prenupimg5,
+    prenupimg6,
+    prenupimg7,
+    prenupimg8,
+    prenupimg9,
+    prenupimg10,
+    prenupimg11,
+    prenupimg12,
+    prenupimg13,
+  ]
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % prenupiamges.length)
+    }, 3000) // Change image every 3 seconds
+    return () => clearInterval(interval)
+  }, [prenupiamges.length])
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,6 +71,20 @@ const MainHome = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const handleNext = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % prenupiamges.length)
+  }
+
+  const handlePrev = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? prenupiamges.length - 1 : prevIndex - 1))
+  }
+
+  const isPortrait = (imageSrc: any) => {
+    const img = new Image()
+    img.src = imageSrc
+    return img.naturalHeight > img.naturalWidth
+  }
+
   return (
     <div className="overflow-x-hidden flex flex-col">
       {/* First Section */}
@@ -45,13 +95,13 @@ const MainHome = () => {
         <img
           src={darylladmin1}
           alt="Daryll & Hannah"
-          className="w-2/3 sm:w-1/3 h-auto rounded-full"
+          className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full shadow-lg"
           style={{
             filter: 'brightness(0) invert(1)',
           }}
         />
         <p
-          className="text-3xl mt-1"
+          className="text-xl mt-1 sm:text-3xl"
           style={{
             textShadow: '0 1px 4px rgba(0,0,0,0.7), 0 0 1px #fff',
           }}
@@ -59,7 +109,7 @@ const MainHome = () => {
           Aquila Crystal Place
         </p>
         <p
-          className="text-3xl mt-1"
+          className="text-xl mt-1 sm:text-3xl"
           style={{
             textShadow: '0 2px 6px rgba(0,0,0,0.7), 0 0 1px #fff',
           }}
@@ -67,7 +117,7 @@ const MainHome = () => {
           Tagaytay City
         </p>
         <p
-          className="text-3xl mt-1"
+          className="text-xl mt-1 sm:text-3xl"
           style={{
             textShadow: '0 2px 6px rgba(0,0,0,0.7), 0 0 1px #fff',
           }}
@@ -78,13 +128,15 @@ const MainHome = () => {
 
       {/* Second Section */}
       <div className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white">
-        <div className="flex flex-col items-center justify-center min-h-screen text-center p-2">
-          <div className="bg-white p-8 rounded-2xl max-w-3xl flex flex-col items-center">
-            <h1 className="text-6xl font-extrabold mb-6 text-purple-900">Daryll & Hannah</h1>
-            <p className="text-xl text-gray-700 italic mb-6">
+        <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 sm:p-8">
+          <div className="bg-white p-6 sm:p-8 rounded-2xl max-w-3xl flex flex-col items-center">
+            <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 text-purple-900">
+              Daryll & Hannah
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-700 italic mb-6">
               "Two souls, one heart, one beautiful journey."
             </p>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className="text-sm sm:text-lg text-gray-600 mb-6">
               From the very beginning, we believed that love is not just about finding the right
               person—it’s about discovering God’s perfect plan. Our journey together is a testament
               to His faithfulness, timing, and grace.
@@ -103,35 +155,50 @@ const MainHome = () => {
           </div>
         </div>
       </div>
+
+      {/* Third Section */}
+      <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col sm:flex-row items-center justify-center">
+        {/* Random text on the top for mobile, right for desktop */}
+        <div className="w-full sm:w-1/2 flex flex-col items-center justify-center text-center p-4 sm:p-8 order-1 sm:order-none">
+          <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">Our Journey</h2>
+          <p className="text-sm sm:text-lg text-gray-700 mb-6">
+            From the first glance to the first dance, our journey has been nothing short of magical.
+            Every moment we've shared has brought us closer, and now we stand on the brink of
+            forever.
+          </p>
+          <p className="text-sm sm:text-lg text-gray-700">
+            As we prepare to celebrate our love, we are reminded of the beauty of life's unexpected
+            twists and turns. Thank you for being part of our story.
+          </p>
+        </div>
+
+        {/* Slideshow on the bottom for mobile, left for desktop */}
+        <div className="w-full sm:w-1/2 flex flex-col items-center justify-center relative order-2 sm:order-none h-full">
+          <div className="relative w-4/5 h-auto max-h-[80vh] flex items-center justify-center">
+            <img
+              src={prenupiamges[currentImageIndex]}
+              alt="Slideshow"
+              className={`rounded-lg w-full h-full object-contain shadow-lg ${
+                isPortrait(prenupiamges[currentImageIndex]) ? 'shadow-md' : 'shadow-lg'
+              }`}
+            />
+          </div>
+          <div className="flex justify-center mt-4 space-x-4">
+            <button
+              className="bg-purple-400 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
+              onClick={handlePrev}
+            >
+              &#8249; {/* Left arrow */}
+            </button>
+            <button
+              className="bg-purple-400 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
+              onClick={handleNext}
+            >
+              &#8250; {/* Right arrow */}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
-
-const RSVP = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen text-center p-8 bg-gradient-to-r from-[#D6B4FC] to-[#B08BEB]">
-    <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md">
-      <h2 className="text-4xl font-bold mb-6 text-purple-900">RSVP</h2>
-      <p className="text-lg text-gray-700 mb-6">
-        We can't wait to celebrate with you! Let us know if you can join.
-      </p>
-      <form className="flex flex-col gap-6">
-        <input
-          type="text"
-          placeholder="Your Name"
-          className="border p-3 rounded-lg shadow-md text-gray-700"
-          required
-        />
-        <select className="border p-3 rounded-lg shadow-md text-gray-700">
-          <option>Yes, I'll be there!</option>
-          <option>Sorry, I can't make it.</option>
-        </select>
-        <button
-          type="submit"
-          className="bg-purple-700 text-white px-6 py-3 rounded-full shadow-lg hover:bg-purple-800 transition duration-300"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
-  </div>
-)
