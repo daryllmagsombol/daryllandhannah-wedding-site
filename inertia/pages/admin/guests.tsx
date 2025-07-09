@@ -98,7 +98,7 @@ export default function GuestsAdmin() {
     setError(null)
     const res = await fetch('/guest/update-guest', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
         id: selectedGuest.id,
         guestNames: updateData.guestNames,

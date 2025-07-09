@@ -4,6 +4,7 @@ import mainImage from '../assets/images/sampleBG2.webp'
 import mobileBg from '../assets/images/mobileBG.webp'
 import daryllhannah from '../assets/images/daryllandhannah-logo-alt.png'
 import { useEffect, useState } from 'react'
+import { motion } from 'motion/react'
 
 import prenupimg1 from '../assets/images/IMG_5356.webp'
 import prenupimg2 from '../assets/images/IMG_5357.webp'
@@ -103,12 +104,19 @@ const MainHome = () => {
     return img.naturalHeight > img.naturalWidth
   }
 
+  const airBnbDefaultAnimate = {
+    initial: { opacity: 0, y: 50 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+  }
+
   type RecommendationBoxProps = {
     title: string
     content?: string
     picture: string
     link: string
     type?: string
+    mainDivProps?: any
   }
 
   const RecommendationBox = ({
@@ -117,22 +125,25 @@ const MainHome = () => {
     picture,
     link,
     type = 'Website',
+    mainDivProps = {},
   }: RecommendationBoxProps) => (
-    <div className="bg-white rounded-lg shadow-lg p-6">
-      <h3 className="text-xl font-bold text-purple-800 mb-2">{title}</h3>
-      <div className="mt-4">
-        <img src={picture} alt={title} className="w-50 h-50 rounded-lg object-cover" />
-      </div>
-      <p className="mt-3 text-sm text-gray-600 mb-4">{content}</p>
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-purple-600 hover:underline"
-      >
-        View in {type}
-      </a>
-    </div>
+    <>
+      <motion.div {...mainDivProps} className="bg-white rounded-lg shadow-lg p-6">
+        <h3 className="text-xl font-bold text-purple-800 mb-2">{title}</h3>
+        <div className="mt-4">
+          <img src={picture} alt={title} className="w-50 h-50 rounded-lg object-cover" />
+        </div>
+        <p className="mt-3 text-sm text-gray-600 mb-4">{content}</p>
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-purple-600 hover:underline"
+        >
+          View in {type}
+        </a>
+      </motion.div>
+    </>
   )
 
   return (
@@ -148,48 +159,36 @@ const MainHome = () => {
       {!loading && (
         <>
           {/* First Section */}
-          <div
+          <motion.div
             className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
             style={{ backgroundImage: `url(${bgImage})` }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
           >
-            <img
+            <motion.img
               src={daryllhannah}
               alt="Daryll & Hannah"
               className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full"
               style={{
                 filter: 'brightness(0) invert(1)',
               }}
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1 }}
             />
-            {/* <p
-              className="text-xl mt-1 sm:text-3xl"
-              style={{
-                textShadow: '0 1px 4px rgba(0,0,0,0.7), 0 0 1px #fff',
-              }}
-            >
-              Aquila Crystal Place
-            </p>
-            <p
-              className="text-xl mt-1 sm:text-3xl"
-              style={{
-                textShadow: '0 1px 4px rgba(0,0,0,0.7), 0 0 1px #fff',
-              }}
-            >
-              Tagaytay City
-            </p>
-            <p
-              className="text-xl mt-1 sm:text-3xl"
-              style={{
-                textShadow: '0 1px 4px rgba(0,0,0,0.7), 0 0 1px #fff',
-              }}
-            >
-              September 5, 2025
-            </p> */}
-          </div>
+          </motion.div>
 
           {/* Second Section */}
-          <div className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white">
+          <motion.div className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white">
             <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 sm:p-8">
-              <div className="bg-white p-6 sm:p-8 rounded-2xl max-w-3xl flex flex-col items-center">
+              <motion.div
+                className="bg-white p-6 sm:p-8 rounded-2xl max-w-3xl flex flex-col items-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: 'easeInOut' }}
+              >
                 <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 text-purple-900">
                   Daryll & Hannah
                 </h1>
@@ -213,17 +212,33 @@ const MainHome = () => {
                   We invite you to join us in witnessing this special day, as we begin a new chapter
                   filled with love, faith, and a future designed by God.
                 </p>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {/* YouTube Section */}
-          <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">Save the Date!</h2>
-            <p className="text-md sm:text-lg text-gray-700 mb-6">
-              Watch a glimpse of our beautiful journey together as we prepare for this special day.
-            </p>
-            <div className="w-full h-full max-w-7xl rounded-lg overflow-hidden shadow-lg">
+          <motion.div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
+            <motion.div
+              initial={{ opacity: 0, y: -30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
+                Save the Date!
+              </h2>
+              <p className="text-md sm:text-lg text-gray-700 mb-6">
+                Watch a glimpse of our beautiful journey together as we prepare for this special
+                day.
+              </p>
+            </motion.div>
+            <motion.div
+              className="w-full h-full max-w-7xl rounded-lg overflow-hidden shadow-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: 'easeInOut' }}
+            >
               <iframe
                 width="100%"
                 height="100%"
@@ -233,13 +248,19 @@ const MainHome = () => {
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               ></iframe>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Third Section */}
           <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col sm:flex-row items-center justify-center">
             {/* Random text on the top for mobile, right for desktop */}
-            <div className="w-full sm:w-1/2 flex flex-col items-center justify-center text-center p-4 sm:p-8 order-1 sm:order-none">
+            <motion.div
+              className="w-full sm:w-1/2 flex flex-col items-center justify-center text-center p-4 sm:p-8 order-1 sm:order-none"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: 'easeInOut' }}
+            >
               <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">Our Journey</h2>
               <p className="text-md sm:text-xl text-gray-700 mb-6">
                 From the first glance to the first dance, our journey has been nothing short of
@@ -250,10 +271,16 @@ const MainHome = () => {
                 As we prepare to celebrate our love, we are reminded of the beauty of life's
                 unexpected twists and turns. Thank you for being part of our story.
               </p>
-            </div>
+            </motion.div>
 
             {/* Slideshow on the bottom for mobile, left for desktop */}
-            <div className="w-full sm:w-1/2 flex flex-col items-center justify-center relative order-2 sm:order-none h-full">
+            <motion.div
+              className="w-full sm:w-1/2 flex flex-col items-center justify-center relative order-2 sm:order-none h-full"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1.2, duration: 1, ease: 'easeInOut' }}
+            >
               <div className="relative w-4/5 h-auto max-h-[80vh] flex items-center justify-center">
                 <img
                   src={prenupiamges[currentImageIndex]}
@@ -277,7 +304,7 @@ const MainHome = () => {
                   &#8250; {/* Right arrow */}
                 </button>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Fourth Section */}
@@ -289,7 +316,13 @@ const MainHome = () => {
               The venue is located at Aquila Crystal Place, Tagaytay City. Below is the map to help
               you find your way. Click <b>Directions</b> to view in Google Maps.
             </p>
-            <div className="w-full max-w-5xl h-96 rounded-lg overflow-hidden shadow-lg">
+            <motion.div
+              className="w-full max-w-5xl h-96 rounded-lg overflow-hidden shadow-lg"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+            >
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3869.1898874444946!2d120.9592638!3d14.1249278!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd79dc7086fc39%3A0x56d9690c8ba530bb!2sAquila%20Crystal%20Palace%20Tagaytay!5e0!3m2!1sen!2sph!4v1751797129428!5m2!1sen!2sph"
                 width="100%"
@@ -299,7 +332,7 @@ const MainHome = () => {
                 loading="lazy"
                 // referrerPolicy="no-referrer-when-cross-origin"
               />
-            </div>
+            </motion.div>
             <div className="mt-10">
               <p className="text-md sm:text-lg text-gray-700 mb-6">
                 Alternatively, you can use <b>Waze</b> for navigation.
@@ -326,37 +359,55 @@ const MainHome = () => {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl">
               {/* Recommendation 1 */}
-              <RecommendationBox
-                title="Elegant Studio Unit with FREE Parking"
-                content="Classy interior, tricolor vanity mirror for your make up and clothes rack for your
+              <motion.div {...airBnbDefaultAnimate} transition={{ duration: 1, ease: 'easeInOut' }}>
+                <RecommendationBox
+                  title="Elegant Studio Unit with FREE Parking"
+                  content="Classy interior, tricolor vanity mirror for your make up and clothes rack for your
                   gown/suit. Located just behind Ayala Serin Mall."
-                picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/dcd16063-8106-42b8-b1f1-3104080316e5.jpeg"
-                link="https://www.airbnb.com/l/noxSkITw"
-                type="Airbnb"
-              />
+                  picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/dcd16063-8106-42b8-b1f1-3104080316e5.jpeg"
+                  link="https://www.airbnb.com/l/noxSkITw"
+                  type="Airbnb"
+                />
+              </motion.div>
 
-              <RecommendationBox
-                title="COZY 21st Flr King+Dbl w/ Pool"
-                content=" Relax with the whole family or barkada at this SPACIOUS staycation spot with FREE pool access and UNLI Netflix."
-                picture="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE0NTMyNzgzNTg5NjUzMzI0MA%3D%3D/original/5ba25b6f-4172-4b5d-aaeb-5d678d6a6490.jpeg?im_w=1440"
-                link="https://www.airbnb.com/l/DPRwsvRJ"
-                type="Airbnb"
-              />
+              <motion.div
+                {...airBnbDefaultAnimate}
+                transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
+              >
+                <RecommendationBox
+                  title="COZY 21st Flr King+Dbl w/ Pool"
+                  content=" Relax with the whole family or barkada at this SPACIOUS staycation spot with FREE pool access and UNLI Netflix."
+                  picture="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE0NTMyNzgzNTg5NjUzMzI0MA%3D%3D/original/5ba25b6f-4172-4b5d-aaeb-5d678d6a6490.jpeg?im_w=1440"
+                  link="https://www.airbnb.com/l/DPRwsvRJ"
+                  type="Airbnb"
+                />
+              </motion.div>
 
-              <RecommendationBox
-                title="Serene Escape Tagaytay"
-                content="Your peaceful escape in the heart of Tagaytay. Unwind, relax, and recharge at our cozy getaway located on the 12th floor of Serin East Tagaytay."
-                picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1429464938235773057/original/3eccc298-f36b-4393-8b3e-a4e762b31f4a.jpeg?im_w=1200"
-                link="https://www.airbnb.com/l/6E076Uhe"
-                type="Airbnb"
-              />
-              <RecommendationBox
-                title="Quest Hotel Tagaytay"
-                content="Quest Hotel Tagaytay is ideal for two travelers, providing stunning Taal Lake views and exceptional comfort. Relax by the outdoor pool, enjoy the lively café, and experience affordable luxury in serene Tagaytay."
-                picture="https://pix8.agoda.net/hotelImages/5826741/0/5643299815f46330c94b8067edbdfd84.jpeg?s=1024x"
-                link="https://www.agoda.com/sl/GlGJ0JnoRYr"
-                type="Agoda"
-              />
+              <motion.div
+                {...airBnbDefaultAnimate}
+                transition={{ delay: 0.4, duration: 1, ease: 'easeInOut' }}
+              >
+                <RecommendationBox
+                  title="Serene Escape Tagaytay"
+                  content="Your peaceful escape in the heart of Tagaytay. Unwind, relax, and recharge at our cozy getaway located on the 12th floor of Serin East Tagaytay."
+                  picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1429464938235773057/original/3eccc298-f36b-4393-8b3e-a4e762b31f4a.jpeg?im_w=1200"
+                  link="https://www.airbnb.com/l/6E076Uhe"
+                  type="Airbnb"
+                />
+              </motion.div>
+
+              <motion.div
+                {...airBnbDefaultAnimate}
+                transition={{ delay: 0.6, duration: 0.8, ease: 'easeInOut' }}
+              >
+                <RecommendationBox
+                  title="Quest Hotel Tagaytay"
+                  content="Quest Hotel Tagaytay is ideal for two travelers, providing stunning Taal Lake views and exceptional comfort. Relax by the outdoor pool, enjoy the lively café, and experience affordable luxury in serene Tagaytay."
+                  picture="https://pix8.agoda.net/hotelImages/5826741/0/5643299815f46330c94b8067edbdfd84.jpeg?s=1024x"
+                  link="https://www.agoda.com/sl/GlGJ0JnoRYr"
+                  type="Agoda"
+                />
+              </motion.div>
             </div>
             <div className="mt-8">
               <a
