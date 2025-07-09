@@ -74,6 +74,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
+    "react-select": "^5.10.1",
     "reflect-metadata": "^0.2.2",
     "sweetalert2": "^11.22.2",
     "uuid": "^11.1.0"
