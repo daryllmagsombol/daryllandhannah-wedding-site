@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.boolean('is_attending').defaultTo(null)
       table.integer('no_of_guests_attending').defaultTo(0)
       table.boolean('max_guests').notNullable()
+      table.string('seat_number').nullable()
       table.string('created_by')
       table.timestamp('created_at')
       table.string('updated_by')

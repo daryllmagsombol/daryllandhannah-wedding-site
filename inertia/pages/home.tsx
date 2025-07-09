@@ -2,7 +2,7 @@ import { Head } from '@inertiajs/react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import mainImage from '../assets/images/sampleBG2.webp'
 import mobileBg from '../assets/images/mobileBG.webp'
-import darylladmin1 from '../assets/images/daryllandadmin1-logo.webp'
+import darylladmin1 from '../assets/images/daryllandadmin1-logo-alt.png'
 import { useEffect, useState } from 'react'
 
 import prenupimg1 from '../assets/images/IMG_5356.webp'
@@ -155,12 +155,12 @@ const MainHome = () => {
             <img
               src={darylladmin1}
               alt="Daryll & Hannah"
-              className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full shadow-lg"
+              className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full"
               style={{
                 filter: 'brightness(0) invert(1)',
               }}
             />
-            <p
+            {/* <p
               className="text-xl mt-1 sm:text-3xl"
               style={{
                 textShadow: '0 1px 4px rgba(0,0,0,0.7), 0 0 1px #fff',
@@ -183,7 +183,7 @@ const MainHome = () => {
               }}
             >
               September 5, 2025
-            </p>
+            </p> */}
           </div>
 
           {/* Second Section */}
@@ -193,10 +193,10 @@ const MainHome = () => {
                 <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 text-purple-900">
                   Daryll & Hannah
                 </h1>
-                <p className="text-lg sm:text-xl text-gray-700 italic mb-6">
+                <p className="text-xl sm:text-2xl text-gray-700 italic mb-6">
                   "Two souls, one heart, one beautiful journey."
                 </p>
-                <p className="text-sm sm:text-lg text-gray-600 mb-6">
+                <p className="text-lg sm:text-xl text-gray-600 mb-6">
                   From the very beginning, we believed that love is not just about finding the right
                   person—it’s about discovering God’s perfect plan. Our journey together is a
                   testament to His faithfulness, timing, and grace.
@@ -220,7 +220,7 @@ const MainHome = () => {
           {/* YouTube Section */}
           <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">Save the Date!</h2>
-            <p className="text-sm sm:text-lg text-gray-700 mb-6">
+            <p className="text-md sm:text-lg text-gray-700 mb-6">
               Watch a glimpse of our beautiful journey together as we prepare for this special day.
             </p>
             <div className="w-full h-full max-w-7xl rounded-lg overflow-hidden shadow-lg">
@@ -241,12 +241,12 @@ const MainHome = () => {
             {/* Random text on the top for mobile, right for desktop */}
             <div className="w-full sm:w-1/2 flex flex-col items-center justify-center text-center p-4 sm:p-8 order-1 sm:order-none">
               <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">Our Journey</h2>
-              <p className="text-sm sm:text-lg text-gray-700 mb-6">
+              <p className="text-md sm:text-xl text-gray-700 mb-6">
                 From the first glance to the first dance, our journey has been nothing short of
                 magical. Every moment we've shared has brought us closer, and now we stand on the
                 brink of forever.
               </p>
-              <p className="text-sm sm:text-lg text-gray-700">
+              <p className="text-md sm:text-xl text-gray-700">
                 As we prepare to celebrate our love, we are reminded of the beauty of life's
                 unexpected twists and turns. Thank you for being part of our story.
               </p>
@@ -285,7 +285,7 @@ const MainHome = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
               How to Get There?
             </h2>
-            <p className="text-sm sm:text-lg text-gray-700 mb-6">
+            <p className="text-md sm:text-lg text-gray-700 mb-6">
               The venue is located at Aquila Crystal Place, Tagaytay City. Below is the map to help
               you find your way. Click <b>Directions</b> to view in Google Maps.
             </p>
@@ -301,7 +301,7 @@ const MainHome = () => {
               />
             </div>
             <div className="mt-10">
-              <p className="text-sm sm:text-lg text-gray-700 mb-6">
+              <p className="text-md sm:text-lg text-gray-700 mb-6">
                 Alternatively, you can use <b>Waze</b> for navigation.
               </p>
               <a
@@ -320,7 +320,7 @@ const MainHome = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
               Airbnb & Hotel Recommendations
             </h2>
-            <p className="text-sm sm:text-lg text-gray-700 mb-6">
+            <p className="text-md sm:text-lg text-gray-700 mb-6">
               Here are some accommodations near the venue to make your stay comfortable and
               memorable.
             </p>
@@ -369,6 +369,10 @@ const MainHome = () => {
               </a>
             </div>
           </div>
+          {/* Footer */}
+          <footer className="w-full bg-gray-100 text-center py-4">
+            <p className="text-sm text-gray-600">Made truly yours &copy; Daryll Joshua Magsombol</p>
+          </footer>
         </>
       )}
     </div>

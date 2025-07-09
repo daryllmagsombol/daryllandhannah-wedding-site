@@ -23,6 +23,9 @@ export default class InvitationGuest extends BaseModel {
   declare maxGuests: number
 
   @column()
+  declare seatNumber: string | null
+
+  @column()
   declare createdBy: string | null
 
   @column.dateTime({ autoCreate: true })

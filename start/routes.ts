@@ -8,10 +8,14 @@
 */
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+
 const LoginController = () => import('#controllers/login_controller')
 
 const RsvpsController = () => import('#controllers/rsvps_controller')
 const GuestsController = () => import('#controllers/guests_controller')
+
+const SeatInquiriesController = () => import('#controllers/seat_inquiries_controller')
+
 router.on('/').renderInertia('home')
 router.on('/valentines').renderInertia('valentines')
 
@@ -22,6 +26,13 @@ router
     router.post('/update-invitation', [RsvpsController, 'saveGuestInvitation'])
   })
   .prefix('/rsvp')
+
+router
+  .group(() => {
+    router.on('/').renderInertia('seat-inquiry')
+    router.get('/fetch-guests', [SeatInquiriesController, 'fetchGuests'])
+  })
+  .prefix('/seat-inquiry')
 
 router
   .group(() => {
