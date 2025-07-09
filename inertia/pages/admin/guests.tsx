@@ -1,5 +1,12 @@
-import { useEffect, useState } from 'react'
-// Make sure the Modal component exists at this path, or update the path if necessary
+import { useEffect, useMemo, useState } from 'react'
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  flexRender,
+} from '@tanstack/react-table'
 import Modal from '../../components/common/Modal/Modal'
 import ActionButtons from '../../components/common/ActionButtons/ActionButtons'
 import { headers } from '~/shared/config'
@@ -31,6 +38,7 @@ export default function GuestsAdmin() {
   const [modalType, setModalType] = useState<ModalType>(null)
   const [updateData, setUpdateData] = useState<Partial<Guest>>({})
   const [newGuestData, setNewGuestData] = useState<Partial<Guest>>(emptyGuest)
+  const [globalFilter, setGlobalFilter] = useState('')
 
   const fetchGuests = () => {
     setLoading(true)
@@ -43,12 +51,7 @@ export default function GuestsAdmin() {
         return res.json()
       })
       .then(setGuests)
-      .catch((err) => {
-        setError(err.message)
-        if (err.message && err.message.includes('Unauthorized access')) {
-          window.location.href = '/login'
-        }
-      })
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }
 
@@ -56,11 +59,78 @@ export default function GuestsAdmin() {
     fetchGuests()
   }, [])
 
-  const totalAttending = guests.reduce(
-    (sum, guest) => sum + (guest.isAttending ? guest.noOfGuestsAttending : 0),
-    0
+  const columns = [
+    {
+      accessorKey: 'guestNames',
+      header: 'Name(s)',
+    },
+    {
+      accessorKey: 'isAttending',
+      header: 'Attending',
+      cell: ({ getValue }: { getValue: () => boolean | null }) => {
+        const value = getValue()
+        return value === null ? (
+          <span className="text-gray-400">No Response</span>
+        ) : value ? (
+          <span className="text-green-600 font-semibold">Yes</span>
+        ) : (
+          <span className="text-red-600 font-semibold">No</span>
+        )
+      },
+    },
+    {
+      accessorKey: 'noOfGuestsAttending',
+      header: '# Attending',
+    },
+    {
+      accessorKey: 'maxGuests',
+      header: 'Max Guests',
+    },
+    {
+      accessorKey: 'id',
+      header: 'Actions',
+      cell: ({ getValue }: { getValue: () => number }) => {
+        const value = getValue()
+        return (
+          <ActionButtons
+            onView={() => openModal(guests.find((guest) => guest.id === value)!, 'view')}
+            onUpdate={() => openModal(guests.find((guest) => guest.id === value)!, 'update')}
+            onDelete={() => openModal(guests.find((guest) => guest.id === value)!, 'delete')}
+            onGenerateKey={() => generateInviteKey(value)}
+          />
+        )
+      },
+    },
+  ]
+
+  const totalAttending = useMemo(
+    () =>
+      guests.reduce((sum, guest) => sum + (guest.isAttending ? guest.noOfGuestsAttending : 0), 0),
+    [guests]
   )
-  const totalMaxGuests = guests.reduce((sum, guest) => sum + guest.maxGuests, 0)
+
+  const totalMaxGuests = useMemo(
+    () => guests.reduce((sum, guest) => sum + guest.maxGuests, 0),
+    [guests]
+  )
+
+  const table = useReactTable({
+    data: guests,
+    columns,
+    state: {
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 10,
+      },
+    },
+  })
 
   const openModal = (guest: Guest, type: ModalType) => {
     setSelectedGuest(guest)
@@ -85,7 +155,7 @@ export default function GuestsAdmin() {
       const data = await res.json()
       const baseUrl = window.location.origin
       const inviteUrl = `${baseUrl}/rsvp?key=${data.code}`
-      setSuccess(`Invite Link: ${inviteUrl}`)
+      alert(`Invite Link: ${inviteUrl}`)
     } else {
       setError(await res.text())
     }
@@ -101,10 +171,10 @@ export default function GuestsAdmin() {
       headers,
       body: JSON.stringify({
         id: selectedGuest.id,
-        guestNames: updateData.guestNames,
-        isAttending: updateData.isAttending,
-        noOfGuestsAttending: updateData.noOfGuestsAttending,
-        maxGuests: updateData.maxGuests ?? selectedGuest.maxGuests,
+        guestNames: newGuestData.guestNames,
+        isAttending: newGuestData.isAttending,
+        noOfGuestsAttending: newGuestData.noOfGuestsAttending,
+        maxGuests: newGuestData.maxGuests ?? selectedGuest.maxGuests,
       }),
     })
     if (res.ok) {
@@ -163,15 +233,17 @@ export default function GuestsAdmin() {
     <div className="max-w-5xl mx-auto mt-12 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
       <div className="flex justify-between items-center mb-6">
         <div className="text-lg font-semibold text-blue-700">
-          Total Attending:{' '}
-          <span className="text-green-600">
-            {totalAttending} out of {totalMaxGuests}
-          </span>
+          Total Attending Guests:{' '}
+          <span className="text-green-600">{`${totalAttending} out of ${totalMaxGuests}`}</span>
         </div>
+        <input
+          type="text"
+          value={globalFilter || ''}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Search guests..."
+          className="border rounded px-4 py-2"
+        />
       </div>
-      <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-700 tracking-tight">
-        Guest List
-      </h2>
       <div className="flex justify-end mb-4">
         <button
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
@@ -201,48 +273,73 @@ export default function GuestsAdmin() {
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border rounded-lg shadow">
             <thead>
-              <tr className="bg-blue-50">
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Name(s)</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Attending</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700"># Attending</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Max Guests</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-700">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {guests.map((guest) => (
-                <tr key={guest.id} className="border-t hover:bg-blue-50 transition">
-                  <td className="px-4 py-3">{guest.guestNames}</td>
-                  <td className="px-4 py-3">
-                    {guest.isAttending === null ? (
-                      <span className="text-gray-400">No Response</span>
-                    ) : guest.isAttending ? (
-                      <span className="text-green-600 font-semibold">Yes</span>
-                    ) : (
-                      <span className="text-red-600 font-semibold">No</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3">{guest.noOfGuestsAttending}</td>
-                  <td className="px-4 py-3">{guest.maxGuests}</td>
-                  <td className="px-4 py-3">
-                    <ActionButtons
-                      onView={() => openModal(guest, 'view')}
-                      onUpdate={() => openModal(guest, 'update')}
-                      onDelete={() => openModal(guest, 'delete')}
-                      onGenerateKey={() => generateInviteKey(guest.id)}
-                    />
-                  </td>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id} className="bg-blue-50">
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-4 py-3 text-left font-semibold text-gray-700"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : // Use flexRender to render header content
+                          flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.column.getIsSorted() === 'asc' ? ' 🔼' : ''}
+                      {header.column.getIsSorted() === 'desc' ? ' 🔽' : ''}
+                    </th>
+                  ))}
                 </tr>
               ))}
-              {guests.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="text-center py-8 text-gray-400">
-                    No guests found.
-                  </td>
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="border-t hover:bg-blue-50 transition">
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-4 py-3">
+                      {
+                        // Use flexRender to render cell content
+                        flexRender(cell.column.columnDef.cell, cell.getContext())
+                      }
+                    </td>
+                  ))}
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition ml-2"
+            >
+              Next
+            </button>
+            <div>
+              Page{' '}
+              <strong>
+                {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+              </strong>
+            </div>
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => table.setPageSize(Number(e.target.value))}
+              className="border rounded px-4 py-2"
+            >
+              {[10, 20, 30, 40, 50].map((size) => (
+                <option key={size} value={size}>
+                  Show {size}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
       {modalType === 'create' && (
@@ -320,8 +417,8 @@ export default function GuestsAdmin() {
               <input
                 type="text"
                 id="guestNames"
-                value={updateData.guestNames}
-                onChange={(e) => setUpdateData({ ...updateData, guestNames: e.target.value })}
+                value={newGuestData.guestNames}
+                onChange={(e) => setNewGuestData({ ...newGuestData, guestNames: e.target.value })}
                 className="border rounded w-full px-3 py-2"
                 required
               />
@@ -332,10 +429,10 @@ export default function GuestsAdmin() {
               </label>
               <select
                 id="isAttending"
-                value={updateData.isAttending ? 'yes' : 'no'}
+                value={newGuestData.isAttending ? 'yes' : 'no'}
                 onChange={(e) =>
-                  setUpdateData({
-                    ...updateData,
+                  setNewGuestData({
+                    ...newGuestData,
                     isAttending: e.target.value === 'yes',
                   })
                 }
@@ -353,9 +450,9 @@ export default function GuestsAdmin() {
               <input
                 type="number"
                 id="noOfGuestsAttending"
-                value={updateData.noOfGuestsAttending}
+                value={newGuestData.noOfGuestsAttending}
                 onChange={(e) =>
-                  setUpdateData({ ...updateData, noOfGuestsAttending: Number(e.target.value) })
+                  setNewGuestData({ ...newGuestData, noOfGuestsAttending: Number(e.target.value) })
                 }
                 className="border rounded w-full px-3 py-2"
                 required
