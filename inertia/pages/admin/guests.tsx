@@ -56,6 +56,12 @@ export default function GuestsAdmin() {
     fetchGuests()
   }, [])
 
+  const totalAttending = guests.reduce(
+    (sum, guest) => sum + (guest.isAttending ? guest.noOfGuestsAttending : 0),
+    0
+  )
+  const totalMaxGuests = guests.reduce((sum, guest) => sum + guest.maxGuests, 0)
+
   const openModal = (guest: Guest, type: ModalType) => {
     setSelectedGuest(guest)
     setUpdateData(guest)
@@ -142,13 +148,27 @@ export default function GuestsAdmin() {
     }
   }
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
+  const copyLinkToClipboard = (text: string) => {
+    const isLink = text.startsWith('Invite Link: ')
+
+    if (isLink) {
+      const link = text.replace('Invite Link: ', '')
+      navigator.clipboard.writeText(link)
+    }
+
     alert('Invite link copied to clipboard!')
   }
 
   return (
     <div className="max-w-5xl mx-auto mt-12 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-lg font-semibold text-blue-700">
+          Total Attending:{' '}
+          <span className="text-green-600">
+            {totalAttending} out of {totalMaxGuests}
+          </span>
+        </div>
+      </div>
       <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-700 tracking-tight">
         Guest List
       </h2>
@@ -373,7 +393,7 @@ export default function GuestsAdmin() {
         <div className="mt-4 text-green-600 bg-green-50 border border-green-200 rounded px-4 py-2 text-center flex items-center justify-center gap-2">
           <span>{success}</span>
           <button
-            onClick={() => copyToClipboard(success)}
+            onClick={() => copyLinkToClipboard(success)}
             className="text-green-700 hover:text-green-900 transition"
             aria-label="Copy to clipboard"
           >

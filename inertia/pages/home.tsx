@@ -171,7 +171,7 @@ const MainHome = () => {
             <p
               className="text-xl mt-1 sm:text-3xl"
               style={{
-                textShadow: '0 2px 6px rgba(0,0,0,0.7), 0 0 1px #fff',
+                textShadow: '0 1px 4px rgba(0,0,0,0.7), 0 0 1px #fff',
               }}
             >
               Tagaytay City
@@ -179,7 +179,7 @@ const MainHome = () => {
             <p
               className="text-xl mt-1 sm:text-3xl"
               style={{
-                textShadow: '0 2px 6px rgba(0,0,0,0.7), 0 0 1px #fff',
+                textShadow: '0 1px 4px rgba(0,0,0,0.7), 0 0 1px #fff',
               }}
             >
               September 5, 2025
@@ -217,6 +217,25 @@ const MainHome = () => {
             </div>
           </div>
 
+          {/* YouTube Section */}
+          <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">Save the Date!</h2>
+            <p className="text-sm sm:text-lg text-gray-700 mb-6">
+              Watch a glimpse of our beautiful journey together as we prepare for this special day.
+            </p>
+            <div className="w-full h-full max-w-7xl rounded-lg overflow-hidden shadow-lg">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/Yv0a9U0IHks?si=BhzQhgYsVYUWM6N5"
+                title="Daryll & Hannah - Save the Date"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+
           {/* Third Section */}
           <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col sm:flex-row items-center justify-center">
             {/* Random text on the top for mobile, right for desktop */}
@@ -246,13 +265,13 @@ const MainHome = () => {
               </div>
               <div className="flex justify-center mt-4 space-x-4">
                 <button
-                  className="bg-purple-400 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
+                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
                   onClick={handlePrev}
                 >
                   &#8249; {/* Left arrow */}
                 </button>
                 <button
-                  className="bg-purple-400 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
+                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
                   onClick={handleNext}
                 >
                   &#8250; {/* Right arrow */}
@@ -264,11 +283,11 @@ const MainHome = () => {
           {/* Fourth Section */}
           <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
-              How to Get There
+              How to Get There?
             </h2>
             <p className="text-sm sm:text-lg text-gray-700 mb-6">
               The venue is located at Aquila Crystal Place, Tagaytay City. Below is the map to help
-              you find your way.
+              you find your way. Click <b>Directions</b> to view in Google Maps.
             </p>
             <div className="w-full max-w-5xl h-96 rounded-lg overflow-hidden shadow-lg">
               <iframe
@@ -278,8 +297,21 @@ const MainHome = () => {
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
+                // referrerPolicy="no-referrer-when-cross-origin"
               />
+            </div>
+            <div className="mt-10">
+              <p className="text-sm sm:text-lg text-gray-700 mb-6">
+                Alternatively, you can use <b>Waze</b> for navigation.
+              </p>
+              <a
+                href="https://ul.waze.com/ul?venue_id=79298701.792724868.10452740&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition"
+              >
+                View Directions in Waze
+              </a>
             </div>
           </div>
 
@@ -323,7 +355,7 @@ const MainHome = () => {
                 content="Quest Hotel Tagaytay is ideal for two travelers, providing stunning Taal Lake views and exceptional comfort. Relax by the outdoor pool, enjoy the lively café, and experience affordable luxury in serene Tagaytay."
                 picture="https://pix8.agoda.net/hotelImages/5826741/0/5643299815f46330c94b8067edbdfd84.jpeg?s=1024x"
                 link="https://www.agoda.com/sl/GlGJ0JnoRYr"
-                type="Airbnb"
+                type="Agoda"
               />
             </div>
             <div className="mt-8">
@@ -331,7 +363,7 @@ const MainHome = () => {
                 href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-purple-500 text-white px-6 py-3 rounded shadow hover:bg-purple-600 transition"
+                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 rounded shadow hover:bg-purple-600 transition"
               >
                 View More on Airbnb
               </a>
