@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { useQueryParams } from '~/hooks/common'
@@ -122,7 +123,13 @@ export default function RSVP() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-50 to-indigo-100">
-      <div className="mx-auto p-8 bg-white rounded-2xl shadow-lg max-w-md w-full">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: 'easeInOut' }}
+        className="mx-auto p-8 bg-white rounded-2xl shadow-lg max-w-md w-full"
+      >
         <h2
           className="text-5xl font-extrabold mb-2 text-center text-purple-700 tracking-tight"
           style={{
@@ -200,7 +207,7 @@ export default function RSVP() {
             </div>
           )}
         </form>
-      </div>
+      </motion.div>
     </div>
   )
 }

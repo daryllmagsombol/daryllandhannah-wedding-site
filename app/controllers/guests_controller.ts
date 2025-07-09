@@ -4,6 +4,7 @@ import InvitationGuest from '#models/invitation_guest'
 import InvitationKey from '#models/invitation_key'
 import { v4 as uuidv4 } from 'uuid'
 import { DateTime } from 'luxon'
+import db from '@adonisjs/lucid/services/db'
 
 export default class GuestsController {
   async getGuestList({ response }: HttpContext) {
@@ -94,13 +95,33 @@ export default class GuestsController {
     } catch (error) {
       return response.status(422).send({ error: error.messages })
     }
+
     const guest = await InvitationGuest.query().where('id', payload.id).first()
     if (!guest) {
       return response.status(404).send({ error: 'Guest not found' })
     }
 
-    await guest.delete()
-    return response.status(200).send({ message: 'Guest deleted successfully' })
+    // Start a transaction
+    const trx = await db.transaction()
+
+    try {
+      // Delete all keys associated with the guest
+      await InvitationKey.query({ client: trx }).where('invitationGuestId', payload.id).delete()
+
+      // Delete the guest
+      await guest.useTransaction(trx).delete()
+
+      // Commit the transaction
+      await trx.commit()
+
+      return response
+        .status(200)
+        .send({ message: 'Guest and associated keys deleted successfully' })
+    } catch (error) {
+      // Rollback the transaction in case of an error
+      await trx.rollback()
+      return response.status(500).send({ error: 'Failed to delete guest and associated keys' })
+    }
   }
 
   async generateInviteKey({ params, response }: HttpContext) {
