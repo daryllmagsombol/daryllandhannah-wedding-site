@@ -27,7 +27,7 @@ export default function AdminLogin() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-100">
-      <div className="bg-white/80 p-8 rounded-2xl shadow-xl w-full max-w-md border border-purple-100">
+      <div className="p-8 rounded-2xl w-full max-w-lg border border-purple-200">
         <h2
           className="text-3xl font-extrabold mb-6 text-center text-purple-600 tracking-tight"
           style={{

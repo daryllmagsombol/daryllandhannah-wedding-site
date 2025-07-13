@@ -10,6 +10,7 @@ import {
 import Modal from '../../components/common/Modal/Modal'
 import ActionButtons from '../../components/common/ActionButtons/ActionButtons'
 import { headers } from '~/shared/config'
+import { QRCodeCanvas } from 'qrcode.react'
 
 type Guest = {
   id: number
@@ -19,7 +20,7 @@ type Guest = {
   maxGuests: number
 }
 
-type ModalType = 'create' | 'view' | 'update' | 'delete' | null
+type ModalType = 'create' | 'view' | 'update' | 'delete' | 'inviteLink' | null
 
 const emptyGuest: Guest = {
   id: 0,
@@ -39,6 +40,7 @@ export default function GuestsAdmin() {
   const [updateData, setUpdateData] = useState<Partial<Guest>>({})
   const [newGuestData, setNewGuestData] = useState<Partial<Guest>>(emptyGuest)
   const [globalFilter, setGlobalFilter] = useState('')
+  const [inviteLink, setInviteLink] = useState<string | null>(null)
 
   const fetchGuests = () => {
     setLoading(true)
@@ -136,6 +138,8 @@ export default function GuestsAdmin() {
     setSelectedGuest(guest)
     setUpdateData(guest)
     setModalType(type)
+
+    if (type === 'update') setNewGuestData(guest)
   }
 
   const closeModal = () => {
@@ -154,8 +158,9 @@ export default function GuestsAdmin() {
     if (res.ok) {
       const data = await res.json()
       const baseUrl = window.location.origin
-      const inviteUrl = `${baseUrl}/rsvp?key=${data.code}`
-      alert(`Invite Link: ${inviteUrl}`)
+      const link = `${baseUrl}/rsvp?key=${data.code}`
+      setInviteLink(link)
+      setModalType('inviteLink') // Open the modal for the invite link
     } else {
       setError(await res.text())
     }
@@ -230,7 +235,7 @@ export default function GuestsAdmin() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto mt-12 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+    <div className="max-w-7xl mx-auto mt-12 p-6">
       <div className="flex justify-between items-center mb-6">
         <div className="text-lg font-semibold text-blue-700">
           Total Attending Guests:{' '}
@@ -417,7 +422,7 @@ export default function GuestsAdmin() {
               <input
                 type="text"
                 id="guestNames"
-                value={newGuestData.guestNames}
+                value={newGuestData.guestNames || ''}
                 onChange={(e) => setNewGuestData({ ...newGuestData, guestNames: e.target.value })}
                 className="border rounded w-full px-3 py-2"
                 required
@@ -450,9 +455,24 @@ export default function GuestsAdmin() {
               <input
                 type="number"
                 id="noOfGuestsAttending"
-                value={newGuestData.noOfGuestsAttending}
+                value={newGuestData.noOfGuestsAttending || 0}
                 onChange={(e) =>
                   setNewGuestData({ ...newGuestData, noOfGuestsAttending: Number(e.target.value) })
+                }
+                className="border rounded w-full px-3 py-2"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2" htmlFor="noOfGuestsAttending">
+                Max Guests
+              </label>
+              <input
+                type="number"
+                id="maxGuests"
+                value={newGuestData.maxGuests || 0}
+                onChange={(e) =>
+                  setNewGuestData({ ...newGuestData, maxGuests: Number(e.target.value) })
                 }
                 className="border rounded w-full px-3 py-2"
                 required
@@ -483,6 +503,36 @@ export default function GuestsAdmin() {
             >
               Cancel
             </button>
+          </div>
+        </Modal>
+      )}
+      {modalType === 'inviteLink' && inviteLink && (
+        <Modal title="Invite Link" onClose={() => setModalType(null)}>
+          <div className="text-center">
+            <p className="mb-4 text-gray-700">Share this invite link with your guest:</p>
+            <div className="mb-4">
+              <input
+                type="text"
+                value={inviteLink}
+                readOnly
+                className="border rounded px-4 py-2 w-full text-center"
+              />
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(inviteLink)
+                  alert('Invite link copied to clipboard!')
+                }}
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+              >
+                Copy Link
+              </button>
+            </div>
+            <div className="flex flex-col items-center mt-4">
+              <QRCodeCanvas value={inviteLink} size={192} />
+              <p className="mt-2 text-gray-500 text-center">
+                Scan the QR code to access the invite link.
+              </p>
+            </div>
           </div>
         </Modal>
       )}

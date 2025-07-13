@@ -34,7 +34,6 @@ export default function RSVP() {
       })
       .then((data) => {
         setGuest(data)
-        setIsAttending(data.isAttending || null)
         setNoOfGuests(data.noOfGuestsAttending ?? 1)
       })
       .catch((err) => setError(err.message))
@@ -55,7 +54,7 @@ export default function RSVP() {
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Yes, I am sure',
-      cancelButtonText: 'No',
+      cancelButtonText: 'No, not yet',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
     })
@@ -107,7 +106,7 @@ export default function RSVP() {
   if (error)
     return (
       <div className="flex h-screen items-center justify-center bg-gradient-to-r from-purple-50 to-indigo-100">
-        <div className="flex flex-col items-center bg-white border border-gray-200 text-gray-700 px-6 py-8 rounded-2xl shadow-lg max-w-md">
+        <div className="flex flex-col items-center text-gray-700 px-6 py-8 max-w-md">
           <img
             src="https://cdn2.iconfinder.com/data/icons/delivery-and-logistic/64/Not_found_the_recipient-no_found-person-user-search-searching-4-1024.png" // Replace with your fancy image or illustration
             alt="Guest Not Found"
@@ -115,8 +114,8 @@ export default function RSVP() {
           />
           <h2 className="text-xl font-bold text-purple-600 mb-2">Oops! {error}</h2>
           <p className="text-center text-gray-500 mb-4">
-            We couldn't find your RSVP details. Please check your RSVP key or contact us for
-            assistance.
+            We couldn't find your RSVP details. Please check your <strong>RSVP key</strong> or
+            contact us for assistance.
           </p>
           <a
             href="/"
@@ -131,11 +130,11 @@ export default function RSVP() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-50 to-indigo-100">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
-        className="mx-auto p-8 bg-white rounded-2xl shadow-lg max-w-lg sm:max-w-xl w-full"
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        className="mx-auto p-8 max-w-lg sm:max-w-xl w-full"
       >
         <h2
           className="text-5xl font-extrabold mb-5 text-center text-purple-600 tracking-tight"
@@ -155,38 +154,12 @@ export default function RSVP() {
           </span>
         </div>
         <div className="mb-6 text-center">
-          <span className="block text-lg font-medium text-gray-800">Event Details:</span>
-          <span className="block text-md text-gray-700">September 5, 2025</span>
-          <span className="block text-md text-gray-700">4:30 PM</span>
+          <span className="block text-lg font-medium text-gray-800">Wedding Details:</span>
+          <span className="block text-md text-gray-700">September 5, 2025 at 4:30 PM</span>
           <span className="block text-md text-gray-700">Aquila Crystal Palace, Tagaytay City</span>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block mb-2 font-medium text-gray-700">Will you attend?</label>
-            <div className="flex justify-center gap-6">
-              <button
-                type="button"
-                aria-pressed={isAttending === true}
-                className={`px-6 py-2 rounded-full font-semibold shadow transition-all duration-150
-              ${isAttending === true ? 'bg-blue-600 text-white scale-105' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}
-            `}
-                onClick={() => setIsAttending(true)}
-              >
-                Accept
-              </button>
-              <button
-                type="button"
-                aria-pressed={isAttending === false}
-                className={`px-6 py-2 rounded-full font-semibold shadow transition-all duration-150
-              ${isAttending === false ? 'bg-red-600 text-white scale-105' : 'bg-red-50 text-red-700 hover:bg-red-100'}
-            `}
-                onClick={() => setIsAttending(false)}
-              >
-                Decline
-              </button>
-            </div>
-          </div>
-          {isAttending ? (
             <div>
               <label className="block mb-2 font-medium text-gray-700" htmlFor="noOfGuests">
                 Number of Guests Attending{' '}
@@ -203,18 +176,22 @@ export default function RSVP() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               />
             </div>
-          ) : (
-            ''
-          )}
-          {isAttending !== null && (
-            <button
-              type="submit"
-              className={`w-full bg-gradient-to-r ${isAttending ? 'from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700' : 'from-red-500 to-red-400 hover:from-red-600 hover:to-red-500'} text-white py-3 rounded-full font-bold text-lg shadow transition disabled:opacity-50`}
-              disabled={isAttending === null}
-            >
-              {isAttending ? `Submit RSVP` : `Decline RSVP`}
-            </button>
-          )}
+          </div>
+          <button
+            type="submit"
+            onClick={() => setIsAttending(true)}
+            className={`w-full bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-3 rounded-full font-bold text-lg shadow transition disabled:opacity-50`}
+            disabled={noOfGuests < 1 || noOfGuests > (guest?.maxGuests ?? 0)}
+          >
+            Yes, I will attend
+          </button>
+          <button
+            type="submit"
+            onClick={() => setIsAttending(false)}
+            className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-3 rounded-full font-bold text-lg shadow transition disabled:opacity-50`}
+          >
+            Sorry, I can't make it
+          </button>
           {success && (
             <div className="text-green-700 bg-green-50 border border-green-200 rounded px-4 py-2 text-center animate-fade-in">
               {success}
