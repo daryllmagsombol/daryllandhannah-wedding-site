@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { useQueryParams } from '~/hooks/common'
+import { Loader } from './shared/loader'
 
 type Guest = {
   id: number
@@ -96,12 +97,7 @@ export default function RSVP() {
     }
   }
 
-  if (loading)
-    return (
-      <div className="flex items-center justify-center min-h-[40vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
-      </div>
-    )
+  if (loading) return <Loader message="Fetching your RSVP..." />
 
   if (error)
     return (

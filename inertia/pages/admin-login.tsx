@@ -4,10 +4,12 @@ export default function AdminLogin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false) // Added loading state
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setLoading(true) // Set loading to true
 
     const res = await fetch('/login', {
       method: 'POST',
@@ -23,6 +25,8 @@ export default function AdminLogin() {
       const errorData = await res.json()
       setError(errorData.error || 'Login failed')
     }
+
+    setLoading(false) // Set loading to false after the request
   }
 
   return (
@@ -78,9 +82,14 @@ export default function AdminLogin() {
           </div>
           <button
             type="submit"
-            className="w-full bg-purple-500 text-white py-2 rounded-full font-bold shadow hover:bg-purple-600 transition"
+            disabled={loading} // Disable button while loading
+            className={`w-full py-2 rounded-full font-bold shadow transition ${
+              loading
+                ? 'bg-purple-300 text-white cursor-not-allowed'
+                : 'bg-purple-500 text-white hover:bg-purple-600'
+            }`}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'} {/* Show loading text */}
           </button>
         </form>
       </div>

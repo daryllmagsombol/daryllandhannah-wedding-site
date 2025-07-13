@@ -1,8 +1,11 @@
 import { Head } from '@inertiajs/react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+
+import darylladmin1alt from '../assets/images/daryllandadmin1-logo-alt.png'
+
 import mainImage from '../assets/images/sampleBG2.webp'
 import mobileBg from '../assets/images/mobileBG.webp'
-import darylladmin1 from '../assets/images/daryllandadmin1-logo-alt.png'
+
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
@@ -19,6 +22,7 @@ import prenupimg10 from '../assets/images/IMG_5366.webp'
 import prenupimg11 from '../assets/images/IMG_5367.jpg'
 import prenupimg12 from '../assets/images/IMG_5368.webp'
 import prenupimg13 from '../assets/images/IMG_5369.webp'
+import { Loader } from './shared/loader'
 
 export default function Home() {
   return (
@@ -149,14 +153,9 @@ const MainHome = () => {
   return (
     <div className="overflow-x-hidden flex flex-col">
       {/* Loader */}
-      {loading && (
-        <div className="w-screen h-screen flex flex-col items-center justify-center bg-gray-100">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-purple-500"></div>
-          <div className="mt-4">Loading...</div>
-        </div>
-      )}
-
-      {!loading && (
+      {loading ? (
+        <Loader />
+      ) : (
         <>
           {/* First Section */}
           <motion.div
@@ -167,7 +166,7 @@ const MainHome = () => {
             transition={{ duration: 1 }}
           >
             <motion.img
-              src={darylladmin1}
+              src={darylladmin1alt}
               alt="Daryll & Hannah"
               className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full"
               style={{
