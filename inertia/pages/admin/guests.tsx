@@ -10,7 +10,8 @@ import {
 import Modal from '../../components/common/Modal/Modal'
 import ActionButtons from '../../components/common/ActionButtons/ActionButtons'
 import { headers } from '~/shared/config'
-import { QRCodeCanvas } from 'qrcode.react'
+import { QRCodeSVG } from 'qrcode.react'
+import { Loader } from '../shared/loader'
 
 type Guest = {
   id: number
@@ -234,6 +235,17 @@ export default function GuestsAdmin() {
     alert('Invite link copied to clipboard!')
   }
 
+  const downloadQRCode = (inviteLink: string) => {
+    const canvas = document.querySelector('canvas') // Select the QR code canvas
+    if (canvas) {
+      const imageURL = canvas.toDataURL('image/png') // Convert canvas to image URL
+      const link = document.createElement('a')
+      link.href = imageURL
+      link.download = 'invite-qr-code.png' // Set the filename
+      link.click() // Trigger download
+    }
+  }
+
   return (
     <div className="max-w-7xl mx-auto mt-12 p-6">
       <div className="flex justify-between items-center mb-6">
@@ -269,9 +281,7 @@ export default function GuestsAdmin() {
         </button>
       </div>
       {loading ? (
-        <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
-        </div>
+        <Loader message="Loading guests..." noBG />
       ) : error ? (
         <div className="text-red-600 text-center">{error}</div>
       ) : (
@@ -528,10 +538,16 @@ export default function GuestsAdmin() {
               </button>
             </div>
             <div className="flex flex-col items-center mt-4">
-              <QRCodeCanvas value={inviteLink} size={192} />
+              <QRCodeSVG value={inviteLink} size={192} />
               <p className="mt-2 text-gray-500 text-center">
                 Scan the QR code to access the invite link.
               </p>
+              <button
+                onClick={() => downloadQRCode(inviteLink)}
+                className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+              >
+                Download QR Code
+              </button>
             </div>
           </div>
         </Modal>
