@@ -167,18 +167,18 @@ const MainHome = () => {
               className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
               style={{ backgroundImage: `url(${bgImage})` }}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              whileInView={{ opacity: 1 }}
               transition={{ duration: 1 }}
             >
               <motion.img
                 src={daryllhannahalt}
                 alt="Daryll & Hannah"
-                className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full"
+                className="w-3/4 sm:w-1/3 h-auto mt-4 rounded-full"
                 style={{
                   filter: 'brightness(0) invert(1)',
                 }}
                 initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5, ease: 'easeInOut' }}
               />
             </motion.div>
@@ -186,22 +186,21 @@ const MainHome = () => {
 
           {/* Second Section */}
           <motion.div className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white">
-            <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 sm:p-8">
+            <div className="flex flex-col items-center justify-center min-h-screen text-center">
               <motion.div
-                className="bg-white p-6 sm:p-8 rounded-2xl max-w-3xl flex flex-col items-center"
+                className="bg-white p-6 sm:p-8 rounded-2xl max-w-xl sm:max-w-3xl flex flex-col items-center"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: 'easeInOut' }}
               >
-                <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 text-purple-900">
+                <h1 className="text-3xl sm:text-6xl font-extrabold mb-6 text-purple-900">
                   Daryll & Hannah
                 </h1>
-
-                <p className="text-xl sm:text-2xl text-gray-700 italic mb-6">
+                <p className="text-lg sm:text-2xl text-gray-700 italic mb-6">
                   "Two souls, one heart, one beautiful journey."
                 </p>
-                <p className="text-lg sm:text-xl text-gray-600 mb-6">
+                <p className="text-sm sm:text-xl text-gray-600 mb-6">
                   From the very beginning, we believed that love is not just about finding the right
                   person—it’s about discovering God’s perfect plan. Our journey together is a
                   testament to His faithfulness, timing, and grace.
@@ -233,7 +232,7 @@ const MainHome = () => {
               <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
                 Save the Date!
               </h2>
-              <p className="text-md sm:text-lg text-gray-700 mb-6">
+              <p className="text-sm sm:text-xl text-gray-700 mb-6">
                 Watch a glimpse of our beautiful journey together as we prepare for this special
                 day.
               </p>
@@ -267,13 +266,13 @@ const MainHome = () => {
               viewport={{ once: true }}
               transition={{ duration: 1, ease: 'easeInOut' }}
             >
-              <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">Our Journey</h2>
-              <p className="text-md sm:text-xl text-gray-700 mb-6">
+              <h2 className="text-2xl sm:text-4xl font-bold text-purple-900 mb-6">Our Journey</h2>
+              <p className="text-sm sm:text-xl text-gray-700 mb-6">
                 From the first glance to the first dance, our journey has been nothing short of
                 magical. Every moment we've shared has brought us closer, and now we stand on the
                 brink of forever.
               </p>
-              <p className="text-md sm:text-xl text-gray-700">
+              <p className="text-sm sm:text-xl text-gray-700">
                 As we prepare to celebrate our love, we are reminded of the beauty of life's
                 unexpected twists and turns. Thank you for being part of our story.
               </p>
@@ -281,7 +280,7 @@ const MainHome = () => {
 
             {/* Slideshow on the bottom for mobile, left for desktop */}
             <motion.div
-              className="w-full sm:w-1/2 flex flex-col items-center justify-center relative order-2 sm:order-none h-full"
+              className="w-full sm:w-1/2 flex flex-col items-center justify-center relative h-auto"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -291,9 +290,7 @@ const MainHome = () => {
                 <img
                   src={prenupiamges[currentImageIndex]}
                   alt="Slideshow"
-                  className={`rounded-lg w-full h-full object-contain shadow-lg ${
-                    isPortrait(prenupiamges[currentImageIndex]) ? 'shadow-md' : 'shadow-lg'
-                  }`}
+                  className="rounded-lg w-full h-auto object-contain shadow-lg"
                 />
               </div>
               <div className="flex justify-center mt-4 space-x-4">
@@ -318,7 +315,7 @@ const MainHome = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
               How to Get There?
             </h2>
-            <p className="text-md sm:text-lg text-gray-700 mb-6">
+            <p className="text-sm sm:text-xl text-gray-700 mb-6">
               The venue is located at Aquila Crystal Place, Tagaytay City. Below is the map to help
               you find your way. Click <b>Directions</b> to view in Google Maps.
             </p>
@@ -340,14 +337,14 @@ const MainHome = () => {
               />
             </motion.div>
             <div className="mt-10">
-              <p className="text-md sm:text-lg text-gray-700 mb-6">
+              <p className="text-sm sm:text-xl text-gray-700 mb-6">
                 Alternatively, you can use <b>Waze</b> for navigation.
               </p>
               <a
                 href="https://ul.waze.com/ul?venue_id=79298701.792724868.10452740&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition"
+                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow transition rounded-full font-bold"
               >
                 View Directions in Waze
               </a>
@@ -359,7 +356,7 @@ const MainHome = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
               Airbnb & Hotel Recommendations
             </h2>
-            <p className="text-md sm:text-lg text-gray-700 mb-6">
+            <p className="text-sm sm:text-xl text-gray-700 mb-6">
               Here are some accommodations near the venue to make your stay comfortable and
               memorable.
             </p>
@@ -415,12 +412,12 @@ const MainHome = () => {
                 />
               </motion.div>
             </div>
-            <div className="mt-8">
+            <div className="mt-8 mb-4">
               <a
                 href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 rounded shadow hover:bg-purple-600 transition"
+                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition transition rounded-full font-bold"
               >
                 View More on Airbnb
               </a>
