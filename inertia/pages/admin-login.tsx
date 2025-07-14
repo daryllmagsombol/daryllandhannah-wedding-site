@@ -31,9 +31,9 @@ export default function AdminLogin() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-100">
-      <div className="p-8 rounded-2xl w-full max-w-lg border border-purple-200">
+      <div className="p-8 rounded-2xl w-full max-w-lg">
         <h2
-          className="text-3xl font-extrabold mb-6 text-center text-purple-600 tracking-tight"
+          className="text-5xl font-extrabold mb-6 text-center text-purple-600 tracking-tight"
           style={{
             fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
             letterSpacing: '0.04em',
@@ -41,15 +41,7 @@ export default function AdminLogin() {
         >
           Admin Login
         </h2>
-        <div className="flex justify-center mb-6">
-          <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
-            <circle cx="24" cy="24" r="24" fill="#EDE9FE" />
-            <path
-              d="M24 34c-6-4-10-7.5-10-12.5A6.5 6.5 0 0124 15a6.5 6.5 0 0110 6.5C34 26.5 30 30 24 34z"
-              fill="#A78BFA"
-            />
-          </svg>
-        </div>
+
         {error && <div className="text-red-600 mb-4 text-center">{error}</div>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
@@ -83,7 +75,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading} // Disable button while loading
-            className={`w-full py-2 rounded-full font-bold shadow transition ${
+            className={`w-full font-bold bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-3 rounded-full font-bold text-lg shadow transition disabled:opacity-50 ${
               loading
                 ? 'bg-purple-300 text-white cursor-not-allowed'
                 : 'bg-purple-500 text-white hover:bg-purple-600'

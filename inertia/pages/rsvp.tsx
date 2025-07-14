@@ -126,8 +126,8 @@ export default function RSVP() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-50 to-indigo-100">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
         className="mx-auto p-8 max-w-lg sm:max-w-xl w-full"
