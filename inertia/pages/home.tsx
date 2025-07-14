@@ -165,6 +165,7 @@ const MainHome = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 1 }}
+              viewport={{ once: true }}
             >
               <motion.img
                 src={darylladmin1alt}
@@ -260,7 +261,7 @@ const MainHome = () => {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
+              transition={{ delay: 1.2, duration: 1, ease: 'easeInOut' }}
             >
               <h2 className="text-2xl sm:text-4xl font-bold text-purple-900 mb-6">Our Journey</h2>
               <p className="text-sm sm:text-xl text-gray-700 mb-6">
@@ -280,14 +281,27 @@ const MainHome = () => {
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 1.2, duration: 1, ease: 'easeInOut' }}
+              transition={{ duration: 1, ease: 'easeInOut' }}
             >
-              <div className="relative w-4/5 h-auto max-h-[80vh] flex items-center justify-center">
-                <img
-                  src={prenupiamges[currentImageIndex]}
-                  alt="Slideshow"
-                  className="rounded-lg w-full h-auto object-contain shadow-lg"
-                />
+              <div className="relative w-4/5 flex items-center justify-center">
+                <div
+                  className="rounded-lg shadow-lg overflow-hidden"
+                  style={{
+                    maxWidth: '100%', // Ensures the container doesn't exceed its parent width
+                    maxHeight: '80vh', // Limits the height to 80% of the viewport
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', // Consistent shadow
+                  }}
+                >
+                  <img
+                    src={prenupiamges[currentImageIndex]}
+                    alt="Slideshow"
+                    className="w-full h-auto object-contain"
+                    style={{
+                      maxHeight: '80vh', // Ensures portrait images don't exceed viewport height
+                      aspectRatio: 'auto', // Automatically adjusts based on image dimensions
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex justify-center mt-4 space-x-4">
                 <button
