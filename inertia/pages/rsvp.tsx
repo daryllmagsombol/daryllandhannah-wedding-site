@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { useQueryParams } from '~/hooks/common'
 import { Loader } from './shared/loader'
+import letterIcon from '~/assets/images/letter-icon.png'
 
 type Guest = {
   id: number
@@ -77,7 +78,7 @@ export default function RSVP() {
 
         Swal.fire({
           title: 'RSVP Confirmed!',
-          html: `You have successfully RSVP'd ${isAttending ? `for <strong>${noOfGuests} guest(s)</strong>` : 'as <strong>not attending</strong>'}.`,
+          html: `<p className="text-sm sm:text-lg"> You have successfully RSVP'd ${isAttending ? `for <strong>${noOfGuests} guest(s)</strong>` : 'as <strong>not attending</strong> </p>'}.`,
           icon: 'success',
           confirmButtonText: 'OK',
           confirmButtonColor: '#3085d6',
@@ -123,6 +124,49 @@ export default function RSVP() {
       </div>
     )
 
+  const SuccessRSVP = () => {
+    return (
+      <div>
+        {isAttending ? (
+          <>
+            <p className="text-2xl sm:text-5xl text-center mb-8">
+              Thank You for <br />
+              Your <strong className="text-purple-500">RSVP</strong>!
+            </p>
+            <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
+              We're thrilled you'll be joining us!
+              <br />
+              Having you there to share in our joy means so much. We’re counting down the days and
+              can’t wait to celebrate this special moment together with you.
+              <br /> <br /> <br />
+              More details and updates will be shared soon —
+              <strong className="text-purple-500"> stay tuned!</strong>
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-2xl sm:text-5xl text-center mb-8">
+              Thank You for <br />
+              the Time!
+            </p>
+            <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
+              We're sad to hear that you're unable to join us to our wedding. But that's totally
+              fine! <br /> <br />
+              We hope to see you soon!
+            </p>
+          </>
+        )}
+        <p className="text-sm sm:text-lg text-center text-gray-600">With love,</p>
+        <p
+          className="text-sm sm:text-lg text-center text-purple-400"
+          style={{ fontFamily: 'Dancing Script, Sans Serif' }}
+        >
+          Daryll and Hannah
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-50 to-indigo-100">
       <motion.div
@@ -130,89 +174,96 @@ export default function RSVP() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
-        className="mx-auto p-8 max-w-lg sm:max-w-xl w-full"
+        className="mx-auto p-4 sm:p-8 max-w-xs sm:max-w-lg w-full bg-white rounded-lg shadow-md"
       >
-        <h2
-          className="antialiased text-5xl font-extrabold mb-5 text-center text-purple-600 tracking-tight"
-          style={{
-            fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
-          }}
-        >
-          The Wedding of
-          <br />
-          Daryll & Hannah
-        </h2>
-        <p className="text-center text-gray-500 mb-6">
-          We are so excited to celebrate our special day with you, and we can't wait to see you
-          there!
-        </p>
-        <div className="mb-6 text-center">
-          <span className="block text-lg font-medium text-gray-800">
-            Please RSVP by August 15, 2025 so we can prepare for your attendance.
-          </span>
+        <div className="flex justify-center items-center mb-6">
+          <img src={letterIcon} alt="Invitation Icon" className="w-12 h-12 sm:w-16 sm:h-16" />
         </div>
-        <div className="mb-6 text-center">
-          <span className="block text-lg font-medium text-gray-800">Wedding Details:</span>
-          <span className="block text-md text-gray-700">September 5, 2025 at 4:30 PM</span>
-          <span className="block text-md text-gray-700">Aquila Crystal Palace, Tagaytay City</span>
-        </div>
-        <div className="mb-6 text-center">
-          <span
-            className="antialiased block text-4xl font-medium text-gray-700"
-            style={{
-              fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
-            }}
-          >
-            {guest?.guestNames}
-          </span>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <div>
-              <label className="block mb-2 font-medium text-gray-700" htmlFor="noOfGuests">
-                Number of Guests Attending{' '}
-                <span className="text-gray-400">(max {guest?.maxGuests})</span>
-              </label>
-              <input
-                type="number"
-                placeholder={`${noOfGuests}`}
-                id="noOfGuests"
-                min={1}
-                max={guest?.maxGuests}
-                value={noOfGuests || ''}
-                onChange={(e) => setNoOfGuests(Number(e.target.value))}
-                required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-              />
+        {success ? (
+          <SuccessRSVP />
+        ) : (
+          <>
+            <p className="text-2xl sm:text-5xl text-center mb-8">
+              You're <strong className="text-purple-500">Invited</strong> to <br />
+              Celebrate with Us!
+            </p>
+            <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
+              We are so excited to celebrate our special day with you, and we can't wait to see you
+              there!
+            </p>
+            <div className="mb-6 text-center">
+              <span className="block text-sm sm:text-lg font-medium text-gray-800">
+                Please RSVP by August 15, 2025 so we can prepare for your attendance.
+              </span>
             </div>
-          </div>
-          <button
-            type="submit"
-            onClick={() => setIsAttending(true)}
-            className={`w-full bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-3 rounded-full font-bold text-lg shadow transition disabled:opacity-50`}
-            disabled={noOfGuests < 1 || noOfGuests > (guest?.maxGuests ?? 0)}
-          >
-            Yes, I will attend
-          </button>
-          <button
-            type="submit"
-            formNoValidate
-            onClick={() => setIsAttending(false)}
-            className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-3 rounded-full font-bold text-lg shadow transition disabled:opacity-50`}
-          >
-            Sorry, I can't make it
-          </button>
-          {success && (
-            <div className="text-green-700 bg-green-50 border border-green-200 rounded px-4 py-2 text-center animate-fade-in">
-              {success}
+            <div className="mb-6 text-center">
+              <span className="block text-sm sm:text-lg font-medium text-gray-800">
+                Wedding Details:
+              </span>
+              <span className="block text-xs sm:text-lg text-gray-700">
+                September 5, 2025 at 4:30 PM
+              </span>
+              <span className="block text-xs sm:text-lg text-gray-700">
+                Aquila Crystal Palace, Tagaytay City
+              </span>
             </div>
-          )}
-          {error && (
-            <div className="text-red-700 bg-red-50 border border-red-200 rounded px-4 py-2 text-center animate-fade-in">
-              {error}
+            <div className="mb-6 text-center">
+              <span
+                className="antialiased block text-2xl sm:text-4xl font-medium text-gray-700"
+                style={{
+                  fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
+                }}
+              >
+                {guest?.guestNames}
+              </span>
             </div>
-          )}
-        </form>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <div>
+                  <label
+                    className="block mb-2 text-sm sm:text-md font-medium text-gray-700"
+                    htmlFor="noOfGuests"
+                  >
+                    Number of Guests Attending{' '}
+                    <span className="text-gray-400">(max {guest?.maxGuests})</span>
+                  </label>
+                  <input
+                    type="number"
+                    placeholder={`${noOfGuests}`}
+                    id="noOfGuests"
+                    min={1}
+                    max={guest?.maxGuests}
+                    value={noOfGuests || ''}
+                    onChange={(e) => setNoOfGuests(Number(e.target.value))}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                onClick={() => setIsAttending(true)}
+                className={`w-full bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-2 sm:py-3 rounded-full font-bold text-sm sm:text-lg shadow transition disabled:opacity-50`}
+                disabled={noOfGuests < 1 || noOfGuests > (guest?.maxGuests ?? 0)}
+              >
+                Yes, I will attend
+              </button>
+              <button
+                type="submit"
+                formNoValidate
+                onClick={() => setIsAttending(false)}
+                className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-2 sm:py-3 rounded-full font-bold text-sm sm:text-lg shadow transition disabled:opacity-50`}
+              >
+                Sorry, I can't make it
+              </button>
+              {error && (
+                <div className="text-red-700 bg-red-50 border border-red-200 rounded px-4 py-2 text-center animate-fade-in">
+                  {error}
+                </div>
+              )}
+            </form>
+          </>
+        )}
       </motion.div>
     </div>
   )
