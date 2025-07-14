@@ -23,6 +23,7 @@ import prenupimg11 from '../assets/images/IMG_5367.jpg'
 import prenupimg12 from '../assets/images/IMG_5368.webp'
 import prenupimg13 from '../assets/images/IMG_5369.webp'
 import { Loader } from './shared/loader'
+import { SparklesText } from '~/components/magicui/sparkles-text'
 
 export default function Home() {
   return (
@@ -158,39 +159,45 @@ const MainHome = () => {
       ) : (
         <>
           {/* First Section */}
-          <motion.div
-            className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
-            style={{ backgroundImage: `url(${bgImage})` }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
+          <SparklesText
+            sparklesCount={window.innerWidth <= 768 ? 12 : 23}
+            colors={{ first: '#fdf1c8', second: '#d9ccc0' }}
           >
-            <motion.img
-              src={daryllhannahalt}
-              alt="Daryll & Hannah"
-              className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full"
-              style={{
-                filter: 'brightness(0) invert(1)',
-              }}
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
+            <motion.div
+              className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
+              style={{ backgroundImage: `url(${bgImage})` }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
-            />
-          </motion.div>
+            >
+              <motion.img
+                src={daryllhannahalt}
+                alt="Daryll & Hannah"
+                className="w-2/3 sm:w-1/3 h-auto mt-4 rounded-full"
+                style={{
+                  filter: 'brightness(0) invert(1)',
+                }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: 'easeInOut' }}
+              />
+            </motion.div>
+          </SparklesText>
 
           {/* Second Section */}
           <motion.div className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white">
             <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 sm:p-8">
               <motion.div
                 className="bg-white p-6 sm:p-8 rounded-2xl max-w-3xl flex flex-col items-center"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: 'easeInOut' }}
               >
                 <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 text-purple-900">
                   Daryll & Hannah
                 </h1>
+
                 <p className="text-xl sm:text-2xl text-gray-700 italic mb-6">
                   "Two souls, one heart, one beautiful journey."
                 </p>
@@ -233,8 +240,8 @@ const MainHome = () => {
             </motion.div>
             <motion.div
               className="w-full h-full max-w-7xl rounded-lg overflow-hidden shadow-lg"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1, ease: 'easeInOut' }}
             >

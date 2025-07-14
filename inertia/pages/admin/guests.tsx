@@ -10,7 +10,7 @@ import {
 import Modal from '../../components/common/Modal/Modal'
 import ActionButtons from '../../components/common/ActionButtons/ActionButtons'
 import { headers } from '~/shared/config'
-import { QRCodeSVG } from 'qrcode.react'
+import { QRCodeCanvas } from 'qrcode.react'
 import { Loader } from '../shared/loader'
 
 type Guest = {
@@ -538,7 +538,7 @@ export default function GuestsAdmin() {
               </button>
             </div>
             <div className="flex flex-col items-center mt-4">
-              <QRCodeSVG value={inviteLink} size={192} />
+              <QRCodeCanvas value={inviteLink} size={192} />
               <p className="mt-2 text-gray-500 text-center">
                 Scan the QR code to access the invite link.
               </p>
