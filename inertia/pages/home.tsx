@@ -58,6 +58,8 @@ const MainHome = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [loading, setLoading] = useState(true) // State for loader
 
+  const backgroundImages = [darylladmin1alt, mainImage, mobileBg]
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % prenupiamges.length)
@@ -79,9 +81,9 @@ const MainHome = () => {
   }, [])
 
   useEffect(() => {
-    // Preload images and set loading to false once done
+    // Preload bg/logo and set loading to false once done
     const preloadImages = async () => {
-      const promises = prenupiamges.map((src) => {
+      const promises = backgroundImages.map((src) => {
         return new Promise((resolve) => {
           const img = new Image()
           img.src = src
@@ -101,12 +103,6 @@ const MainHome = () => {
 
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? prenupiamges.length - 1 : prevIndex - 1))
-  }
-
-  const isPortrait = (imageSrc: any) => {
-    const img = new Image()
-    img.src = imageSrc
-    return img.naturalHeight > img.naturalWidth
   }
 
   const airBnbDefaultAnimate = {
@@ -192,9 +188,9 @@ const MainHome = () => {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: 'easeInOut' }}
+                transition={{ duration: 0.9, ease: 'easeInOut' }}
               >
-                <h1 className="text-3xl sm:text-6xl font-extrabold mb-6 text-purple-900">
+                <h1 className="antialiased text-3xl sm:text-6xl font-extrabold mb-6 text-purple-900">
                   Daryll & Hannah
                 </h1>
                 <p className="text-lg sm:text-2xl text-gray-700 italic mb-6">
@@ -425,7 +421,7 @@ const MainHome = () => {
           </div>
           {/* Footer */}
           <footer className="w-full bg-gray-100 text-center py-4">
-            <p className="text-sm text-gray-600">
+            <p className="antialiased text-sm">
               Made by yours truly &copy; Daryll Joshua Magsombol
             </p>
           </footer>

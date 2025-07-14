@@ -133,12 +133,14 @@ export default function RSVP() {
         className="mx-auto p-8 max-w-lg sm:max-w-xl w-full"
       >
         <h2
-          className="text-5xl font-extrabold mb-5 text-center text-purple-600 tracking-tight"
+          className="antialiased text-5xl font-extrabold mb-5 text-center text-purple-600 tracking-tight"
           style={{
             fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
           }}
         >
-          The Wedding of Daryll & Hannah
+          The Wedding of
+          <br />
+          Daryll & Hannah
         </h2>
         <p className="text-center text-gray-500 mb-6">
           We are so excited to celebrate our special day with you, and we can't wait to see you
@@ -154,6 +156,16 @@ export default function RSVP() {
           <span className="block text-md text-gray-700">September 5, 2025 at 4:30 PM</span>
           <span className="block text-md text-gray-700">Aquila Crystal Palace, Tagaytay City</span>
         </div>
+        <div className="mb-6 text-center">
+          <span
+            className="antialiased block text-4xl font-medium text-gray-700"
+            style={{
+              fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
+            }}
+          >
+            {guest?.guestNames}
+          </span>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <div>
@@ -163,10 +175,11 @@ export default function RSVP() {
               </label>
               <input
                 type="number"
+                placeholder={`${noOfGuests}`}
                 id="noOfGuests"
                 min={1}
                 max={guest?.maxGuests}
-                value={noOfGuests}
+                value={noOfGuests || ''}
                 onChange={(e) => setNoOfGuests(Number(e.target.value))}
                 required
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
@@ -183,6 +196,7 @@ export default function RSVP() {
           </button>
           <button
             type="submit"
+            formNoValidate
             onClick={() => setIsAttending(false)}
             className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-3 rounded-full font-bold text-lg shadow transition disabled:opacity-50`}
           >
