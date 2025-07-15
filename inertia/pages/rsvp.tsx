@@ -109,7 +109,9 @@ export default function RSVP() {
             alt="Guest Not Found"
             className="w-32 h-32 mb-4"
           />
-          <h2 className="text-xl font-bold text-purple-600 mb-2">Oops! {error}</h2>
+          <h2 className="text-xl font-bold bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+            Oops! {error}
+          </h2>
           <p className="text-center text-gray-500 mb-4">
             We couldn't find your RSVP details. Please check your <strong>RSVP key</strong> or
             contact us for assistance.
@@ -131,7 +133,10 @@ export default function RSVP() {
           <>
             <p className="text-2xl sm:text-5xl text-center mb-8">
               Thank You for <br />
-              Your <strong className="text-purple-500">RSVP</strong>!
+              Your{' '}
+              <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                RSVP!
+              </strong>
             </p>
             <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
               We're thrilled you'll be joining us!
@@ -140,7 +145,10 @@ export default function RSVP() {
               can’t wait to celebrate this special moment together with you.
               <br /> <br /> <br />
               More details and updates will be shared soon —
-              <strong className="text-purple-500"> stay tuned!</strong>
+              <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                {' '}
+                stay tuned!
+              </strong>
             </p>
           </>
         ) : (
@@ -158,7 +166,7 @@ export default function RSVP() {
         )}
         <p className="text-sm sm:text-lg text-center text-gray-600">With love,</p>
         <p
-          className="text-sm sm:text-lg text-center text-purple-400"
+          className="text-sm sm:text-lg text-center bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent"
           style={{ fontFamily: 'Dancing Script, Sans Serif' }}
         >
           Daryll and Hannah
@@ -184,7 +192,11 @@ export default function RSVP() {
         ) : (
           <>
             <p className="text-2xl sm:text-5xl text-center mb-8">
-              You're <strong className="text-purple-500">Invited</strong> to <br />
+              You're{' '}
+              <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                Invited
+              </strong>{' '}
+              to <br />
               Celebrate with Us!
             </p>
             <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
@@ -209,7 +221,7 @@ export default function RSVP() {
             </div>
             <div className="mb-6 text-center">
               <span
-                className="antialiased block text-2xl sm:text-4xl font-medium text-gray-700"
+                className="antialiased block text-2xl sm:text-4xl bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent"
                 style={{
                   fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
                 }}
