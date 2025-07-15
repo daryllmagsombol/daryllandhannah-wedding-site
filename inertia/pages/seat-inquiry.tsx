@@ -44,8 +44,10 @@ export default function SeatInquiry() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-indigo-50 to-purple-100 text-center px-4">
-      <h1 className="text-5xl font-bold text-purple-900 mb-6 sm:text-6xl">Find Your Seat</h1>
-      <p className="text-lg sm:text-xl text-gray-700 mb-8">
+      <h1 className="text-5xl font-bold mb-6 sm:text-6xl bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+        Find Your Seat
+      </h1>
+      <p className="text-lg sm:text-xl text-gray-600 mb-8">
         Select your name below to find your table number.
       </p>
       <div className="flex flex-col items-center w-full max-w-lg">
@@ -65,8 +67,10 @@ export default function SeatInquiry() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-2xl font-bold text-purple-900 mb-4">{selectedGuest.label}</h2>
-          <p className="text-lg text-gray-700">Seat Number: {selectedGuest.seatNumber}</p>
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent mb-4">
+            {selectedGuest.label}
+          </h2>
+          <p className="text-lg text-gray-600">Seat Number: {selectedGuest.seatNumber}</p>
         </motion.div>
       )}
     </div>

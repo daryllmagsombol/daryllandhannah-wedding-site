@@ -7,7 +7,7 @@ export default class SeatInquiriesController {
       const guests = await InvitationGuest.query().select('guestNames', 'seatNumber')
       const formattedGuests = guests.map((guest) => ({
         guestName: guest.guestNames,
-        seatNumber: guest.seatNumber || 'Seat not yet assigned',
+        seatNumber: guest.seatNumber || '** Seat Not Yet Assigned **',
       }))
       return response.status(200).send(formattedGuests)
     } catch (error) {
