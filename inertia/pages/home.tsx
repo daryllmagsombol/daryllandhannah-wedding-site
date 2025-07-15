@@ -24,6 +24,7 @@ import prenupimg12 from '../assets/images/IMG_5368.webp'
 import prenupimg13 from '../assets/images/IMG_5369.webp'
 import { Loader } from './shared/loader'
 import { SparklesText } from '~/components/magicui/sparkles-text'
+import { TypingAnimation } from '~/components/magicui/typing-animation'
 
 export default function Home() {
   return (
@@ -156,7 +157,7 @@ const MainHome = () => {
         <>
           {/* First Section */}
           <SparklesText
-            sparklesCount={window.innerWidth <= 768 ? 12 : 23}
+            sparklesCount={window.innerWidth <= 768 ? 18 : 23}
             colors={{ first: '#fdf1c8', second: '#d9ccc0' }}
           >
             <motion.div
@@ -180,66 +181,68 @@ const MainHome = () => {
               />
             </motion.div>
           </SparklesText>
-
           {/* Second Section */}
-          <motion.div className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white">
-            <div className="flex flex-col items-center justify-center min-h-screen text-center">
-              <motion.div
-                className="bg-white p-6 sm:p-8 rounded-2xl max-w-xl sm:max-w-3xl flex flex-col items-center"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.9, ease: 'easeInOut' }}
-              >
-                <h1 className="antialiased text-3xl sm:text-6xl font-extrabold mb-6 text-purple-900">
-                  Daryll & Hannah
-                </h1>
-                <p className="text-lg sm:text-2xl text-gray-700 italic mb-6">
-                  "Two souls, one heart, one beautiful journey."
-                </p>
-                <p className="text-sm sm:text-xl text-gray-600 mb-6">
-                  From the very beginning, we believed that love is not just about finding the right
-                  person—it’s about discovering God’s perfect plan. Our journey together is a
-                  testament to His faithfulness, timing, and grace.
-                  <br /> <br />
-                  Every step we’ve taken has led us here, to a love that is deeper than words,
-                  rooted in faith, and strengthened by His promises. We are beyond grateful for this
-                  beautiful gift of love, knowing that our story was written long before we even
-                  met.
-                  <br /> <br />
-                  As we prepare to say "I do," we celebrate not just our love, but the One who made
-                  it possible. Our marriage is a covenant, a promise to love, honor, and serve each
-                  other—always guided by His wisdom and unconditional love.
-                  <br /> <br />
-                  We invite you to join us in witnessing this special day, as we begin a new chapter
-                  filled with love, faith, and a future designed by God.
-                </p>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* YouTube Section */}
-          <motion.div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
+          <div className="w-screen h-screen bg-gradient-to-b from-purple-50 to-indigo-100 flex items-center justify-center text-center">
             <motion.div
-              initial={{ opacity: 0, y: -30 }}
+              className="flex flex-col items-center justify-center max-w-3xl px-6 sm:px-12"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 1, ease: 'easeInOut' }}
+            >
+              <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                Two Souls, One Heart, One Beautiful Journey.
+              </h2>
+              <h1 className="text-3xl sm:text-6xl font-extrabold mb-6 bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                Daryll & Hannah
+              </h1>
+              <p className="text-sm sm:text-lg text-gray-700 leading-relaxed">
+                From the very beginning, we believed that love is not just about finding the right
+                person—it’s about discovering God’s perfect plan. Our journey together is a
+                testament to His faithfulness, timing, and grace.
+                <br /> <br />
+                Every step we’ve taken has led us here, to a love that is deeper than words, rooted
+                in faith, and strengthened by His promises. We are beyond grateful for this
+                beautiful gift of love, knowing that our story was written long before we even met.
+                <br /> <br />
+                As we prepare to say "I do," we celebrate not just our love, but the One who made it
+                possible. Our marriage is a covenant, a promise to love, honor, and serve each
+                other—always guided by His wisdom and unconditional love.
+                <br /> <br />
+                We invite you to join us in witnessing this special day, as we begin a new chapter
+                filled with love, faith, and a future designed by God.
+              </p>
+            </motion.div>
+          </div>
+          {/* YouTube Section */}
+          <motion.div className="w-screen h-screen bg-white flex flex-col items-center justify-center text-center p-8">
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
+              transition={{ duration: 1.2, ease: 'easeInOut' }}
+              className="mb-6"
             >
-              <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
-                Save the Date!
+              <h2 className="text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wide mb-4">
+                A Glimpse Into Our Story
               </h2>
-              <p className="text-sm sm:text-xl text-gray-700 mb-6">
+              <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
+                We Know You're Excited —{' '}
+                <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                  So Are We!
+                </span>
+              </h1>
+              <p className="text-sm sm:text-lg text-gray-700">
                 Watch a glimpse of our beautiful journey together as we prepare for this special
                 day.
               </p>
             </motion.div>
             <motion.div
-              className="w-full h-full max-w-7xl rounded-lg overflow-hidden shadow-lg"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              className="w-full h-3/4 max-w-7xl rounded-lg overflow-hidden shadow-lg"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
+              transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
             >
               <iframe
                 width="100%"
@@ -249,69 +252,67 @@ const MainHome = () => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
+                className="w-full h-full"
               ></iframe>
             </motion.div>
           </motion.div>
-
-          {/* Third Section */}
-          <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col sm:flex-row items-center justify-center">
-            {/* Random text on the top for mobile, right for desktop */}
+          <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex items-center md:relative">
+            {/* Image on the left */}
             <motion.div
-              className="w-full sm:w-1/2 flex flex-col items-center justify-center text-center p-4 sm:p-8 order-1 sm:order-none"
+              className="h-[60vh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
               initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1.2, duration: 1, ease: 'easeInOut' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 50 }} // Exit animation for smooth transition
+              transition={{ delay: 3, duration: 0.8, ease: 'easeInOut' }} // Adjust duration and easing
             >
-              <h2 className="text-2xl sm:text-4xl font-bold text-purple-900 mb-6">Our Journey</h2>
-              <p className="text-sm sm:text-xl text-gray-700 mb-6">
-                From the first glance to the first dance, our journey has been nothing short of
-                magical. Every moment we've shared has brought us closer, and now we stand on the
-                brink of forever.
-              </p>
-              <p className="text-sm sm:text-xl text-gray-700">
-                As we prepare to celebrate our love, we are reminded of the beauty of life's
-                unexpected twists and turns. Thank you for being part of our story.
-              </p>
+              <div className="relative w-full h-full overflow-hidden">
+                <motion.img
+                  key={prenupiamges[currentImageIndex]} // Key ensures animation triggers on image change
+                  src={prenupiamges[currentImageIndex]}
+                  alt="Slideshow"
+                  className="w-full h-full object-cover"
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 1, ease: 'easeInOut' }}
+                />
+              </div>
             </motion.div>
 
-            {/* Slideshow on the bottom for mobile, left for desktop */}
+            {/* Content overlay on the right */}
             <motion.div
-              className="w-full sm:w-1/2 flex flex-col items-center justify-center relative h-auto"
+              className="w-screen h-[40vh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] flex flex-col items-start justify-center text-left p-6 sm:p-12 bg-white bg-opacity-90"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
+              transition={{ delay: 0.6, duration: 1.3, ease: 'easeInOut' }}
             >
-              <div className="relative w-4/5 flex items-center justify-center">
-                <div
-                  className="rounded-lg shadow-lg overflow-hidden"
-                  style={{
-                    maxWidth: '100%', // Ensures the container doesn't exceed its parent width
-                    maxHeight: '80vh', // Limits the height to 80% of the viewport
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', // Consistent shadow
-                  }}
-                >
-                  <img
-                    src={prenupiamges[currentImageIndex]}
-                    alt="Slideshow"
-                    className="w-full h-auto object-contain"
-                    style={{
-                      maxHeight: '80vh', // Ensures portrait images don't exceed viewport height
-                      aspectRatio: 'auto', // Automatically adjusts based on image dimensions
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-center mt-4 space-x-4">
+              <h2 className="text-sm sm:text-lg font-bold text-gray-500 uppercase mb-2">
+                Our Journey
+              </h2>
+              <h1 className="text-2xl sm:text-5xl font-bold text-gray-800 mb-4">
+                From A Single Glance <br /> To A{' '}
+                <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                  Lifetime Dance
+                </span>
+              </h1>
+              <p className="text-sm sm:text-lg text-gray-700 mb-6">
+                From the first glance to the first dance, our journey has been nothing short of
+                magical. Every moment we've shared has brought us closer, and now we stand on the
+                brink of forever.
+                <br />
+                As we prepare to celebrate our love, we are reminded of the beauty of life's
+                unexpected twists and turns. Thank you for being part of our story.
+              </p>
+              <div className="flex justify-end mt-4 space-x-4">
                 <button
-                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
+                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-4 py-2 rounded-full shadow hover:bg-purple-600 transition"
                   onClick={handlePrev}
                 >
                   &#8249; {/* Left arrow */}
                 </button>
                 <button
-                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-3 py-1 rounded-full shadow hover:bg-purple-800 transition"
+                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-4 py-2 rounded-full shadow hover:bg-purple-600 transition"
                   onClick={handleNext}
                 >
                   &#8250; {/* Right arrow */}
@@ -319,18 +320,31 @@ const MainHome = () => {
               </div>
             </motion.div>
           </div>
-
           {/* Fourth Section */}
-          <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
-              How to Get There?
-            </h2>
-            <p className="text-sm sm:text-xl text-gray-700 mb-6">
-              The venue is located at Aquila Crystal Place, Tagaytay City. Below is the map to help
-              you find your way. Click <b>Directions</b> to view in Google Maps.
-            </p>
+          <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-8">
             <motion.div
-              className="w-full max-w-5xl h-96 rounded-lg overflow-hidden shadow-lg"
+              initial={{ opacity: 0, y: -30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+              className="mb-6"
+            >
+              <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                How to Get There
+              </h2>
+              <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
+                Your Journey to Our Big Day{' '}
+                <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                  Starts Here
+                </span>
+              </h1>
+              <p className="text-sm sm:text-lg text-gray-700">
+                Use the Google Maps below or open Waze for step-by-step directions straight to our
+                venue.
+              </p>
+            </motion.div>
+            <motion.div
+              className="w-full max-w-5xl h-96 overflow-hidden rounded-lg shadow-lg"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -343,12 +357,12 @@ const MainHome = () => {
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                // referrerPolicy="no-referrer-when-cross-origin"
               />
             </motion.div>
             <div className="mt-10">
-              <p className="text-sm sm:text-xl text-gray-700 mb-6">
-                Alternatively, you can use <b>Waze</b> for navigation.
+              <p className="text-sm sm:text-lg text-gray-700 mb-6">
+                Got a problem with Google Maps? Alternatively, you can use <b>Waze</b> for
+                navigation.
               </p>
               <a
                 href="https://ul.waze.com/ul?venue_id=79298701.792724868.10452740&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
@@ -356,16 +370,28 @@ const MainHome = () => {
                 rel="noopener noreferrer"
                 className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow transition rounded-full font-bold"
               >
-                View Directions in Waze
+                View Directions using Waze
               </a>
             </div>
           </div>
-
           {/* 5th Section */}
-          <div className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col items-center justify-center text-center p-4 sm:p-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-6">
-              Airbnb & Hotel Recommendations
+
+          <motion.div
+            className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col items-center justify-center text-center p-4 sm:p-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 1, ease: 'easeInOut' }}
+          >
+            <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+              Places to Stay
             </h2>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
+              Airbnb & Hotel{' '}
+              <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                Recommendations
+              </span>
+            </h1>
             <p className="text-sm sm:text-xl text-gray-700 mb-6">
               Here are some accommodations near the venue to make your stay comfortable and
               memorable.
@@ -375,27 +401,28 @@ const MainHome = () => {
               <motion.div {...airBnbDefaultAnimate} transition={{ duration: 1, ease: 'easeInOut' }}>
                 <RecommendationBox
                   title="Elegant Studio Unit with FREE Parking"
-                  content="Classy interior, tricolor vanity mirror for your make up and clothes rack for your
-                  gown/suit. Located just behind Ayala Serin Mall."
+                  content="Classy interior, tricolor vanity mirror for your make up and clothes rack for your gown/suit. Located just behind Ayala Serin Mall."
                   picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/dcd16063-8106-42b8-b1f1-3104080316e5.jpeg"
                   link="https://www.airbnb.com/l/noxSkITw"
                   type="Airbnb"
                 />
               </motion.div>
 
+              {/* Recommendation 2 */}
               <motion.div
                 {...airBnbDefaultAnimate}
                 transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
               >
                 <RecommendationBox
                   title="COZY 21st Flr King+Dbl w/ Pool"
-                  content=" Relax with the whole family or barkada at this SPACIOUS staycation spot with FREE pool access and UNLI Netflix."
+                  content="Relax with the whole family or barkada at this SPACIOUS staycation spot with FREE pool access and UNLI Netflix."
                   picture="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE0NTMyNzgzNTg5NjUzMzI0MA%3D%3D/original/5ba25b6f-4172-4b5d-aaeb-5d678d6a6490.jpeg?im_w=1440"
                   link="https://www.airbnb.com/l/DPRwsvRJ"
                   type="Airbnb"
                 />
               </motion.div>
 
+              {/* Recommendation 3 */}
               <motion.div
                 {...airBnbDefaultAnimate}
                 transition={{ delay: 0.4, duration: 1, ease: 'easeInOut' }}
@@ -409,6 +436,7 @@ const MainHome = () => {
                 />
               </motion.div>
 
+              {/* Recommendation 4 */}
               <motion.div
                 {...airBnbDefaultAnimate}
                 transition={{ delay: 0.6, duration: 0.8, ease: 'easeInOut' }}
@@ -427,12 +455,12 @@ const MainHome = () => {
                 href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition transition rounded-full font-bold"
+                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-full font-bold"
               >
                 View More on Airbnb
               </a>
             </div>
-          </div>
+          </motion.div>
           {/* Footer */}
           <footer className="w-full bg-gray-100 text-center py-4">
             <p className="antialiased text-sm">
