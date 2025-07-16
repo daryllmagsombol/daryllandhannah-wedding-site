@@ -88,17 +88,6 @@
       };
     </script>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        // Check if the browser is Facebook or Instagram
-        if (userAgent.includes("FBAN") || userAgent.includes("FBAV") || userAgent.includes("Instagram")) {
-          alert("You are viewing this page in Facebook or Instagram browser. Redirecting to your default browser for the best experience.");
-          window.location.href = document.URL;
-        }
-      });
-    </script>
-
     @stack('dumper')
     @viteReactRefresh()
     @inertiaHead()
