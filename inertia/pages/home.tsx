@@ -254,7 +254,7 @@ const MainHome = () => {
           <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex md:items-center md:relative">
             {/* Image on the left */}
             <motion.div
-              className="h-[60vh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
+              className="h-[50vh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 50 }} // Exit animation for smooth transition
@@ -266,17 +266,17 @@ const MainHome = () => {
                   src={prenupiamges[currentImageIndex]}
                   alt="Slideshow"
                   className="w-full h-full object-cover"
-                  initial={{ opacity: 0, x: -100 }}
+                  initial={{ opacity: 0.5, x: -100 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 1, ease: 'easeInOut' }}
+                  transition={{ duration: 1 }}
                 />
               </div>
             </motion.div>
 
             {/* Content overlay on the right */}
             <motion.div
-              className="w-screen h-[40vh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] flex flex-col items-center md:items-start justify-center text-center md:text-left p-6 sm:p-12 bg-white bg-opacity-90"
+              className="w-screen h-[50vh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] lg:h-[100vh] flex flex-col items-center md:items-start justify-center text-center md:text-left p-6 sm:p-12 bg-white bg-opacity-90"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 1.3, ease: 'easeInOut' }}
