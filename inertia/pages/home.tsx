@@ -24,7 +24,6 @@ import prenupimg12 from '../assets/images/IMG_5368.webp'
 import prenupimg13 from '../assets/images/IMG_5369.webp'
 import { Loader } from './shared/loader'
 import { SparklesText } from '~/components/magicui/sparkles-text'
-import { TypingAnimation } from '~/components/magicui/typing-animation'
 
 export default function Home() {
   return (
@@ -109,7 +108,6 @@ const MainHome = () => {
   const airBnbDefaultAnimate = {
     initial: { opacity: 0, y: 50 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
   }
 
   type RecommendationBoxProps = {
@@ -187,8 +185,7 @@ const MainHome = () => {
               className="flex flex-col items-center justify-center max-w-3xl px-6 sm:px-12"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 1, ease: 'easeInOut' }}
+              transition={{ delay: 0.3, duration: 0.9, ease: 'easeInOut' }}
             >
               <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
                 Two Souls, One Heart, One Beautiful Journey.
@@ -219,8 +216,7 @@ const MainHome = () => {
             <motion.div
               initial={{ opacity: 0, y: -50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: 'easeInOut' }}
+              transition={{ duration: 1, ease: 'easeInOut' }}
               className="mb-6"
             >
               <h2 className="text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wide mb-4">
@@ -241,7 +237,6 @@ const MainHome = () => {
               className="w-full h-3/4 max-w-7xl rounded-lg overflow-hidden shadow-lg"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
             >
               <iframe
@@ -253,10 +248,10 @@ const MainHome = () => {
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
                 className="w-full h-full"
-              ></iframe>
+              />
             </motion.div>
           </motion.div>
-          <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex items-center md:relative">
+          <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex md:items-center md:relative">
             {/* Image on the left */}
             <motion.div
               className="h-[60vh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
@@ -281,11 +276,10 @@ const MainHome = () => {
 
             {/* Content overlay on the right */}
             <motion.div
-              className="w-screen h-[40vh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] flex flex-col items-start justify-center text-left p-6 sm:p-12 bg-white bg-opacity-90"
+              className="w-screen h-[40vh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] flex flex-col items-center md:items-start justify-center text-center md:text-left p-6 sm:p-12 bg-white bg-opacity-90"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 1.3, ease: 'easeInOut' }}
+              transition={{ delay: 0.5, duration: 1.3, ease: 'easeInOut' }}
             >
               <h2 className="text-sm sm:text-lg font-bold text-gray-500 uppercase mb-2">
                 Our Journey
@@ -304,7 +298,7 @@ const MainHome = () => {
                 As we prepare to celebrate our love, we are reminded of the beauty of life's
                 unexpected twists and turns. Thank you for being part of our story.
               </p>
-              <div className="flex justify-end mt-4 space-x-4">
+              <div className="flex justify-center md:justify-end mt-4 space-x-4">
                 <button
                   className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-4 py-2 rounded-full shadow hover:bg-purple-600 transition"
                   onClick={handlePrev}
@@ -325,7 +319,6 @@ const MainHome = () => {
             <motion.div
               initial={{ opacity: 0, y: -30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.8, ease: 'easeInOut' }}
               className="mb-6"
             >
@@ -339,24 +332,22 @@ const MainHome = () => {
                 </span>
               </h1>
               <p className="text-sm sm:text-lg text-gray-700">
-                Use the Google Maps below or open Waze for step-by-step directions straight to our
-                venue.
+                Use the <b>Google Maps</b> below or open Waze for step-by-step directions straight
+                to our venue, <b>Crystal Palace of Aquila in the Sky</b>.
               </p>
             </motion.div>
             <motion.div
               className="w-full max-w-5xl h-96 overflow-hidden rounded-lg shadow-lg"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: -60 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: 'easeInOut' }}
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3869.1898874444946!2d120.9592638!3d14.1249278!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd79dc7086fc39%3A0x56d9690c8ba530bb!2sAquila%20Crystal%20Palace%20Tagaytay!5e0!3m2!1sen!2sph!4v1751797129428!5m2!1sen!2sph"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3868.6221609334757!2d120.97798227584663!3d14.158297387750922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd7900132f27b1%3A0xddad94df53491868!2sCrystal%20Palace%20of%20Aquila%20in%20the%20Sky!5e0!3m2!1sen!2sph!4v1752631463931!5m2!1sen!2sph"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
-                loading="lazy"
               />
             </motion.div>
             <div className="mt-10">
@@ -365,7 +356,7 @@ const MainHome = () => {
                 navigation.
               </p>
               <a
-                href="https://ul.waze.com/ul?venue_id=79298701.792724868.10452740&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
+                href="https://www.waze.com/en/live-map/directions/ph/calabarzon/silang/crystal-palace-of-aquila-in-the-sky?place=ChIJsScvEwB5vTMRaBhJU9-Urd0&utm_campaign=default&utm_medium=lm_share_location&utm_source=waze_website"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow transition rounded-full font-bold"
@@ -380,7 +371,6 @@ const MainHome = () => {
             className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col items-center justify-center text-center p-4 sm:p-8"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 1, ease: 'easeInOut' }}
           >
             <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
@@ -462,9 +452,9 @@ const MainHome = () => {
             </div>
           </motion.div>
           {/* Footer */}
-          <footer className="w-full bg-gray-100 text-center py-4">
-            <p className="antialiased text-sm">
-              Made by yours truly &copy; Daryll Joshua Magsombol
+          <footer className="w-full bg-white text-center py-4">
+            <p className="text-sm text-gray-500">
+              Coded by yours truly &copy; Daryll Joshua Magsombol - 2025
             </p>
           </footer>
         </>
