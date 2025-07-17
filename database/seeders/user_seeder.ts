@@ -22,6 +22,15 @@ export default class extends BaseSeeder {
         createdBy: 'admin',
         updatedBy: 'admin',
       },
+      {
+        fullName: 'Justin Palermo',
+        email: 'dyastyn10@gmail.com',
+        username: 'dyastyn10',
+        password: 'justin1111.',
+        role: 'admin',
+        createdBy: 'admin',
+        updatedBy: 'admin',
+      },
     ])
   }
 }

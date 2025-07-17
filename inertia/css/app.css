@@ -3,3 +3,11 @@ body {
   overflow-x: hidden;
   font-family: 'Merriweather', serif;
 }
+
+.hide-ios-play-button::-webkit-media-controls {
+  display: none !important; /* Hide iOS media controls */
+}
+
+.hide-ios-play-button::-webkit-media-controls-start-playback-button {
+  display: none !important; /* Specifically hide the play button */
+}

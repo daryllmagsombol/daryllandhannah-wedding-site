@@ -48,17 +48,46 @@ export default function RSVP() {
     setError(null)
     setSuccess(null)
 
-    const result = await Swal.fire({
+    let countdown = 5
+
+    const swalWithCountdown = Swal.mixin({
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+
+        if (confirmButton) {
+          confirmButton.disabled = true
+        }
+
+        const interval = setInterval(() => {
+          countdown -= 1
+          Swal.update({
+            confirmButtonText: `Yes, I am sure (${countdown}s)`,
+          })
+
+          if (countdown <= 0) {
+            clearInterval(interval)
+            if (confirmButton) {
+              confirmButton.disabled = false
+            }
+            Swal.update({
+              confirmButtonText: 'Yes, I am sure',
+            })
+          }
+        }, 1000)
+      },
+    })
+
+    const result = await swalWithCountdown.fire({
       title: 'Confirm Your RSVP',
       html: isAttending
-        ? `Before submitting, please confirm that all the information you’ve provided is accurate. Confrming for <strong>${noOfGuests} guest(s)</strong>.`
+        ? `Before submitting, please confirm that all the information you’ve provided is accurate. Confirming for <strong>${noOfGuests} guest(s)</strong>.`
         : `Confirming your RSVP as <strong>not attending</strong>. Are you sure?`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Yes, I am sure',
+      confirmButtonText: `Yes, I am sure (${countdown}s)`,
       cancelButtonText: 'No, not yet',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#786cf3',
+      cancelButtonColor: '#f14e4e',
     })
 
     if (result.isConfirmed) {
@@ -78,10 +107,14 @@ export default function RSVP() {
 
         Swal.fire({
           title: 'RSVP Confirmed!',
-          html: `<p className="text-sm sm:text-lg"> You have successfully RSVP'd ${isAttending ? `for <strong>${noOfGuests} guest(s)</strong>` : 'as <strong>not attending</strong> </p>'}.`,
-          icon: 'success',
+          html: `<p className="text-sm sm:text-lg"> You have successfully RSVP'd ${
+            isAttending
+              ? `for <strong>${noOfGuests} guest(s)</strong>`
+              : 'as <strong>not attending</strong>'
+          }.</p>`,
+          icon: isAttending ? 'success' : 'warning',
           confirmButtonText: 'OK',
-          confirmButtonColor: '#3085d6',
+          confirmButtonColor: '#786cf3',
         })
       } else {
         const errorMessage = await res.text()
@@ -92,7 +125,7 @@ export default function RSVP() {
           text: errorMessage,
           icon: 'error',
           confirmButtonText: 'Try Again',
-          confirmButtonColor: '#d33',
+          confirmButtonColor: '#f14e4e',
         })
       }
     }
@@ -155,7 +188,10 @@ export default function RSVP() {
           <>
             <p className="text-2xl sm:text-5xl text-center mb-8">
               Thank You for <br />
-              the Time!
+              the{' '}
+              <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                Time!
+              </strong>
             </p>
             <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
               We're sad to hear that you're unable to join us to our wedding. But that's totally
