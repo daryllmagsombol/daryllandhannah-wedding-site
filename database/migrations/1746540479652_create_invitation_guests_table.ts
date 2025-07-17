@@ -7,6 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('guest_names').notNullable()
+      table.string('family').defaultTo('')
       table.boolean('is_attending').defaultTo(null)
       table.integer('no_of_guests_attending').defaultTo(0)
       table.boolean('max_guests').notNullable()

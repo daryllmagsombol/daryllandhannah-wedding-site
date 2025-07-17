@@ -6,6 +6,7 @@ export default class extends BaseSeeder {
     await InvitationGuest.createMany([
       {
         guestNames: 'Mr. & Mrs. Eustacio Hadap',
+        family: 'Hadap',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -15,6 +16,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Alejandro Segales',
+        family: 'Segales',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -24,6 +26,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Franco Castro',
+        family: 'Castro',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -33,6 +36,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Alvin Hadap',
+        family: 'Hadap',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -42,6 +46,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Ronald Aldrin Hadap',
+        family: 'Hadap',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -51,6 +56,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mrs. Mischerre Hadap',
+        family: 'Hadap',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -60,6 +66,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Almira Margaret Segales',
+        family: 'Segales',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -69,6 +76,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Shanessa Ghislaine Hadap',
+        family: 'Hadap',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -78,6 +86,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Akio Hadap',
+        family: 'Hadap',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -87,6 +96,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Adriel Segales',
+        family: 'Segales',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -96,6 +106,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Hans Gabriel Hadap',
+        family: 'Hadap',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -105,6 +116,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mrs. Maxima Ganelo & Family',
+        family: 'Ganelo',
         maxGuests: 4,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -114,6 +126,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mrs. Cely Mora & Family',
+        family: 'Mora',
         maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -123,6 +136,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mrs. Fermina Clemente',
+        family: 'Clemente',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -132,6 +146,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Ricardo Clemente',
+        family: 'Clemente',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -141,6 +156,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Fredy Hadap & Family',
+        family: 'Hadap',
         maxGuests: 4,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -150,6 +166,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mrs. Evelyn Hadap & Family',
+        family: 'Hadap',
         maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -159,6 +176,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Jaspher Juangco and Lucas',
+        family: 'Juangco',
         maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -168,6 +186,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Niel Placino',
+        family: 'Placino',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -177,6 +196,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Grace Sugatan',
+        family: 'Sugatan',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -186,6 +206,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Kelvin Evangelista',
+        family: 'Evangelista',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -195,6 +216,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Gizelle and Ms. Renalyn',
+        family: 'Gizelle',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -204,6 +226,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Gwenn Laurente',
+        family: 'Laurente',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -213,6 +236,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Jennalyn Bonifacio',
+        family: 'Bonifacio',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -222,6 +246,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Chaicel Mayonado',
+        family: 'Mayonado',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -231,6 +256,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Anna Michelle Vega',
+        family: 'Vega',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -240,6 +266,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Rafael Yu',
+        family: 'Yu',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -249,6 +276,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Pearl Borja',
+        family: 'Borja',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -258,6 +286,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Teoderico Anadon',
+        family: 'Anadon',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -267,6 +296,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Dr. Edward & Dr. Florence Isidoro',
+        family: 'Isidoro',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -276,6 +306,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Hannah Nicole Isidoro',
+        family: 'Isidoro',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -285,6 +316,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Edward Gavin Jr. Isidoro',
+        family: 'Isidoro',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -294,6 +326,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ptr. Clinton & Mrs. Bridgette Grace Anoche & Isla Flora Garce',
+        family: 'Anoche',
         maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -303,6 +336,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Justin Palermo',
+        family: 'Palermo',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -312,6 +346,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Rev. Carlo Jeffrey and Mrs. April Love Coronel',
+        family: 'Coronel',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -321,6 +356,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Rev. Jerald and Mrs. Lara Joy Sardina',
+        family: 'Sardina',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -330,6 +366,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mrs. Adelaida Sardina',
+        family: 'Sardina',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -339,6 +376,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mrs. Laura Sanidad',
+        family: 'Sanidad',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -348,6 +386,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. John Wendell Valerio & Ms. Nicole Joyzen Narcelles',
+        family: 'Valerio-Narcelles',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -357,6 +396,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Peter Paul Llave and Mr. David Joshua Llave',
+        family: 'Llave',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -366,6 +406,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ptr. Renen Nathan & Mrs. Alma Cadapan',
+        family: 'Cadapan',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -375,6 +416,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Joshua Carillo & Ms. Dorothy Herrera',
+        family: 'Carillo',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -384,6 +426,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. and Mrs. Romeo Jr. Requino',
+        family: 'Requino',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -393,6 +436,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ptr. Lincoln & Mrs. Rustia Anoche',
+        family: 'Anoche',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -402,6 +446,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Roslin Anoche',
+        family: 'Anoche',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -411,6 +456,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Carl James Anoche',
+        family: 'Anoche',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -420,6 +466,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Jupet Carillo',
+        family: 'Carillo',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -429,6 +476,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Christine Nicole Carillo',
+        family: 'Carillo',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -438,6 +486,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Christian Gumaya',
+        family: 'Gumaya',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -447,6 +496,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. Aaron John Andres',
+        family: 'Andres',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -456,6 +506,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Pedrian Panlilio',
+        family: 'Panlilio',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -465,6 +516,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Baby Panlilio',
+        family: 'Panlilio',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -474,6 +526,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Carlos Armea',
+        family: 'Armea',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -483,6 +536,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Mr. & Mrs. Justo Batoon',
+        family: 'Batoon',
         maxGuests: 2,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -492,6 +546,7 @@ export default class extends BaseSeeder {
       },
       {
         guestNames: 'Ms. Diane Jassen Cruz',
+        family: 'Cruz',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,

@@ -16,6 +16,7 @@ import { Loader } from '../shared/loader'
 type Guest = {
   id: number
   guestNames: string
+  family: string | null
   isAttending: boolean | null
   noOfGuestsAttending: number
   maxGuests: number
@@ -26,6 +27,7 @@ type ModalType = 'create' | 'view' | 'update' | 'delete' | 'inviteLink' | null
 const emptyGuest: Guest = {
   id: 0,
   guestNames: '',
+  family: null,
   isAttending: null,
   noOfGuestsAttending: 0,
   maxGuests: 1,
@@ -66,6 +68,10 @@ export default function GuestsAdmin() {
     {
       accessorKey: 'guestNames',
       header: 'Name(s)',
+    },
+    {
+      accessorKey: 'family',
+      header: 'Family', // Add family column
     },
     {
       accessorKey: 'isAttending',
@@ -178,6 +184,7 @@ export default function GuestsAdmin() {
       body: JSON.stringify({
         id: selectedGuest.id,
         guestNames: newGuestData.guestNames,
+        family: newGuestData.family,
         isAttending: newGuestData.isAttending,
         noOfGuestsAttending: newGuestData.noOfGuestsAttending,
         maxGuests: newGuestData.maxGuests ?? selectedGuest.maxGuests,
@@ -235,7 +242,7 @@ export default function GuestsAdmin() {
     alert('Invite link copied to clipboard!')
   }
 
-  const downloadQRCode = (inviteLink: string) => {
+  const downloadQRCode = () => {
     const canvas = document.querySelector('canvas') // Select the QR code canvas
     if (canvas) {
       const imageURL = canvas.toDataURL('image/png') // Convert canvas to image URL
@@ -269,6 +276,7 @@ export default function GuestsAdmin() {
               {
                 id: 0,
                 guestNames: '',
+                family: null,
                 isAttending: null,
                 noOfGuestsAttending: 0,
                 maxGuests: 0,
@@ -407,6 +415,9 @@ export default function GuestsAdmin() {
             <strong>Name(s):</strong> {selectedGuest.guestNames}
           </p>
           <p>
+            <strong>Family:</strong> {selectedGuest.family || 'N/A'}
+          </p>
+          <p>
             <strong>Attending:</strong>{' '}
             {selectedGuest.isAttending === null
               ? 'No Response'
@@ -436,6 +447,18 @@ export default function GuestsAdmin() {
                 onChange={(e) => setNewGuestData({ ...newGuestData, guestNames: e.target.value })}
                 className="border rounded w-full px-3 py-2"
                 required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2" htmlFor="family">
+                Family
+              </label>
+              <input
+                type="text"
+                id="family"
+                value={newGuestData.family || ''}
+                onChange={(e) => setNewGuestData({ ...newGuestData, family: e.target.value })}
+                className="border rounded w-full px-3 py-2"
               />
             </div>
             <div className="mb-4">
@@ -474,7 +497,7 @@ export default function GuestsAdmin() {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="noOfGuestsAttending">
+              <label className="block text-gray-700 mb-2" htmlFor="maxGuests">
                 Max Guests
               </label>
               <input
@@ -543,7 +566,7 @@ export default function GuestsAdmin() {
                 Scan the QR code to access the invite link.
               </p>
               <button
-                onClick={() => downloadQRCode(inviteLink)}
+                onClick={() => downloadQRCode()}
                 className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
               >
                 Download QR Code
@@ -551,18 +574,6 @@ export default function GuestsAdmin() {
             </div>
           </div>
         </Modal>
-      )}
-      {success && (
-        <div className="mt-4 text-green-600 bg-green-50 border border-green-200 rounded px-4 py-2 text-center flex items-center justify-center gap-2">
-          <span>{success}</span>
-          <button
-            onClick={() => copyLinkToClipboard(success)}
-            className="text-green-700 hover:text-green-900 transition"
-            aria-label="Copy to clipboard"
-          >
-            Copy
-          </button>
-        </div>
       )}
       {error && (
         <div className="mt-4 text-red-600 bg-red-50 border border-red-200 rounded px-4 py-2 text-center">

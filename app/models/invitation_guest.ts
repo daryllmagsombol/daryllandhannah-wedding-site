@@ -36,4 +36,7 @@ export default class InvitationGuest extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @column()
+  declare family: string | null // Add the family field
 }

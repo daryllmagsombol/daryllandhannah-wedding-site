@@ -22,6 +22,7 @@ import prenupimg10 from '../assets/images/IMG_5366.webp'
 import prenupimg11 from '../assets/images/IMG_5367.jpg'
 import prenupimg12 from '../assets/images/IMG_5368.webp'
 import prenupimg13 from '../assets/images/IMG_5369.webp'
+import aiCoverPortrait from '../assets/videos/AI moving cover wedding portrait.mp4'
 import { Loader } from './shared/loader'
 import { SparklesText } from '~/components/magicui/sparkles-text'
 
@@ -101,6 +102,8 @@ const MainHome = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % prenupiamges.length)
   }
 
+  const isMobile = window.innerWidth <= 768
+
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? prenupiamges.length - 1 : prevIndex - 1))
   }
@@ -155,21 +158,37 @@ const MainHome = () => {
         <>
           {/* First Section */}
           <SparklesText
-            sparklesCount={window.innerWidth <= 768 ? 18 : 23}
+            sparklesCount={isMobile ? 18 : 23}
             colors={{ first: '#fdf1c8', second: '#d9ccc0' }}
           >
             <motion.div
               className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
-              style={{ backgroundImage: `url(${bgImage})` }}
+              style={{
+                backgroundImage: `url(${bgImage})`,
+              }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 1 }}
               viewport={{ once: true }}
             >
+              {isMobile && (
+                <video
+                  autoPlay
+                  loop
+                  playsInline
+                  muted
+                  controls={false} // Ensure controls are disabled
+                  poster={aiCoverPortrait}
+                  className="absolute top-0 left-0 w-full h-full object-cover hide-ios-play-button" // Add a custom class
+                >
+                  <source src={aiCoverPortrait} type="video/mp4" />
+                </video>
+              )}
+
               <motion.img
                 src={daryllhannahalt}
                 alt="Daryll & Hannah"
-                className="w-3/4 sm:w-1/3 h-auto mt-4 rounded-full"
+                className="relative w-3/4 sm:w-1/3 h-auto mt-4 rounded-full"
                 style={{
                   filter: 'brightness(0) invert(1)',
                 }}

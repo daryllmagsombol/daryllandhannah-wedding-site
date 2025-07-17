@@ -11,6 +11,7 @@ export default class GuestsController {
     const guests = await InvitationGuest.query().select(
       'id',
       'guestNames',
+      'family', // Include family field
       'isAttending',
       'noOfGuestsAttending',
       'maxGuests'
@@ -34,6 +35,7 @@ export default class GuestsController {
   async createGuest({ request, response }: HttpContext) {
     const guestSchema = schema.create({
       guestNames: schema.string({ trim: true }, [rules.maxLength(255)]),
+      family: schema.string.optional({ trim: true }, [rules.maxLength(255)]), // Add family field
       isAttending: schema.boolean.optional(),
       noOfGuestsAttending: schema.number([rules.unsigned()]),
       maxGuests: schema.number([rules.unsigned(), rules.range(1, 20)]),
@@ -58,6 +60,7 @@ export default class GuestsController {
     const guestSchema = schema.create({
       id: schema.number(),
       guestNames: schema.string({ trim: true }, [rules.maxLength(255)]),
+      family: schema.string.optional({ trim: true }, [rules.maxLength(255)]), // Add family field
       isAttending: schema.boolean.optional(),
       noOfGuestsAttending: schema.number([rules.unsigned()]),
       maxGuests: schema.number([rules.unsigned(), rules.range(1, 20)]),
