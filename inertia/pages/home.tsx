@@ -59,7 +59,7 @@ const MainHome = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [loading, setLoading] = useState(true) // State for loader
 
-  const backgroundImages = [daryllhannahalt, mainImage, mobileBg]
+  const backgroundImages = [daryllhannahalt, mainImage, mobileBg, aiCoverPortrait]
 
   useEffect(() => {
     const interval = setInterval(() => {

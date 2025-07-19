@@ -7,8 +7,6 @@ import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { useEffect, useState } from 'react'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Daryll and Hannah - Wedding'
-
 const BrowserWarningModal = () => {
   const [showModal, setShowModal] = useState(false)
 
@@ -93,7 +91,7 @@ const BrowserWarningModal = () => {
 createInertiaApp({
   progress: { color: '#5468FF' },
 
-  title: () => appName,
+  title: (title) => `${title} || test`,
 
   resolve: (name) => {
     return resolvePageComponent(`../pages/${name}.tsx`, import.meta.glob('../pages/**/*.tsx'))
