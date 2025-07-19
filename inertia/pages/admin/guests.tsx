@@ -9,9 +9,9 @@ import {
 } from '@tanstack/react-table'
 import Modal from '../../components/common/Modal/Modal'
 import ActionButtons from '../../components/common/ActionButtons/ActionButtons'
-import { headers } from '~/shared/config'
 import { QRCodeCanvas } from 'qrcode.react'
 import { Loader } from '../shared/loader'
+import axios from '~/shared/axios_config'
 
 type Guest = {
   id: number
@@ -37,27 +37,22 @@ export default function GuestsAdmin() {
   const [guests, setGuests] = useState<Guest[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
   const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null)
   const [modalType, setModalType] = useState<ModalType>(null)
-  const [updateData, setUpdateData] = useState<Partial<Guest>>({})
   const [newGuestData, setNewGuestData] = useState<Partial<Guest>>(emptyGuest)
   const [globalFilter, setGlobalFilter] = useState('')
   const [inviteLink, setInviteLink] = useState<string | null>(null)
 
-  const fetchGuests = () => {
+  const fetchGuests = async () => {
     setLoading(true)
-    fetch('/guest/lists', {
-      method: 'GET',
-      headers,
-    })
-      .then(async (res) => {
-        if (!res.ok) throw new Error(await res.text())
-        return res.json()
-      })
-      .then(setGuests)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false))
+    try {
+      const res = await axios.get('/guest/lists')
+      setGuests(res.data)
+    } catch (err) {
+      setError(err.response?.data || err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -143,7 +138,6 @@ export default function GuestsAdmin() {
 
   const openModal = (guest: Guest, type: ModalType) => {
     setSelectedGuest(guest)
-    setUpdateData(guest)
     setModalType(type)
 
     if (type === 'update') setNewGuestData(guest)
@@ -157,19 +151,14 @@ export default function GuestsAdmin() {
 
   const generateInviteKey = async (guestId: number) => {
     setError(null)
-    setSuccess(null)
-    const res = await fetch(`/guest/generate-invite-key/${guestId}`, {
-      method: 'POST',
-      headers,
-    })
-    if (res.ok) {
-      const data = await res.json()
+    try {
+      const res = await axios.post(`/guest/generate-invite-key/${guestId}`)
       const baseUrl = window.location.origin
-      const link = `${baseUrl}/rsvp?key=${data.code}`
+      const link = `${baseUrl}/rsvp?key=${res.data.code}`
       setInviteLink(link)
       setModalType('inviteLink') // Open the modal for the invite link
-    } else {
-      setError(await res.text())
+    } catch (err) {
+      setError(err.response?.data || err.message)
     }
   }
 
@@ -178,39 +167,31 @@ export default function GuestsAdmin() {
     e.preventDefault()
     if (!selectedGuest) return
     setError(null)
-    const res = await fetch('/guest/update-guest', {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify({
+    try {
+      await axios.put('/guest/update-guest', {
         id: selectedGuest.id,
         guestNames: newGuestData.guestNames,
         family: newGuestData.family,
         isAttending: newGuestData.isAttending,
         noOfGuestsAttending: newGuestData.noOfGuestsAttending,
         maxGuests: newGuestData.maxGuests ?? selectedGuest.maxGuests,
-      }),
-    })
-    if (res.ok) {
+      })
       fetchGuests()
       closeModal()
-    } else {
-      setError(await res.text())
+    } catch (err) {
+      setError(err.response?.data || err.message)
     }
   }
 
   const handleCreateGuest = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-    const res = await fetch('/guest/create', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(newGuestData),
-    })
-    if (res.ok) {
+    try {
+      await axios.post('/guest/create', newGuestData)
       fetchGuests()
       closeModal()
-    } else {
-      setError(await res.text())
+    } catch (err) {
+      setError(err.response?.data || err.message)
     }
   }
 
@@ -218,16 +199,14 @@ export default function GuestsAdmin() {
   const handleDelete = async () => {
     if (!selectedGuest) return
     setError(null)
-    const res = await fetch('/guest/delete-guest', {
-      method: 'DELETE',
-      headers,
-      body: JSON.stringify({ id: selectedGuest.id }),
-    })
-    if (res.ok) {
+    try {
+      await axios.delete('/guest/delete-guest', {
+        data: { id: selectedGuest.id },
+      })
       setGuests((prev) => prev.filter((g) => g.id !== selectedGuest.id))
       closeModal()
-    } else {
-      setError(await res.text())
+    } catch (err) {
+      setError(err.response?.data || err.message)
     }
   }
 
