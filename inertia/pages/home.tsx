@@ -59,7 +59,7 @@ const MainHome = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [loading, setLoading] = useState(true) // State for loader
 
-  const backgroundImages = [darylladmin1alt, mainImage, mobileBg]
+  const backgroundImages = [darylladmin1alt, mainImage, mobileBg, aiCoverPortrait]
 
   useEffect(() => {
     const interval = setInterval(() => {

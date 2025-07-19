@@ -476,7 +476,7 @@ export default function GuestsAdmin() {
                 }
                 className="border rounded w-full px-3 py-2"
               >
-                <option value="">Select</option>
+                <option value="">No Response</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>

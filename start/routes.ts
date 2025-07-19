@@ -16,12 +16,14 @@ const GuestsController = () => import('#controllers/guests_controller')
 
 const SeatInquiriesController = () => import('#controllers/seat_inquiries_controller')
 
-router.on('/').renderInertia('home')
-router.on('/valentines').renderInertia('valentines')
+router.on('/').renderInertia('home', { title: 'The Wedding of Hannah and Daryll' })
+router
+  .on('/valentines')
+  .renderInertia('valentines', { title: 'Valentines 2025 - Daryll and Hannah' })
 
 router
   .group(() => {
-    router.on('/').renderInertia('rsvp')
+    router.on('/').renderInertia('rsvp', { title: 'RSVP - Daryll and Hannah Wedding' })
     router.get('/view-invitation', [RsvpsController, 'getGuestInvitation'])
     router.post('/update-invitation', [RsvpsController, 'saveGuestInvitation'])
   })
@@ -29,7 +31,9 @@ router
 
 router
   .group(() => {
-    router.on('/').renderInertia('seat-inquiry')
+    router
+      .on('/')
+      .renderInertia('seat-inquiry', { title: 'Find Your Seat - Daryll and Hannah Wedding' })
     router.get('/fetch-guests', [SeatInquiriesController, 'fetchGuests'])
   })
   .prefix('/seat-inquiry')
@@ -50,6 +54,10 @@ router
     })
   )
 
-router.on('/guests').renderInertia('admin/guests')
-router.on('/login').renderInertia('admin-login')
+router
+  .on('/guests')
+  .renderInertia('admin/guests', { title: 'Guests Admin - Daryll and Hannah Wedding' })
+router
+  .on('/login')
+  .renderInertia('admin-login', { title: 'Admin Login - Daryll and Hannah Wedding' })
 router.post('/login', [LoginController, 'login'])
