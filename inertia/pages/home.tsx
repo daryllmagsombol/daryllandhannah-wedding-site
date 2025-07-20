@@ -64,7 +64,7 @@ const MainHome = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % prenupiamges.length)
-    }, 3000) // Change image every 3 seconds
+    }, 5000) // Change image every 5 seconds
     return () => clearInterval(interval)
   }, [prenupiamges.length])
 
@@ -175,58 +175,60 @@ const MainHome = () => {
   )
 
   return (
-    <div className="overflow-x-hidden flex flex-col">
+    <div className="overflow-x-hidden flex flex-col scroll-smooth snap-y snap-mandatory h-screen">
       {/* Loader */}
       {loading ? (
         <Loader />
       ) : (
         <>
           {/* First Section */}
-          <SparklesText
-            sparklesCount={isMobile ? 18 : 23}
-            colors={{ first: '#fdf1c8', second: '#d9ccc0' }}
-          >
-            <motion.div
-              className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
-              style={{
-                backgroundImage: `url(${bgImage})`,
-              }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-              viewport={{ once: true }}
+          <div className="snap-start h-screen flex flex-col ">
+            <SparklesText
+              sparklesCount={isMobile ? 18 : 23}
+              colors={{ first: '#fdf1c8', second: '#d9ccc0' }}
             >
-              {isMobile && (
-                <video
-                  autoPlay
-                  loop
-                  playsInline
-                  muted
-                  controls={false} // Ensure controls are disabled
-                  poster={aiCoverPortrait}
-                  className="absolute top-0 left-0 w-full h-full object-cover hide-ios-play-button" // Add a custom class
-                >
-                  <source src={aiCoverPortrait} type="video/mp4" />
-                </video>
-              )}
-
-              <motion.img
-                src={darylladmin1alt}
-                alt="Daryll & Hannah"
-                className="relative w-3/4 sm:w-1/3 h-auto mt-4 rounded-full"
+              <motion.div
+                className="w-screen h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
                 style={{
-                  filter: 'brightness(0) invert(1)',
+                  backgroundImage: `url(${bgImage})`,
                 }}
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5, ease: 'easeInOut' }}
-              />
-            </motion.div>
-          </SparklesText>
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+                viewport={{ once: true }}
+              >
+                {isMobile && (
+                  <video
+                    autoPlay
+                    loop
+                    playsInline
+                    muted
+                    controls={false} // Ensure controls are disabled
+                    poster={aiCoverPortrait}
+                    className="absolute top-0 left-0 w-full h-full object-cover hide-ios-play-button" // Add a custom class
+                  >
+                    <source src={aiCoverPortrait} type="video/mp4" />
+                  </video>
+                )}
+
+                <motion.img
+                  src={darylladmin1alt}
+                  alt="Daryll & Hannah"
+                  className="relative w-3/4 sm:w-1/3 h-auto mt-4 rounded-full"
+                  style={{
+                    filter: 'brightness(0) invert(1)',
+                  }}
+                  initial={{ opacity: 0, y: -20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5, ease: 'easeInOut' }}
+                />
+              </motion.div>
+            </SparklesText>
+          </div>
           {/* Second Section */}
-          <div className="w-screen h-screen bg-gradient-to-b from-purple-50 to-indigo-100 flex items-center justify-center text-center">
+          <div className="snap-start w-screen h-screen bg-gradient-to-b from-purple-50 to-indigo-100 flex items-center justify-center text-center">
             <motion.div
-              className="flex flex-col items-center justify-center max-w-3xl px-6 sm:px-12"
+              className="h-screen flex flex-col items-center justify-center max-w-3xl px-6 sm:px-12"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.9, ease: 'easeInOut' }}
@@ -256,46 +258,49 @@ const MainHome = () => {
             </motion.div>
           </div>
           {/* YouTube Section */}
-          <motion.div className="w-screen h-screen bg-white flex flex-col items-center justify-center text-center p-8">
-            <motion.div
-              initial={{ opacity: 0, y: -50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
-              className="mb-6"
-            >
-              <h2 className="text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wide mb-4">
-                A Glimpse Into Our Story
-              </h2>
-              <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
-                We Know You're Excited —{' '}
-                <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
-                  So Are We!
-                </span>
-              </h1>
-              <p className="text-sm sm:text-lg text-gray-700">
-                Watch a glimpse of our beautiful journey together as we prepare for this special
-                day.
-              </p>
+          <div className="snap-start w-screen h-screen">
+            <motion.div className=" w-screen h-screen bg-white flex flex-col items-center justify-center text-center p-8">
+              <motion.div
+                initial={{ opacity: 0, y: -50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: 'easeInOut' }}
+                className="h-auto mb-6"
+              >
+                <h2 className="text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wide mb-4">
+                  A Glimpse Into Our Story
+                </h2>
+                <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
+                  We Know You're Excited —{' '}
+                  <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                    So Are We!
+                  </span>
+                </h1>
+                <p className="text-sm sm:text-lg text-gray-700">
+                  Watch a glimpse of our beautiful journey together as we prepare for this special
+                  day.
+                </p>
+              </motion.div>
+              <motion.div
+                className="w-full h-3/4 max-w-7xl rounded-lg overflow-hidden shadow-lg"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
+              >
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/Yv0a9U0IHks?si=BhzQhgYsVYUWM6N5"
+                  title="Daryll & Hannah - Save the Date"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </motion.div>
             </motion.div>
-            <motion.div
-              className="w-full h-3/4 max-w-7xl rounded-lg overflow-hidden shadow-lg"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
-            >
-              <iframe
-                width="100%"
-                height="100%"
-                src="https://www.youtube.com/embed/Yv0a9U0IHks?si=BhzQhgYsVYUWM6N5"
-                title="Daryll & Hannah - Save the Date"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </motion.div>
-          </motion.div>
-          <div className="w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex md:items-center md:relative">
+          </div>
+          {/* Third Section */}
+          <div className="snap-start w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex md:items-center md:relative">
             {/* Image on the left */}
             <motion.div
               className="h-[50vh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
@@ -310,10 +315,13 @@ const MainHome = () => {
                   src={prenupiamges[currentImageIndex]}
                   alt="Slideshow"
                   className="w-full h-full object-cover"
-                  initial={{ opacity: 0.9, x: isMobile ? -window.innerWidth : -700 }}
+                  initial={{
+                    opacity: 0.9,
+                    x: isMobile ? -window.innerWidth : -window.innerWidth * 0.7,
+                  }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 50 }}
-                  transition={{ duration: 1.3, ease: 'easeInOut' }}
+                  transition={{ duration: 1.15, ease: 'easeInOut' }}
                 />
               </div>
             </motion.div>
@@ -359,162 +367,169 @@ const MainHome = () => {
             </motion.div>
           </div>
           {/* Fourth Section */}
-          <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-8">
-            <motion.div
-              initial={{ opacity: 0, y: -30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-              className="mb-6"
-            >
-              <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
-                How to Get There
-              </h2>
-              <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
-                Your Journey to Our Big Day{' '}
-                <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
-                  Starts Here
-                </span>
-              </h1>
-              <p className="text-sm sm:text-lg text-gray-700">
-                Use the <b>Google Maps</b> below or open Waze for step-by-step directions straight
-                to our venue, <b>Crystal Palace of Aquila in the Sky</b>.
-              </p>
-            </motion.div>
-            <motion.div
-              className="w-full max-w-5xl h-96 overflow-hidden rounded-lg shadow-lg"
-              initial={{ opacity: 0, y: -60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-            >
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3868.6221609334757!2d120.97798227584663!3d14.158297387750922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd7900132f27b1%3A0xddad94df53491868!2sCrystal%20Palace%20of%20Aquila%20in%20the%20Sky!5e0!3m2!1sen!2sph!4v1752631463931!5m2!1sen!2sph"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-              />
-            </motion.div>
-            <div className="mt-10">
-              <p className="text-sm sm:text-lg text-gray-700 mb-6">
-                Got a problem with Google Maps? Alternatively, you can use <b>Waze</b> for
-                navigation.
-              </p>
-              <a
-                href="https://www.waze.com/en/live-map/directions/ph/calabarzon/silang/crystal-palace-of-aquila-in-the-sky?place=ChIJsScvEwB5vTMRaBhJU9-Urd0&utm_campaign=default&utm_medium=lm_share_location&utm_source=waze_website"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow transition rounded-full font-bold"
+          <div className="snap-start w-screen h-screen">
+            <div className="w-screen h-screen bg-gradient-to-r from-indigo-50 to-purple-100 flex flex-col items-center justify-center text-center p-8">
+              <motion.div
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeInOut' }}
+                className="mb-6"
               >
-                View Directions using Waze
-              </a>
+                <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                  How to Get There
+                </h2>
+                <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
+                  Your Journey to Our Big Day{' '}
+                  <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                    Starts Here
+                  </span>
+                </h1>
+                <p className="text-sm sm:text-lg text-gray-700">
+                  Use the <b>Google Maps</b> below or open Waze for step-by-step directions straight
+                  to our venue, <b>Crystal Palace of Aquila in the Sky</b>.
+                </p>
+              </motion.div>
+              <motion.div
+                className="w-full max-w-5xl h-96 overflow-hidden rounded-lg shadow-lg"
+                initial={{ opacity: 0, y: -60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeInOut' }}
+              >
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3868.6221609334757!2d120.97798227584663!3d14.158297387750922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd7900132f27b1%3A0xddad94df53491868!2sCrystal%20Palace%20of%20Aquila%20in%20the%20Sky!5e0!3m2!1sen!2sph!4v1752631463931!5m2!1sen!2sph"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                />
+              </motion.div>
+              <div className="mt-10">
+                <p className="text-sm sm:text-lg text-gray-700 mb-6">
+                  Got a problem with Google Maps? Alternatively, you can use <b>Waze</b> for
+                  navigation.
+                </p>
+                <a
+                  href="https://www.waze.com/en/live-map/directions/ph/calabarzon/silang/crystal-palace-of-aquila-in-the-sky?place=ChIJsScvEwB5vTMRaBhJU9-Urd0&utm_campaign=default&utm_medium=lm_share_location&utm_source=waze_website"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow transition rounded-full font-bold"
+                >
+                  View Directions using Waze
+                </a>
+              </div>
             </div>
           </div>
+
           {/* 5th Section */}
+          <div className="snap-start w-screen h-auto">
+            <motion.div
+              className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col items-center justify-center text-center p-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
+            >
+              <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                Places to Stay
+              </h2>
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
+                Airbnb & Hotel{' '}
+                <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                  Recommendations
+                </span>
+              </h1>
+              <p className="text-sm sm:text-xl text-gray-700 mb-6">
+                Here are some accommodations near the venue to make your stay comfortable and
+                memorable.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-5xl">
+                {/* Recommendation 1 */}
+                <motion.div
+                  {...airBnbDefaultAnimate}
+                  transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
+                >
+                  <RecommendationBox
+                    title="Elegant Studio Unit with FREE Parking"
+                    content="Classy interior, tricolor vanity mirror for your make up and clothes rack for your gown/suit. Located just behind Ayala Serin Mall."
+                    picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/dcd16063-8106-42b8-b1f1-3104080316e5.jpeg"
+                    link="https://www.airbnb.com/l/noxSkITw"
+                    type="Airbnb"
+                    reviews="4.67 Reviews"
+                    guests="4 Guests"
+                    bedrooms="1 Bedroom"
+                    beds="4 Beds"
+                    baths="1 Bath"
+                  />
+                </motion.div>
 
-          <motion.div
-            className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col items-center justify-center text-center p-8"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 1, ease: 'easeInOut' }}
-          >
-            <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
-              Places to Stay
-            </h2>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
-              Airbnb & Hotel{' '}
-              <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
-                Recommendations
-              </span>
-            </h1>
-            <p className="text-sm sm:text-xl text-gray-700 mb-6">
-              Here are some accommodations near the venue to make your stay comfortable and
-              memorable.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-5xl">
-              {/* Recommendation 1 */}
-              <motion.div {...airBnbDefaultAnimate} transition={{ duration: 1, ease: 'easeInOut' }}>
-                <RecommendationBox
-                  title="Elegant Studio Unit with FREE Parking"
-                  content="Classy interior, tricolor vanity mirror for your make up and clothes rack for your gown/suit. Located just behind Ayala Serin Mall."
-                  picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/dcd16063-8106-42b8-b1f1-3104080316e5.jpeg"
-                  link="https://www.airbnb.com/l/noxSkITw"
-                  type="Airbnb"
-                  reviews="4.67 Reviews"
-                  guests="4 Guests"
-                  bedrooms="1 Bedroom"
-                  beds="4 Beds"
-                  baths="1 Bath"
-                />
-              </motion.div>
+                {/* Recommendation 2 */}
+                <motion.div
+                  {...airBnbDefaultAnimate}
+                  transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
+                >
+                  <RecommendationBox
+                    title="COZY 21st Flr King+Dbl w/ Pool"
+                    content="Relax with the whole family or barkada at this SPACIOUS staycation spot with FREE pool access and UNLI Netflix."
+                    picture="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE0NTMyNzgzNTg5NjUzMzI0MA%3D%3D/original/5ba25b6f-4172-4b5d-aaeb-5d678d6a6490.jpeg?im_w=1440"
+                    link="https://www.airbnb.com/l/DPRwsvRJ"
+                    type="Airbnb"
+                    reviews="4.84 Reviews"
+                    guests="6 Guests"
+                    bedrooms="1 Bedroom"
+                    beds="3 Beds"
+                    baths="1 Bath"
+                  />
+                </motion.div>
 
-              {/* Recommendation 2 */}
-              <motion.div
-                {...airBnbDefaultAnimate}
-                transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
-              >
-                <RecommendationBox
-                  title="COZY 21st Flr King+Dbl w/ Pool"
-                  content="Relax with the whole family or barkada at this SPACIOUS staycation spot with FREE pool access and UNLI Netflix."
-                  picture="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE0NTMyNzgzNTg5NjUzMzI0MA%3D%3D/original/5ba25b6f-4172-4b5d-aaeb-5d678d6a6490.jpeg?im_w=1440"
-                  link="https://www.airbnb.com/l/DPRwsvRJ"
-                  type="Airbnb"
-                  reviews="4.84 Reviews"
-                  guests="6 Guests"
-                  bedrooms="1 Bedroom"
-                  beds="3 Beds"
-                  baths="1 Bath"
-                />
-              </motion.div>
+                {/* Recommendation 3 */}
+                <motion.div
+                  {...airBnbDefaultAnimate}
+                  transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
+                >
+                  <RecommendationBox
+                    title="Serene Escape Tagaytay"
+                    content="Your peaceful escape in the heart of Tagaytay. Unwind, relax, and recharge at our cozy getaway located on the 12th floor of Serin East Tagaytay."
+                    picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1429464938235773057/original/3eccc298-f36b-4393-8b3e-a4e762b31f4a.jpeg?im_w=1200"
+                    link="https://www.airbnb.com/l/6E076Uhe"
+                    type="Airbnb"
+                    reviews="5.0 Reviews"
+                    guests="6 Guests"
+                    bedrooms="1 Bedroom"
+                    beds="1 Bed"
+                    baths="1 Bath"
+                  />
+                </motion.div>
 
-              {/* Recommendation 3 */}
-              <motion.div
-                {...airBnbDefaultAnimate}
-                transition={{ delay: 0.4, duration: 1, ease: 'easeInOut' }}
-              >
-                <RecommendationBox
-                  title="Serene Escape Tagaytay"
-                  content="Your peaceful escape in the heart of Tagaytay. Unwind, relax, and recharge at our cozy getaway located on the 12th floor of Serin East Tagaytay."
-                  picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1429464938235773057/original/3eccc298-f36b-4393-8b3e-a4e762b31f4a.jpeg?im_w=1200"
-                  link="https://www.airbnb.com/l/6E076Uhe"
-                  type="Airbnb"
-                  reviews="5.0 Reviews"
-                  guests="6 Guests"
-                  bedrooms="1 Bedroom"
-                  beds="1 Bed"
-                  baths="1 Bath"
-                />
-              </motion.div>
-
-              {/* Recommendation 4 */}
-              <motion.div
-                {...airBnbDefaultAnimate}
-                transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
-              >
-                <RecommendationBox
-                  title="Quest Hotel Tagaytay"
-                  content="Quest Hotel Tagaytay is ideal for two travelers, providing stunning Taal Lake views and exceptional comfort. Relax by the outdoor pool, enjoy the lively café, and experience affordable luxury in serene Tagaytay."
-                  picture="https://pix8.agoda.net/hotelImages/5826741/0/5643299815f46330c94b8067edbdfd84.jpeg?s=1024x"
-                  link="https://www.agoda.com/sl/GlGJ0JnoRYr"
-                  type="Agoda"
-                  reviews="4.8 Reviews"
-                  guests="Many Options"
-                  bedrooms=""
-                  beds=""
-                  baths=""
-                />
-              </motion.div>
-            </div>
-            <div className="mt-8 mb-4">
-              <a
-                href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-md font-bold"
-              >
-                View More on Airbnb
-              </a>
-            </div>
-          </motion.div>
+                {/* Recommendation 4 */}
+                <motion.div
+                  {...airBnbDefaultAnimate}
+                  transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
+                >
+                  <RecommendationBox
+                    title="Quest Hotel Tagaytay"
+                    content="Quest Hotel Tagaytay is ideal for two travelers, providing stunning Taal Lake views and exceptional comfort. Relax by the outdoor pool, enjoy the lively café, and experience affordable luxury in serene Tagaytay."
+                    picture="https://pix8.agoda.net/hotelImages/5826741/0/5643299815f46330c94b8067edbdfd84.jpeg?s=1024x"
+                    link="https://www.agoda.com/sl/GlGJ0JnoRYr"
+                    type="Agoda"
+                    reviews="4.8 Reviews"
+                    guests="Many Options"
+                    bedrooms=""
+                    beds=""
+                    baths=""
+                  />
+                </motion.div>
+              </div>
+              <div className="mt-8 mb-4">
+                <a
+                  href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-md font-bold"
+                >
+                  View More on Airbnb
+                </a>
+              </div>
+            </motion.div>
+          </div>
           {/* Footer */}
           <footer className="w-full bg-white text-center py-4">
             <p className="text-sm text-gray-500">
