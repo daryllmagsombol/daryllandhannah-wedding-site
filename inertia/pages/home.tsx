@@ -175,7 +175,7 @@ const MainHome = () => {
   )
 
   return (
-    <div className="overflow-x-hidden flex flex-col scroll-smooth snap-y snap-mandatory h-screen">
+    <div className="overflow-x-hidden flex flex-col scroll-smooth snap-y h-screen">
       {/* Loader */}
       {loading ? (
         <Loader />
