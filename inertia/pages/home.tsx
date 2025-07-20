@@ -115,11 +115,15 @@ const MainHome = () => {
 
   type RecommendationBoxProps = {
     title: string
-    content?: string
+    content: string
     picture: string
     link: string
-    type?: string
-    mainDivProps?: any
+    type: string
+    reviews: string
+    guests: string
+    bedrooms: string
+    beds: string
+    baths: string
   }
 
   const RecommendationBox = ({
@@ -127,26 +131,47 @@ const MainHome = () => {
     content,
     picture,
     link,
-    type = 'Website',
-    mainDivProps = {},
+    type,
+    reviews,
+    guests,
+    bedrooms,
+    beds,
+    baths,
   }: RecommendationBoxProps) => (
-    <>
-      <motion.div {...mainDivProps} className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-bold text-purple-800 mb-2">{title}</h3>
-        <div className="mt-4">
-          <img src={picture} alt={title} className="w-50 h-50 rounded-lg object-cover" />
+    <div className="overflow-y-hidden flex flex-col">
+      <div className="relative">
+        <img src={picture} alt={title} className="w-full h-80 object-cover rounded-lg" />
+        <div className="absolute top-4 right-4 bg-white rounded-md px-3 py-1 shadow text-sm font-bold text-gray-800">
+          {reviews}
         </div>
-        <p className="mt-3 text-sm text-gray-600 mb-4">{content}</p>
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-purple-600 hover:underline"
-        >
-          View in {type}
-        </a>
-      </motion.div>
-    </>
+      </div>
+      <div className="py-6 flex flex-col justify-between">
+        <div className="text-left">
+          <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
+          <p className="text-sm text-gray-600 mb-4">{content}</p>
+        </div>
+
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-between sm:text-left py-2 items-center sm:items-start">
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-purple-600 hover:underline mt-2 sm:mt-0"
+          >
+            {/* <button className="bg-trasparent text-white px-4 py-2 rounded-full text-purple-600 hover:bg-purple-600 transition">
+              &rarr;
+            </button> */}
+            <span>View in {type}</span>
+          </a>
+          <div className="text-sm text-gray-500 flex flex-wrap gap-2 justify-center sm:justify-start">
+            {guests && <span>{guests}</span>}
+            {bedrooms && <span>{bedrooms}</span>}
+            {beds && <span>{beds}</span>}
+            {baths && <span>{baths}</span>}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 
   return (
@@ -285,10 +310,10 @@ const MainHome = () => {
                   src={prenupiamges[currentImageIndex]}
                   alt="Slideshow"
                   className="w-full h-full object-cover"
-                  initial={{ opacity: 0, x: -100 }}
+                  initial={{ opacity: 0.9, x: isMobile ? -window.innerWidth : -700 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 1, ease: 'easeInOut' }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 1.3, ease: 'easeInOut' }}
                 />
               </div>
             </motion.div>
@@ -387,7 +412,7 @@ const MainHome = () => {
           {/* 5th Section */}
 
           <motion.div
-            className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col items-center justify-center text-center p-4 sm:p-8"
+            className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-100 flex flex-col items-center justify-center text-center p-8"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 1, ease: 'easeInOut' }}
@@ -405,7 +430,7 @@ const MainHome = () => {
               Here are some accommodations near the venue to make your stay comfortable and
               memorable.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-5xl">
               {/* Recommendation 1 */}
               <motion.div {...airBnbDefaultAnimate} transition={{ duration: 1, ease: 'easeInOut' }}>
                 <RecommendationBox
@@ -414,6 +439,11 @@ const MainHome = () => {
                   picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/dcd16063-8106-42b8-b1f1-3104080316e5.jpeg"
                   link="https://www.airbnb.com/l/noxSkITw"
                   type="Airbnb"
+                  reviews="4.67 Reviews"
+                  guests="4 Guests"
+                  bedrooms="1 Bedroom"
+                  beds="4 Beds"
+                  baths="1 Bath"
                 />
               </motion.div>
 
@@ -428,6 +458,11 @@ const MainHome = () => {
                   picture="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE0NTMyNzgzNTg5NjUzMzI0MA%3D%3D/original/5ba25b6f-4172-4b5d-aaeb-5d678d6a6490.jpeg?im_w=1440"
                   link="https://www.airbnb.com/l/DPRwsvRJ"
                   type="Airbnb"
+                  reviews="4.84 Reviews"
+                  guests="6 Guests"
+                  bedrooms="1 Bedroom"
+                  beds="3 Beds"
+                  baths="1 Bath"
                 />
               </motion.div>
 
@@ -442,13 +477,18 @@ const MainHome = () => {
                   picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1429464938235773057/original/3eccc298-f36b-4393-8b3e-a4e762b31f4a.jpeg?im_w=1200"
                   link="https://www.airbnb.com/l/6E076Uhe"
                   type="Airbnb"
+                  reviews="5.0 Reviews"
+                  guests="6 Guests"
+                  bedrooms="1 Bedroom"
+                  beds="1 Bed"
+                  baths="1 Bath"
                 />
               </motion.div>
 
               {/* Recommendation 4 */}
               <motion.div
                 {...airBnbDefaultAnimate}
-                transition={{ delay: 0.6, duration: 0.8, ease: 'easeInOut' }}
+                transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
               >
                 <RecommendationBox
                   title="Quest Hotel Tagaytay"
@@ -456,6 +496,11 @@ const MainHome = () => {
                   picture="https://pix8.agoda.net/hotelImages/5826741/0/5643299815f46330c94b8067edbdfd84.jpeg?s=1024x"
                   link="https://www.agoda.com/sl/GlGJ0JnoRYr"
                   type="Agoda"
+                  reviews="4.8 Reviews"
+                  guests="Many Options"
+                  bedrooms=""
+                  beds=""
+                  baths=""
                 />
               </motion.div>
             </div>
@@ -464,7 +509,7 @@ const MainHome = () => {
                 href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-full font-bold"
+                className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-md font-bold"
               >
                 View More on Airbnb
               </a>

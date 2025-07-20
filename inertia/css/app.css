@@ -3,6 +3,9 @@ body {
   overflow-x: hidden;
   font-family: 'Merriweather', serif;
 }
+.no-border {
+  border: none !important;
+}
 
 .hide-ios-play-button::-webkit-media-controls {
   display: none !important; /* Hide iOS media controls */

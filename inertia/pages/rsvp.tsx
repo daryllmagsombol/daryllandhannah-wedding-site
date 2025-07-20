@@ -48,7 +48,7 @@ export default function RSVP() {
     setError(null)
     setSuccess(null)
 
-    let countdown = 5
+    let countdown = 3
 
     const swalWithCountdown = Swal.mixin({
       didOpen: () => {
@@ -82,12 +82,16 @@ export default function RSVP() {
       html: isAttending
         ? `Before submitting, please confirm that all the information you’ve provided is accurate. Confirming for <strong>${noOfGuests} guest(s)</strong>.`
         : `Confirming your RSVP as <strong>not attending</strong>. Are you sure?`,
-      icon: 'question',
+      // icon: 'question',
+      iconHtml: `<img src="${letterIcon}" alt="Invitation Icon"`,
       showCancelButton: true,
       confirmButtonText: `Yes, I am sure (${countdown}s)`,
       cancelButtonText: 'No, not yet',
       confirmButtonColor: '#786cf3',
       cancelButtonColor: '#f14e4e',
+      customClass: {
+        icon: 'no-border', // Add this custom class
+      },
     })
 
     if (result.isConfirmed) {
@@ -218,7 +222,7 @@ export default function RSVP() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
-        className="mx-auto p-4 sm:p-8 max-w-xs sm:max-w-lg w-full bg-white rounded-lg shadow-md"
+        className="mx-auto p-4 sm:p-8 max-w-[85vw] sm:max-w-xl w-full bg-white rounded-lg shadow-md"
       >
         <div className="flex justify-center items-center mb-6">
           <img src={letterIcon} alt="Invitation Icon" className="w-12 h-12 sm:w-16 sm:h-16" />
@@ -242,17 +246,6 @@ export default function RSVP() {
             <div className="mb-6 text-center">
               <span className="block text-sm sm:text-lg font-medium text-gray-800">
                 Please RSVP by August 15, 2025 so we can prepare for your attendance.
-              </span>
-            </div>
-            <div className="mb-6 text-center">
-              <span className="block text-sm sm:text-lg font-medium text-gray-800">
-                Wedding Details:
-              </span>
-              <span className="block text-xs sm:text-lg text-gray-700">
-                September 5, 2025 at 4:30 PM
-              </span>
-              <span className="block text-xs sm:text-lg text-gray-700">
-                Aquila Crystal Palace, Tagaytay City
               </span>
             </div>
             <div className="mb-6 text-center">
@@ -288,22 +281,33 @@ export default function RSVP() {
                   />
                 </div>
               </div>
-              <button
-                type="submit"
-                onClick={() => setIsAttending(true)}
-                className={`w-full bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-2 sm:py-3 rounded-full font-bold text-sm sm:text-lg shadow transition disabled:opacity-50`}
-                disabled={noOfGuests < 1 || noOfGuests > (guest?.maxGuests ?? 0)}
-              >
-                Yes, I will attend
-              </button>
-              <button
-                type="submit"
-                formNoValidate
-                onClick={() => setIsAttending(false)}
-                className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-2 sm:py-3 rounded-full font-bold text-sm sm:text-lg shadow transition disabled:opacity-50`}
-              >
-                Sorry, I can't make it
-              </button>
+              <div className="flex flex-row gap-4">
+                <button
+                  type="submit"
+                  onClick={() => setIsAttending(true)}
+                  className={`w-full bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-3 sm:py-4 rounded-md text-xs md:text-md font-bold sm:text-md shadow-sm transition disabled:opacity-50`}
+                  disabled={noOfGuests < 1 || noOfGuests > (guest?.maxGuests ?? 0)}
+                >
+                  Yes, I will attend
+                </button>
+                <button
+                  type="submit"
+                  formNoValidate
+                  onClick={() => setIsAttending(false)}
+                  className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-3 sm:py-4 rounded-md text-xs md:text-md font-bold sm:text-md shadow-sm transition disabled:opacity-50`}
+                >
+                  Sorry, I can't make it
+                </button>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center sm:text-left py-2">
+                <span className="block sm:inline text-xs sm:text-md text-gray-600">
+                  September 5, 2025 at 4:30 PM
+                </span>
+                <span className="block sm:inline text-xs sm:text-md text-gray-600 mt-2 sm:mt-0">
+                  Crystal Palace of Aquila in the Sky, Tagaytay City
+                </span>
+              </div>
+
               {error && (
                 <div className="text-red-700 bg-red-50 border border-red-200 rounded px-4 py-2 text-center animate-fade-in">
                   {error}
