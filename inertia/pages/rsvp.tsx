@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 import { useQueryParams } from '~/hooks/common'
 import { Loader } from './shared/loader'
 import letterIcon from '~/assets/images/letter-icon.png'
+import axios from 'axios'
 
 type Guest = {
   id: number
@@ -11,6 +12,7 @@ type Guest = {
   isAttending: boolean | null
   noOfGuestsAttending: number
   maxGuests: number
+  familyName?: string // Added familyName here
 }
 
 export default function RSVP() {
@@ -255,7 +257,7 @@ export default function RSVP() {
                   fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
                 }}
               >
-                {guest?.guestNames}
+                {guest?.familyName}
               </span>
             </div>
             <form onSubmit={handleSubmit} className="space-y-5">

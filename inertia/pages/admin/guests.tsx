@@ -12,11 +12,17 @@ import ActionButtons from '../../components/common/ActionButtons/ActionButtons'
 import { QRCodeCanvas } from 'qrcode.react'
 import { Loader } from '../shared/loader'
 import axios from '~/shared/axios_config'
+import Swal from 'sweetalert2'
 
 type Guest = {
   id: number
-  guestNames: string
-  family: string | null
+  familyName: string | null
+  guests: Array<{
+    id: number
+    name: string
+    familyInvitationId: number | null
+    tableNumber: string | null
+  }>
   isAttending: boolean | null
   noOfGuestsAttending: number
   maxGuests: number
@@ -26,15 +32,15 @@ type ModalType = 'create' | 'view' | 'update' | 'delete' | 'inviteLink' | null
 
 const emptyGuest: Guest = {
   id: 0,
-  guestNames: '',
-  family: null,
+  familyName: null,
+  guests: [],
   isAttending: null,
   noOfGuestsAttending: 0,
   maxGuests: 1,
 }
 
 export default function GuestsAdmin() {
-  const [guests, setGuests] = useState<Guest[]>([])
+  const [family, setGuests] = useState<Guest[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null)
@@ -61,12 +67,8 @@ export default function GuestsAdmin() {
 
   const columns = [
     {
-      accessorKey: 'guestNames',
-      header: 'Name(s)',
-    },
-    {
-      accessorKey: 'family',
-      header: 'Family', // Add family column
+      accessorKey: 'familyName',
+      header: 'Family Name', // Add family column
     },
     {
       accessorKey: 'isAttending',
@@ -97,9 +99,9 @@ export default function GuestsAdmin() {
         const value = getValue()
         return (
           <ActionButtons
-            onView={() => openModal(guests.find((guest) => guest.id === value)!, 'view')}
-            onUpdate={() => openModal(guests.find((guest) => guest.id === value)!, 'update')}
-            onDelete={() => openModal(guests.find((guest) => guest.id === value)!, 'delete')}
+            onView={() => openModal(family.find((f) => f.id === value)!, 'view')}
+            onUpdate={() => openModal(family.find((f) => f.id === value)!, 'update')}
+            onDelete={() => openModal(family.find((f) => f.id === value)!, 'delete')}
             onGenerateKey={() => generateInviteKey(value)}
           />
         )
@@ -109,17 +111,17 @@ export default function GuestsAdmin() {
 
   const totalAttending = useMemo(
     () =>
-      guests.reduce((sum, guest) => sum + (guest.isAttending ? guest.noOfGuestsAttending : 0), 0),
-    [guests]
+      family.reduce((sum, guest) => sum + (guest.isAttending ? guest.noOfGuestsAttending : 0), 0),
+    [family]
   )
 
   const totalMaxGuests = useMemo(
-    () => guests.reduce((sum, guest) => sum + guest.maxGuests, 0),
-    [guests]
+    () => family.reduce((sum, guest) => sum + guest.maxGuests, 0),
+    [family]
   )
 
   const table = useReactTable({
-    data: guests,
+    data: family,
     columns,
     state: {
       globalFilter,
@@ -167,17 +169,36 @@ export default function GuestsAdmin() {
     e.preventDefault()
     if (!selectedGuest) return
     setError(null)
+
+    const result = await Swal.fire({
+      title: 'Confirm Family Update',
+      text: 'Are you sure you want to update this family?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, update it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#007bff',
+      cancelButtonColor: '#dc3545',
+    })
+
+    if (!result.isConfirmed) return
+
     try {
-      await axios.put('/guest/update-guest', {
+      const payload = {
         id: selectedGuest.id,
-        guestNames: newGuestData.guestNames,
-        family: newGuestData.family,
-        isAttending: newGuestData.isAttending,
-        noOfGuestsAttending: newGuestData.noOfGuestsAttending,
-        maxGuests: newGuestData.maxGuests ?? selectedGuest.maxGuests,
-      })
+        familyName: newGuestData.familyName,
+        maxGuests: newGuestData.maxGuests,
+        guests: newGuestData.guests?.map((guest) => ({
+          id: guest.id, // Include the guest ID for updates
+          name: guest.name,
+          tableNumber: guest.tableNumber, // Updated field
+        })),
+      }
+
+      await axios.put('/guest/update-guest', payload)
       fetchGuests()
       closeModal()
+      Swal.fire('Updated!', 'The family has been updated successfully.', 'success')
     } catch (err) {
       setError(err.response?.data || err.message)
     }
@@ -186,10 +207,34 @@ export default function GuestsAdmin() {
   const handleCreateGuest = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+
+    const result = await Swal.fire({
+      title: 'Confirm Family Creation',
+      text: 'Are you sure you want to create this family?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, create it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+    })
+
+    if (!result.isConfirmed) return
+
     try {
-      await axios.post('/guest/create', newGuestData)
+      const payload = {
+        familyName: newGuestData.familyName,
+        maxGuests: newGuestData.maxGuests,
+        guests: newGuestData.guests?.map((guest) => ({
+          name: guest.name,
+          tableNumber: guest.tableNumber, // Updated field
+        })),
+      }
+
+      await axios.post('/guest/create', payload)
       fetchGuests()
       closeModal()
+      Swal.fire('Created!', 'The family has been created successfully.', 'success')
     } catch (err) {
       setError(err.response?.data || err.message)
     }
@@ -243,32 +288,20 @@ export default function GuestsAdmin() {
           type="text"
           value={globalFilter || ''}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search guests..."
+          placeholder="Search families..."
           className="border rounded px-4 py-2"
         />
       </div>
       <div className="flex justify-end mb-4">
         <button
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-          onClick={() =>
-            openModal(
-              {
-                id: 0,
-                guestNames: '',
-                family: null,
-                isAttending: null,
-                noOfGuestsAttending: 0,
-                maxGuests: 0,
-              },
-              'create'
-            )
-          }
+          onClick={() => openModal(emptyGuest, 'create')}
         >
-          Create Guest
+          Create Family
         </button>
       </div>
       {loading ? (
-        <Loader message="Loading guests..." noBG />
+        <Loader message="Loading families..." noBG />
       ) : error ? (
         <div className="text-red-600 text-center">{error}</div>
       ) : (
@@ -345,22 +378,111 @@ export default function GuestsAdmin() {
         </div>
       )}
       {modalType === 'create' && (
-        <Modal title="Create Guest" onClose={closeModal}>
+        <Modal title="Create Family" onClose={closeModal}>
           <form onSubmit={handleCreateGuest}>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="guestNames">
-                Name(s)
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="guestNames">
+                Family Name
               </label>
               <input
                 type="text"
                 id="guestNames"
-                value={newGuestData.guestNames}
+                value={newGuestData.familyName || ''}
                 onChange={(e) =>
-                  setNewGuestData((prev) => ({ ...prev, guestNames: e.target.value }))
+                  setNewGuestData((prev) => ({ ...prev, familyName: e.target.value }))
                 }
                 className="border rounded w-full px-3 py-2"
                 required
               />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="guestList">
+                Guest List
+              </label>
+              {newGuestData.guests?.map((guest, index) => (
+                <div key={index} className="flex items-center gap-4 mb-2">
+                  <div className="w-1/2">
+                    <label
+                      className="block text-gray-700 text-md mb-1"
+                      htmlFor={`guestName-${index}`}
+                    >
+                      Guest Name
+                    </label>
+                    <input
+                      type="text"
+                      id={`guestName-${index}`}
+                      placeholder="Guest Name"
+                      value={guest.name}
+                      onChange={(e) =>
+                        setNewGuestData((prev) => {
+                          const updatedGuests = [...(prev.guests || [])]
+                          updatedGuests[index] = { ...updatedGuests[index], name: e.target.value }
+                          return { ...prev, guests: updatedGuests }
+                        })
+                      }
+                      className="border rounded px-3 py-2 w-full"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/2">
+                    <label
+                      className="block text-gray-700 text mb-1"
+                      htmlFor={`tableNumber-${index}`}
+                    >
+                      Table No.
+                    </label>
+                    <input
+                      type="text"
+                      id={`tableNumber-${index}`}
+                      placeholder="Table No."
+                      value={guest.tableNumber || ''}
+                      onChange={(e) =>
+                        setNewGuestData((prev) => {
+                          const updatedGuests = [...(prev.guests || [])]
+                          updatedGuests[index] = {
+                            ...updatedGuests[index],
+                            tableNumber: e.target.value,
+                          }
+                          return { ...prev, guests: updatedGuests }
+                        })
+                      }
+                      className="border rounded px-3 py-2 w-full"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setNewGuestData((prev) => ({
+                        ...prev,
+                        guests: (prev.guests || []).filter((_, i) => i !== index),
+                      }))
+                    }
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() =>
+                  setNewGuestData((prev) => ({
+                    ...prev,
+                    guests: [
+                      ...(prev.guests || []),
+                      {
+                        id: Date.now(), // Temporary unique id for the new guest
+                        name: '',
+                        familyInvitationId: null,
+                        tableNumber: '',
+                      },
+                    ],
+                  }))
+                }
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+              >
+                Add Guest
+              </button>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2" htmlFor="maxGuests">
@@ -383,108 +505,197 @@ export default function GuestsAdmin() {
               type="submit"
               className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
             >
-              Create Guest
+              Create Family
             </button>
           </form>
         </Modal>
       )}
       {modalType === 'view' && selectedGuest && (
-        <Modal title="Guest Details" onClose={closeModal}>
-          <p>
-            <strong>Name(s):</strong> {selectedGuest.guestNames}
-          </p>
-          <p>
-            <strong>Family:</strong> {selectedGuest.family || 'N/A'}
-          </p>
-          <p>
-            <strong>Attending:</strong>{' '}
-            {selectedGuest.isAttending === null
-              ? 'No Response'
-              : selectedGuest.isAttending
-                ? 'Yes'
-                : 'No'}
-          </p>
-          <p>
-            <strong># Attending:</strong> {selectedGuest.noOfGuestsAttending}
-          </p>
-          <p>
-            <strong>Max Guests:</strong> {selectedGuest.maxGuests}
-          </p>
-        </Modal>
-      )}
-      {modalType === 'update' && selectedGuest && (
-        <Modal title="Update Guest" onClose={closeModal}>
-          <form onSubmit={handleUpdate}>
+        <Modal title="Family Details" onClose={closeModal}>
+          <form>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="guestNames">
-                Name(s)
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="familyName">
+                Family Name
               </label>
               <input
                 type="text"
-                id="guestNames"
-                value={newGuestData.guestNames || ''}
-                onChange={(e) => setNewGuestData({ ...newGuestData, guestNames: e.target.value })}
-                className="border rounded w-full px-3 py-2"
-                required
+                id="familyName"
+                value={selectedGuest.familyName || ''}
+                readOnly
+                className="border rounded w-full px-3 py-2 bg-gray-100"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="family">
-                Family
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="guestList">
+                Guest List
               </label>
-              <input
-                type="text"
-                id="family"
-                value={newGuestData.family || ''}
-                onChange={(e) => setNewGuestData({ ...newGuestData, family: e.target.value })}
-                className="border rounded w-full px-3 py-2"
-              />
+              {selectedGuest.guests.map((guest, index) => (
+                <div key={index} className="flex items-center gap-4 mb-2">
+                  <div className="w-3/4">
+                    <label
+                      className="block text-gray-700 text-md mb-1"
+                      htmlFor={`guestName-${index}`}
+                    >
+                      Guest Name
+                    </label>
+                    <input
+                      type="text"
+                      id={`guestName-${index}`}
+                      value={guest.name}
+                      readOnly
+                      className="border rounded px-3 py-2 w-full bg-gray-100"
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label
+                      className="block text-gray-700 text-md mb-1"
+                      htmlFor={`tableNumber-${index}`}
+                    >
+                      Table No.
+                    </label>
+                    <input
+                      type="text"
+                      id={`tableNumber-${index}`}
+                      value={guest.tableNumber || ''}
+                      readOnly
+                      className="border rounded px-3 py-2 w-full bg-gray-100"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="isAttending">
-                Attending
-              </label>
-              <select
-                id="isAttending"
-                value={newGuestData.isAttending ? 'yes' : 'no'}
-                onChange={(e) =>
-                  setNewGuestData({
-                    ...newGuestData,
-                    isAttending: e.target.value === 'yes',
-                  })
-                }
-                className="border rounded w-full px-3 py-2"
-              >
-                <option value="">No Response</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="noOfGuestsAttending">
-                # Attending
-              </label>
-              <input
-                type="number"
-                id="noOfGuestsAttending"
-                value={newGuestData.noOfGuestsAttending || 0}
-                onChange={(e) =>
-                  setNewGuestData({ ...newGuestData, noOfGuestsAttending: Number(e.target.value) })
-                }
-                className="border rounded w-full px-3 py-2"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="maxGuests">
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="maxGuests">
                 Max Guests
               </label>
               <input
                 type="number"
                 id="maxGuests"
-                value={newGuestData.maxGuests || 0}
+                value={selectedGuest.maxGuests}
+                readOnly
+                className="border rounded w-full px-3 py-2 bg-gray-100"
+              />
+            </div>
+          </form>
+        </Modal>
+      )}
+      {modalType === 'update' && selectedGuest && (
+        <Modal title="Update Family" onClose={closeModal}>
+          <form onSubmit={handleUpdate}>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="familyName">
+                Family Name
+              </label>
+              <input
+                type="text"
+                id="familyName"
+                value={newGuestData.familyName || ''}
                 onChange={(e) =>
-                  setNewGuestData({ ...newGuestData, maxGuests: Number(e.target.value) })
+                  setNewGuestData((prev) => ({ ...prev, familyName: e.target.value }))
+                }
+                className="border rounded w-full px-3 py-2"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="guestList">
+                Guest List
+              </label>
+              {newGuestData.guests?.map((guest, index) => (
+                <div key={index} className="flex items-center gap-4 mb-2">
+                  <div className="w-3/4">
+                    <label
+                      className="block text-gray-700 text-md mb-1"
+                      htmlFor={`guestName-${index}`}
+                    >
+                      Guest Name
+                    </label>
+                    <input
+                      type="text"
+                      id={`guestName-${index}`}
+                      placeholder="Guest Name"
+                      value={guest.name}
+                      onChange={(e) =>
+                        setNewGuestData((prev) => {
+                          const updatedGuests = [...(prev.guests || [])]
+                          updatedGuests[index] = { ...updatedGuests[index], name: e.target.value }
+                          return { ...prev, guests: updatedGuests }
+                        })
+                      }
+                      className="border rounded px-3 py-2 w-full"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <label
+                      className="block text-gray-700 text-md mb-1"
+                      htmlFor={`tableNumber-${index}`}
+                    >
+                      Table No.
+                    </label>
+                    <input
+                      type="text"
+                      id={`tableNumber-${index}`}
+                      placeholder="Table No."
+                      value={guest.tableNumber || ''}
+                      onChange={(e) =>
+                        setNewGuestData((prev) => {
+                          const updatedGuests = [...(prev.guests || [])]
+                          updatedGuests[index] = {
+                            ...updatedGuests[index],
+                            tableNumber: e.target.value,
+                          }
+                          return { ...prev, guests: updatedGuests }
+                        })
+                      }
+                      className="border rounded px-3 py-2 w-full"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setNewGuestData((prev) => ({
+                        ...prev,
+                        guests: (prev.guests || []).filter((_, i) => i !== index),
+                      }))
+                    }
+                    className="text-red-500 hover:text-red-700 mt-5"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() =>
+                  setNewGuestData((prev) => ({
+                    ...prev,
+                    guests: [
+                      ...(prev.guests || []),
+                      {
+                        id: Date.now(), // Temporary unique id for the new guest
+                        name: '',
+                        familyInvitationId: null,
+                        tableNumber: '',
+                      },
+                    ],
+                  }))
+                }
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+              >
+                Add Guest
+              </button>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="maxGuests">
+                Max Guests
+              </label>
+              <input
+                type="number"
+                id="maxGuests"
+                value={newGuestData.maxGuests || ''}
+                onChange={(e) =>
+                  setNewGuestData((prev) => ({ ...prev, maxGuests: Number(e.target.value) }))
                 }
                 className="border rounded w-full px-3 py-2"
                 required
@@ -494,14 +705,14 @@ export default function GuestsAdmin() {
               type="submit"
               className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
             >
-              Update Guest
+              Update Family
             </button>
           </form>
         </Modal>
       )}
       {modalType === 'delete' && selectedGuest && (
         <Modal title="Delete Guest" onClose={closeModal}>
-          <p>Are you sure you want to delete {selectedGuest.guestNames}?</p>
+          <p>Are you sure you want to delete {selectedGuest.familyName}?</p>
           <div className="mt-4 flex justify-end gap-2">
             <button
               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
