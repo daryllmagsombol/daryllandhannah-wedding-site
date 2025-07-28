@@ -1,20 +1,31 @@
-import InvitationGuest from '#models/invitation_guest'
+import InvitationGuest from '#models/family_invitation'
 import InvitationKey from '#models/invitation_key'
 import type { HttpContext } from '@adonisjs/core/http'
 import { schema, rules } from '@adonisjs/validator'
+import db from '@adonisjs/lucid/services/db'
 
 export default class RsvpsController {
   async getGuestInvitation({ request, response }: HttpContext) {
     const key = request.input('key')
+
+    console.log('Key:', key)
 
     if (!key) {
       return response.status(400).send('Key is required')
     }
 
     const guest = await InvitationGuest.query()
-      .select('id', 'guestNames', 'isAttending', 'noOfGuestsAttending', 'maxGuests')
-      .where('id', InvitationKey.query().select('invitation_guest_id').where('code', key).limit(1))
+      .select(
+        'id',
+        'familyName', // Include familyName in the response
+        'isAttending',
+        'noOfGuestsAttending',
+        'maxGuests'
+      )
+      .where('id', InvitationKey.query().select('familyInvitationId').where('code', key).limit(1))
       .first()
+
+    console.log('Guest:', guest)
 
     if (!guest) {
       return response.status(404).send('Guest not found')
@@ -41,28 +52,39 @@ export default class RsvpsController {
 
     const { id, isAttending, noOfGuestsAttending, code } = payload
 
-    // Check key validity
-    const keyCheck: { error?: string; success?: boolean } = await this.checkKey(code, id)
-    if (keyCheck.error && !keyCheck.success) {
-      return response.status(400).send({ error: keyCheck.error })
-    }
-
-    const guest = await InvitationGuest.query().where('id', id).first()
-    if (!guest) {
-      return response.status(404).send({ error: 'Guest not found' })
-    }
-
-    if (noOfGuestsAttending > guest.maxGuests) {
-      return response.status(400).send({ error: `You can only invite ${guest.maxGuests} guest(s)` })
-    }
+    // Start a transaction
+    const trx = await db.transaction()
 
     try {
-      await InvitationGuest.query().where('id', id).update({ isAttending, noOfGuestsAttending })
-      if (isAttending) {
-        return response.status(200).send('Guest invitation updated successfully')
+      // Check key validity
+      const keyCheck: { error?: string; success?: boolean } = await this.checkKey(code, id)
+      if (keyCheck.error && !keyCheck.success) {
+        await trx.rollback()
+        return response.status(400).send({ error: keyCheck.error })
       }
+
+      const guest = await InvitationGuest.query({ client: trx }).where('id', id).first()
+      if (!guest) {
+        await trx.rollback()
+        return response.status(404).send({ error: 'Guest not found' })
+      }
+
+      if (noOfGuestsAttending > guest.maxGuests) {
+        await trx.rollback()
+        return response
+          .status(400)
+          .send({ error: `You can only invite ${guest.maxGuests} guest(s)` })
+      }
+
+      await InvitationGuest.query({ client: trx })
+        .where('id', id)
+        .update({ isAttending, noOfGuestsAttending })
+
+      await trx.commit()
+
       return response.status(200).send('Guest invitation updated successfully')
-    } catch {
+    } catch (error) {
+      await trx.rollback()
       return response.status(500).send({ error: 'Internal Server Error' })
     }
   }
@@ -75,7 +97,7 @@ export default class RsvpsController {
     try {
       const invitationKey = await InvitationKey.query()
         .where('code', key)
-        .where('invitation_guest_id', id)
+        .where('family_invitation_id', id)
         .first()
 
       if (!invitationKey) {

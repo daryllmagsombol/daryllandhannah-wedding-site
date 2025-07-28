@@ -10,7 +10,7 @@ export default function SeatInquiry() {
   const [selectedGuest, setSelectedGuest] = useState<{
     label: string
     value: string
-    seatNumber: string
+    tableNumber: string
   } | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -20,10 +20,10 @@ export default function SeatInquiry() {
       try {
         const response = await axios.get('/seat-inquiry/fetch-guests') // Endpoint to fetch guest names and seat numbers
         const formattedGuestList = response.data.map(
-          (guest: { guestName: string; seatNumber: string }) => ({
-            label: guest.guestName,
-            value: guest.guestName,
-            seatNumber: guest.seatNumber,
+          (guest: { name: string; tableNumber: string }) => ({
+            label: guest.name,
+            value: guest.name,
+            tableNumber: guest.tableNumber || '** Table Not Yet Assigned **', // Ensure fallback for unassigned tables
           })
         )
         setGuestList(formattedGuestList)
@@ -70,7 +70,7 @@ export default function SeatInquiry() {
           <h2 className="text-2xl font-bold bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent mb-4">
             {selectedGuest.label}
           </h2>
-          <p className="text-lg text-gray-600">Seat Number: {selectedGuest.seatNumber}</p>
+          <p className="text-lg text-gray-600">Table Number: {selectedGuest.tableNumber}</p>
         </motion.div>
       )}
     </div>

@@ -1,17 +1,14 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
-import InvitationKey from './invitation_key.js'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import FamilyInvitationGuest from './family_invitation_guest.js'
 
-export default class InvitationGuest extends BaseModel {
-  @hasOne(() => InvitationKey)
-  declare invitationKey: HasOne<typeof InvitationKey>
-
+export default class FamilyInvitation extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare guestNames: string
+  declare familyName: string
 
   @column()
   declare isAttending: number | null
@@ -22,8 +19,8 @@ export default class InvitationGuest extends BaseModel {
   @column()
   declare maxGuests: number
 
-  @column()
-  declare seatNumber: string | null
+  @hasMany(() => FamilyInvitationGuest)
+  declare guests: HasMany<typeof FamilyInvitationGuest>
 
   @column()
   declare createdBy: string | null
@@ -36,7 +33,4 @@ export default class InvitationGuest extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @column()
-  declare family: string | null // Add the family field
 }
