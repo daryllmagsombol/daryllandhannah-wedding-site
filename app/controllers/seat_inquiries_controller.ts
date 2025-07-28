@@ -1,17 +1,14 @@
-import InvitationGuest from '#models/invitation_guest'
+import FamilyInvitation from '#models/family_invitation_guest'
 
 export default class SeatInquiriesController {
-  // Fetch all guest names and seat numbers
+  // Fetch all family invitations and their guests with seat numbers
   public async fetchGuests({ response }: { response: any }) {
     try {
-      const guests = await InvitationGuest.query().select('guestNames', 'seatNumber')
-      const formattedGuests = guests.map((guest) => ({
-        guestName: guest.guestNames,
-        seatNumber: guest.seatNumber || '** Seat Not Yet Assigned **',
-      }))
-      return response.status(200).send(formattedGuests)
+      const guests = await FamilyInvitation.query().select('name', 'tableNumber') // Select only necessary fields from FamilyInvitation
+
+      return response.status(200).send(guests)
     } catch (error) {
-      return response.status(500).send({ error: 'Failed to fetch guest list.' })
+      return response.status(500).send({ error: 'Failed to fetch family invitations and guests.' })
     }
   }
 }

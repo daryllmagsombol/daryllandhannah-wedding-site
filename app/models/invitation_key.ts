@@ -9,7 +9,7 @@ export default class InvitationKey extends BaseModel {
   declare code: string
 
   @column()
-  declare invitationGuestId: number | null
+  declare familyInvitationId: number | null
 
   @column.dateTime()
   declare validUntil: DateTime
