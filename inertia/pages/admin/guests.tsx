@@ -255,17 +255,6 @@ export default function GuestsAdmin() {
     }
   }
 
-  const copyLinkToClipboard = (text: string) => {
-    const isLink = text.startsWith('Invite Link: ')
-
-    if (isLink) {
-      const link = text.replace('Invite Link: ', '')
-      navigator.clipboard.writeText(link)
-    }
-
-    alert('Invite link copied to clipboard!')
-  }
-
   const downloadQRCode = () => {
     const canvas = document.querySelector('canvas') // Select the QR code canvas
     if (canvas) {
@@ -292,14 +281,20 @@ export default function GuestsAdmin() {
           className="border rounded px-4 py-2"
         />
       </div>
-      <div className="flex justify-end mb-4">
-        <button
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-          onClick={() => openModal(emptyGuest, 'create')}
-        >
-          Create Family
-        </button>
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-start">
+          <span className="text-2xl font-semibold text-gray-700">Family List</span>
+        </div>
+        <div className="flex justify-end">
+          <button
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+            onClick={() => openModal(emptyGuest, 'create')}
+          >
+            Create Family
+          </button>
+        </div>
       </div>
+
       {loading ? (
         <Loader message="Loading families..." noBG />
       ) : error ? (
