@@ -8,24 +8,17 @@ export default class RsvpsController {
   async getGuestInvitation({ request, response }: HttpContext) {
     const key = request.input('key')
 
-    console.log('Key:', key)
-
     if (!key) {
       return response.status(400).send('Key is required')
     }
 
     const guest = await InvitationGuest.query()
-      .select(
-        'id',
-        'familyName', // Include familyName in the response
-        'isAttending',
-        'noOfGuestsAttending',
-        'maxGuests'
-      )
+      .select('id', 'familyName', 'isAttending', 'noOfGuestsAttending', 'maxGuests')
+      .preload('guests', (query) => {
+        query.select('name') // Fetch only the guest names
+      })
       .where('id', InvitationKey.query().select('familyInvitationId').where('code', key).limit(1))
       .first()
-
-    console.log('Guest:', guest)
 
     if (!guest) {
       return response.status(404).send('Guest not found')

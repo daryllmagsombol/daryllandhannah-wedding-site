@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { useQueryParams } from '~/hooks/common'
 import { Loader } from './shared/loader'
-import letterIcon from '~/assets/images/letter-icon.png'
-import axios from 'axios'
+import letterIcon from '~/assets/images/letter-icon.svg'
+import brokenHeartIcon from '~/assets/images/broken-heart.svg'
 
 type Guest = {
   id: number
-  guestNames: string
+  familyName: string
   isAttending: boolean | null
   noOfGuestsAttending: number
   maxGuests: number
-  familyName?: string // Added familyName here
+  guests: { name: string }[] // Preloaded guest list
 }
 
 export default function RSVP() {
@@ -24,6 +24,7 @@ export default function RSVP() {
   const [isAttending, setIsAttending] = useState<boolean | null>(null)
   const [noOfGuests, setNoOfGuests] = useState<number>(1)
   const [success, setSuccess] = useState<string | null>(null)
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
 
   useEffect(() => {
     if (!key) {
@@ -217,17 +218,23 @@ export default function RSVP() {
     )
   }
 
+  const isBrokenHeart = !isAttending && success
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-50 to-indigo-100">
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        initial={{ opacity: 0, y: -15 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        transition={{ duration: 0.8, ease: 'easeInOut' }}
         className="mx-auto p-4 sm:p-8 max-w-[85vw] sm:max-w-xl w-full bg-white rounded-lg shadow-md"
       >
-        <div className="flex justify-center items-center mb-6">
-          <img src={letterIcon} alt="Invitation Icon" className="w-12 h-12 sm:w-16 sm:h-16" />
+        <div className="flex justify-center items-center mb-4">
+          <img
+            src={isBrokenHeart ? brokenHeartIcon : letterIcon}
+            alt="Invitation Icon"
+            className={isBrokenHeart ? `w-1/4 h-1/4` : `w-12 h-12 sm:w-16 sm:h-16`}
+          />
         </div>
         {success ? (
           <SuccessRSVP />
@@ -316,6 +323,43 @@ export default function RSVP() {
                 </div>
               )}
             </form>
+
+            {/* Custom Accordion for Guest List */}
+            {guest?.guests && guest.guests.length > 1 && (
+              <div className="w-full max-w-md sm:max-w-lg mx-auto mt-4">
+                <button
+                  onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                  className="flex items-center w-full px-4 py-3 text-sm sm:text-md font-medium text-purple-900 focus:outline-none ring-1 focus:ring-purple-500 focus:ring-opacity-75 transition rounded-lg"
+                >
+                  <span className="mx-auto text-xs sm:text-sm">View Guest List</span>
+                  <span
+                    className={`transform transition-transform ${
+                      isAccordionOpen ? 'rotate-180' : ''
+                    }`}
+                  >
+                    ▼
+                  </span>
+                </button>
+                {isAccordionOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
+                    className="pt-4 pb-2 text-sm sm:text-md text-gray-500 text-center"
+                  >
+                    {guest?.guests?.length ? (
+                      <ul className="pl-5 text-center">
+                        {guest.guests.map((g, index) => (
+                          <li key={index}>{g.name}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No guests found for this family.</p>
+                    )}
+                  </motion.div>
+                )}
+              </div>
+            )}
           </>
         )}
       </motion.div>
