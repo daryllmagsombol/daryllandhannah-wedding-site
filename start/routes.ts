@@ -46,6 +46,7 @@ router
     router.put('/update-guest', [GuestsController, 'updateGuest'])
     router.delete('/delete-guest', [GuestsController, 'deleteGuest'])
     router.post('/generate-invite-key/:id', [GuestsController, 'generateInviteKey'])
+    router.post('/generate-all-invite-keys', [GuestsController, 'generateAllInviteKeys'])
   })
   .prefix('/guest')
   .use(

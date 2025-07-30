@@ -37,7 +37,7 @@ export default function ActionButtons({
         className="px-3 py-1 rounded bg-green-100 text-green-700 hover:bg-green-200 transition"
         onClick={onGenerateKey}
       >
-        Generate Key
+        Generate Invite
       </button>
     </div>
   )

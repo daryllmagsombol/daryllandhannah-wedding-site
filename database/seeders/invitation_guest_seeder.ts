@@ -63,7 +63,7 @@ export default class extends BaseSeeder {
         updatedBy: 'admin',
       },
       {
-        familyName: 'Mr. & Mrs. Buboy Arriedo',
+        familyName: 'Mr. & Mrs. Ernesto Ariedo',
         maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -71,7 +71,7 @@ export default class extends BaseSeeder {
         updatedBy: 'admin',
       },
       {
-        familyName: 'Mr. Wilfredo',
+        familyName: 'Mr. Wilfredo Baloloy',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -79,7 +79,15 @@ export default class extends BaseSeeder {
         updatedBy: 'admin',
       },
       {
-        familyName: 'Mrs. Cherry Derramas',
+        familyName: 'Mrs. Jocelyn Malicdem',
+        maxGuests: 2,
+        isAttending: null,
+        noOfGuestsAttending: 0,
+        createdBy: 'admin',
+        updatedBy: 'admin',
+      },
+      {
+        familyName: 'Mrs. Chery Deramas',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -622,34 +630,47 @@ export default class extends BaseSeeder {
           families.find((f) => f.familyName === 'Mr. & Mrs. Anthony Magsombol')?.id || null,
       },
 
-      // Mr. & Mrs. Buboy Arriedo
+      // Mr. & Mrs. Ernesto Ariedo
       {
-        name: 'Mr. Buboy Arriedo',
+        name: 'Mr. Ernesto Ariedo II',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mr. & Mrs. Buboy Arriedo')?.id || null,
+          families.find((f) => f.familyName === 'Mr. & Mrs. Ernesto Ariedo')?.id || null,
       },
       {
-        name: 'Mrs. Cyra Arriedo',
+        name: 'Mrs. Cyra Ariedo',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mr. & Mrs. Buboy Arriedo')?.id || null,
+          families.find((f) => f.familyName === 'Mr. & Mrs. Ernesto Ariedo')?.id || null,
       },
       {
-        name: 'Ms. Sophia Arriedo',
+        name: 'Ms. Sophia Ariedo',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mr. & Mrs. Buboy Arriedo')?.id || null,
-      },
-
-      // Mr. Wilfredo
-      {
-        name: 'Mr. Wilfredo',
-        familyInvitationId: families.find((f) => f.familyName === 'Mr. Wilfredo')?.id || null,
+          families.find((f) => f.familyName === 'Mr. & Mrs. Ernesto Ariedo')?.id || null,
       },
 
-      // Mrs. Cherry Derramas
+      // Mr. Wilfredo Baloloy
       {
-        name: 'Mrs. Cherry Derramas',
+        name: 'Mr. Wilfredo Baloloy',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mrs. Cherry Derramas')?.id || null,
+          families.find((f) => f.familyName === 'Mr. Wilfredo Baloloy')?.id || null,
+      },
+
+      // Mrs. Jocelyn Malicdem
+      {
+        name: 'Mrs. Jocelyn Malicdem',
+        familyInvitationId:
+          families.find((f) => f.familyName === 'Mrs. Jocelyn Malicdem')?.id || null,
+      },
+
+      {
+        name: 'Mr. Zoriano II Malicdem',
+        familyInvitationId:
+          families.find((f) => f.familyName === 'Mrs. Jocelyn Malicdem')?.id || null,
+      },
+
+      // Mrs. Chery Deramas
+      {
+        name: 'Mrs. Chery Deramas',
+        familyInvitationId: families.find((f) => f.familyName === 'Mrs. Chery Deramas')?.id || null,
       },
 
       // Hadap Family
