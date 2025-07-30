@@ -171,14 +171,14 @@ export default function RSVP() {
       <div>
         {isAttending ? (
           <>
-            <p className="text-2xl sm:text-5xl text-center mb-8">
+            <p className="text-3xl sm:text-5xltext-center mb-8">
               Thank You for <br />
               Your{' '}
               <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
                 RSVP!
               </strong>
             </p>
-            <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
+            <p className="text-md sm:text-lg text-center text-gray-500 mb-6">
               We're thrilled you'll be joining us!
               <br />
               Having you there to share in our joy means so much. We’re counting down the days and
@@ -195,14 +195,14 @@ export default function RSVP() {
           </>
         ) : (
           <>
-            <p className="text-2xl sm:text-5xl text-center mb-8">
+            <p className="text-3xl sm:text-5xl text-center mb-8">
               Thank You for <br />
               the{' '}
               <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
                 Time!
               </strong>
             </p>
-            <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
+            <p className="text-md sm:text-lg text-center text-gray-500 mb-6">
               We're sad to hear that you're unable to join us to our wedding. But that's totally
               fine! <br /> <br />
               We hope to see you soon!
