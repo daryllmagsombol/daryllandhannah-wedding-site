@@ -36,7 +36,7 @@ export default class GuestsController {
       guests: schema.array().members(
         schema.object().members({
           name: schema.string({ trim: true }, [rules.maxLength(255)]),
-          tableNumber: schema.string.optional({ trim: true }, [rules.maxLength(10)]),
+          tableNumber: schema.string.optional({ trim: true }),
         })
       ),
     })
@@ -61,7 +61,7 @@ export default class GuestsController {
         await family.related('guests').createMany(
           payload.guests.map((guest) => ({
             ...guest,
-            tableNumber: guest.tableNumber ? Number(guest.tableNumber) : undefined,
+            tableNumber: guest.tableNumber,
           })),
           { client: trx }
         )
@@ -96,13 +96,14 @@ export default class GuestsController {
       return response.status(422).send({ error: error.messages })
     }
 
-    const family = await FamilyInvitation.query().where('id', payload.id).first()
+    const family = await FamilyInvitation.query().where('id', payload.id).preload('guests').first()
     if (!family) {
-      return response.status(404).send({ error: 'Family not found' })
+      return response.status(404).send({ error: 'Family not found.' })
     }
 
     try {
       await db.transaction(async (trx) => {
+        // Update family info
         await family
           .merge({
             familyName: payload.familyName,
@@ -112,24 +113,28 @@ export default class GuestsController {
               : payload.isAttending
                 ? 1
                 : 0,
-            noOfGuestsAttending: payload.isAttending ? payload.noOfGuestsAttending : 0, // Set to 0 if not attending
+            noOfGuestsAttending: payload.isAttending ? payload.noOfGuestsAttending : 0,
           })
           .useTransaction(trx)
           .save()
 
-        const existingGuestIds = payload.guests
+        // Get IDs of guests in the payload
+        const payloadGuestIds = payload.guests
           .map((guest) => guest.id)
           .filter((id) => id !== undefined)
 
+        // Delete guests that are in the DB but not in the payload
         await family
           .related('guests')
           .query()
           .useTransaction(trx)
-          .whereNotIn('id', existingGuestIds)
+          .whereNotIn('id', payloadGuestIds.length ? payloadGuestIds : [0]) // [0] prevents SQL error if empty
           .delete()
 
+        // Upsert guests
         for (const guest of payload.guests) {
           if (guest.id) {
+            // Update existing guest
             await family
               .related('guests')
               .query()
@@ -137,13 +142,14 @@ export default class GuestsController {
               .where('id', guest.id)
               .update({
                 name: guest.name,
-                tableNumber: guest.tableNumber ? Number(guest.tableNumber) : undefined,
+                tableNumber: guest.tableNumber,
               })
           } else {
+            // Create new guest
             await family.related('guests').create(
               {
                 name: guest.name,
-                tableNumber: guest.tableNumber ? Number(guest.tableNumber) : undefined,
+                tableNumber: guest.tableNumber,
               },
               { client: trx }
             )

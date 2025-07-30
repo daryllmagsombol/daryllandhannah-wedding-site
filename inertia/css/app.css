@@ -2,6 +2,12 @@ html,
 body {
   overflow-x: hidden;
 }
+
+.h-screen {
+  height: 100vh;
+  height: 100dvh;
+}
+
 .no-border {
   border: none !important;
 }
