@@ -63,7 +63,7 @@ export default class extends BaseSeeder {
         updatedBy: 'admin',
       },
       {
-        familyName: 'Mr. & Mrs. Buboy Arriedo',
+        familyName: 'Guest 8',
         maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -71,7 +71,7 @@ export default class extends BaseSeeder {
         updatedBy: 'admin',
       },
       {
-        familyName: 'Mr. Wilfredo',
+        familyName: 'Guest 9',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -79,7 +79,15 @@ export default class extends BaseSeeder {
         updatedBy: 'admin',
       },
       {
-        familyName: 'Mrs. Cherry Derramas',
+        familyName: 'Guest 10',
+        maxGuests: 2,
+        isAttending: null,
+        noOfGuestsAttending: 0,
+        createdBy: 'admin',
+        updatedBy: 'admin',
+      },
+      {
+        familyName: 'Guest 11',
         maxGuests: 1,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -622,34 +630,47 @@ export default class extends BaseSeeder {
           families.find((f) => f.familyName === 'Guest 7')?.id || null,
       },
 
-      // Mr. & Mrs. Buboy Arriedo
+      // Guest 8
       {
-        name: 'Mr. Buboy Arriedo',
+        name: 'Guest 88',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mr. & Mrs. Buboy Arriedo')?.id || null,
+          families.find((f) => f.familyName === 'Guest 8')?.id || null,
       },
       {
-        name: 'Mrs. Cyra Arriedo',
+        name: 'Guest 89',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mr. & Mrs. Buboy Arriedo')?.id || null,
+          families.find((f) => f.familyName === 'Guest 8')?.id || null,
       },
       {
-        name: 'Ms. Sophia Arriedo',
+        name: 'Guest 90',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mr. & Mrs. Buboy Arriedo')?.id || null,
-      },
-
-      // Mr. Wilfredo
-      {
-        name: 'Mr. Wilfredo',
-        familyInvitationId: families.find((f) => f.familyName === 'Mr. Wilfredo')?.id || null,
+          families.find((f) => f.familyName === 'Guest 8')?.id || null,
       },
 
-      // Mrs. Cherry Derramas
+      // Guest 9
       {
-        name: 'Mrs. Cherry Derramas',
+        name: 'Guest 9',
         familyInvitationId:
-          families.find((f) => f.familyName === 'Mrs. Cherry Derramas')?.id || null,
+          families.find((f) => f.familyName === 'Guest 9')?.id || null,
+      },
+
+      // Guest 10
+      {
+        name: 'Guest 10',
+        familyInvitationId:
+          families.find((f) => f.familyName === 'Guest 10')?.id || null,
+      },
+
+      {
+        name: 'Guest 91',
+        familyInvitationId:
+          families.find((f) => f.familyName === 'Guest 10')?.id || null,
+      },
+
+      // Guest 11
+      {
+        name: 'Guest 11',
+        familyInvitationId: families.find((f) => f.familyName === 'Guest 11')?.id || null,
       },
 
       // Guest 12
