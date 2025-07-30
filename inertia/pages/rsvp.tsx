@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { motion, AnimatePresence } from 'motion/react'
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { useQueryParams } from '~/hooks/common'
@@ -185,10 +185,12 @@ export default function RSVP() {
               can’t wait to celebrate this special moment together with you.
               <br /> <br /> <br />
               More details and updates will be shared soon —
-              <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
-                {' '}
-                stay tuned!
-              </strong>
+              <a
+                href="/"
+                className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent underline"
+              >
+                Visit Our Website
+              </a>
             </p>
           </>
         ) : (
@@ -223,8 +225,8 @@ export default function RSVP() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-50 to-indigo-100">
       <motion.div
-        initial={{ opacity: 0, y: -15 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
         className="mx-auto p-4 sm:p-8 max-w-[85vw] sm:max-w-xl w-full bg-white rounded-lg shadow-md"
@@ -240,7 +242,7 @@ export default function RSVP() {
           <SuccessRSVP />
         ) : (
           <>
-            <p className="text-2xl sm:text-5xl text-center mb-8">
+            <p className="text-3xl sm:text-5xl text-center mb-8">
               You're{' '}
               <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
                 Invited
@@ -248,20 +250,22 @@ export default function RSVP() {
               to <br />
               Celebrate with Us!
             </p>
-            <p className="text-sm sm:text-lg text-center text-gray-500 mb-6">
+            <p className="text-md sm:text-lg text-center text-gray-500 mb-6">
               We are so excited to celebrate our special day with you, and we can't wait to see you
               there!
             </p>
             <div className="mb-6 text-center">
-              <span className="block text-sm sm:text-lg font-medium text-gray-800">
+              <span className="block text-md sm:text-lg font-medium text-gray-800">
                 Please RSVP by August 15, 2025 so we can prepare for your attendance.
               </span>
             </div>
-            <div className="mb-6 text-center">
+            <div className="mb-6 text-center overflow-visible h-auto">
               <span
-                className="antialiased block text-2xl sm:text-4xl bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent"
+                className="block text-3xl sm:text-4xl bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent"
                 style={{
                   fontFamily: `'Dancing Script', cursive, 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif`,
+                  lineHeight: '1.2', // Adjust line height to prevent overlapping
+                  overflow: 'visible', // Ensure content is not clipped
                 }}
               >
                 {guest?.familyName}
@@ -271,7 +275,7 @@ export default function RSVP() {
               <div>
                 <div>
                   <label
-                    className="block mb-2 text-sm sm:text-md font-medium text-gray-700"
+                    className="block mb-2 text-md font-medium text-gray-700"
                     htmlFor="noOfGuests"
                   >
                     Number of Guests Attending{' '}
@@ -294,7 +298,7 @@ export default function RSVP() {
                 <button
                   type="submit"
                   onClick={() => setIsAttending(true)}
-                  className={`w-full bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-3 sm:py-4 rounded-md text-xs md:text-md font-bold sm:text-md shadow-sm transition disabled:opacity-50`}
+                  className={`w-full bg-gradient-to-r from-indigo-500 to-purple-400 hover:from-indigo-500 hover:to-purple-700 text-white py-3 md:py-4 rounded-md text-xs md:text-md sm:text-md md:text-[0.9em] shadow-sm transition disabled:opacity-50`}
                   disabled={noOfGuests < 1 || noOfGuests > (guest?.maxGuests ?? 0)}
                 >
                   Yes, I will attend
@@ -303,7 +307,7 @@ export default function RSVP() {
                   type="submit"
                   formNoValidate
                   onClick={() => setIsAttending(false)}
-                  className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-3 sm:py-4 rounded-md text-xs md:text-md font-bold sm:text-md shadow-sm transition disabled:opacity-50`}
+                  className={`w-full bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white py-3 md:py-4 rounded-md text-xs md:text-md sm:text-md shadow-sm md:text-[0.9em] transition disabled:opacity-50`}
                 >
                   Sorry, I can't make it
                 </button>
@@ -329,35 +333,40 @@ export default function RSVP() {
               <div className="w-full max-w-md sm:max-w-lg mx-auto mt-4">
                 <button
                   onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-                  className="flex items-center w-full px-4 py-3 text-sm sm:text-md font-medium text-purple-900 focus:outline-none ring-1 focus:ring-purple-500 focus:ring-opacity-75 transition rounded-lg"
+                  className="relative flex items-center w-full px-4 py-3 text-sm sm:text-md font-medium text-purple-900 focus:outline-none ring-1 focus:ring-purple-500 focus:ring-opacity-75 transition rounded-lg"
                 >
                   <span className="mx-auto text-xs sm:text-sm">View Guest List</span>
                   <span
-                    className={`transform transition-transform ${
+                    className={`absolute right-4 transform transition-transform ${
                       isAccordionOpen ? 'rotate-180' : ''
                     }`}
                   >
                     ▼
                   </span>
                 </button>
-                {isAccordionOpen && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 1 }}
-                    className="pt-4 pb-2 text-sm sm:text-md text-gray-500 text-center"
-                  >
-                    {guest?.guests?.length ? (
-                      <ul className="pl-5 text-center">
-                        {guest.guests.map((g, index) => (
-                          <li key={index}>{g.name}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No guests found for this family.</p>
-                    )}
-                  </motion.div>
-                )}
+                <AnimatePresence>
+                  {isAccordionOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.6 }}
+                      className="pt-4 pb-2 text-sm sm:text-md text-gray-500 text-center overflow-hidden"
+                    >
+                      {guest?.guests?.length ? (
+                        <ul className="pl-5 text-center space-y-1">
+                          {guest.guests.map((g, index) => (
+                            <li className="tracking-wide" key={index}>
+                              {g.name}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p>No guests found for this family.</p>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )}
           </>
