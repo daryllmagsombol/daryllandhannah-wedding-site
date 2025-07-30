@@ -37,7 +37,7 @@ const BrowserWarningModal = () => {
         alignItems: 'center',
         justifyContent: 'center',
         color: 'white',
-        fontFamily: "'Inter Tight', sans-serif",
+        fontFamily: "'Sofia Pro', sans-serif",
         textAlign: 'center',
         padding: '20px',
         zIndex: 9999,
