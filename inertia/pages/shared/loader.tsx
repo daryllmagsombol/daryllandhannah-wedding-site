@@ -9,7 +9,7 @@ export function Loader({
 }) {
   return (
     <div
-      className={`w-screen h-screen flex flex-col items-center justify-center ${noBG ? '' : `bg-gradient-to-r from-purple-50 to-indigo-100`}`}
+      className={`flex flex-col items-center justify-center ${noBG ? 'w-auto h-[60vh]' : ` w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100`}`}
     >
       <div className="relative">
         <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-purple-700"></div>
