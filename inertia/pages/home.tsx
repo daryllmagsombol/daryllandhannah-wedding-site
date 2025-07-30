@@ -25,7 +25,6 @@ import prenupimg13 from '../assets/images/IMG_5369.webp'
 import aiCoverPortrait from '../assets/videos/AI moving cover wedding portrait.mp4'
 
 import attireLandscape from '../assets/images/attire-landscape.jpg'
-import attirePortrait from '../assets/images/attire-portrait.jpg'
 import attireSquare from '../assets/images/attire-square.jpg'
 
 import { Loader } from './shared/loader'
@@ -187,7 +186,7 @@ const MainHome = () => {
   )
 
   return (
-    <div className="overflow-x-hidden flex flex-col scroll-smooth snap-y h-screen">
+    <div className={`overflow-x-hidden flex flex-col h-screen scroll-smooth snap-y snap-proximity`}>
       {/* Loader */}
       {loading ? (
         <Loader />
@@ -316,7 +315,7 @@ const MainHome = () => {
           <div className="snap-start w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex md:items-center md:relative">
             {/* Image on the left */}
             <motion.div
-              className="h-[50vh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
+              className="h-[50dvh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 50 }} // Exit animation for smooth transition
@@ -341,7 +340,7 @@ const MainHome = () => {
 
             {/* Content overlay on the right */}
             <motion.div
-              className="w-screen h-[50vh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] flex flex-col items-center md:items-start justify-center text-center md:text-left p-6 sm:p-12 bg-white bg-opacity-90 rounded-md shadow-md"
+              className="w-screen h-[50dvh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] flex flex-col items-center md:items-start justify-center text-center md:text-left p-6 sm:p-12 bg-white bg-opacity-90 rounded-md shadow-md"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 1.3, ease: 'easeInOut' }}
@@ -483,7 +482,7 @@ const MainHome = () => {
           </div>
 
           {/* 5th Section */}
-          <div className="snap-start w-screen h-auto">
+          <div className="snap-start snap- w-screen h-auto">
             <motion.div
               className="w-screen h-auto bg-gradient-to-r from-purple-50 to-indigo-50 flex flex-col items-center justify-center text-center p-8"
               initial={{ opacity: 0 }}

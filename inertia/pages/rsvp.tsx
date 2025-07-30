@@ -171,7 +171,7 @@ export default function RSVP() {
       <div>
         {isAttending ? (
           <>
-            <p className="text-3xl sm:text-5xltext-center mb-8">
+            <p className="text-3xl sm:text-5xl text-center mb-8">
               Thank You for <br />
               Your{' '}
               <strong className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
@@ -184,7 +184,7 @@ export default function RSVP() {
               Having you there to share in our joy means so much. We’re counting down the days and
               can’t wait to celebrate this special moment together with you.
               <br /> <br /> <br />
-              More details and updates will be shared soon —
+              More details and updates will be shared soon —{' '}
               <a
                 href="/"
                 className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent underline"
@@ -205,7 +205,13 @@ export default function RSVP() {
             <p className="text-md sm:text-lg text-center text-gray-500 mb-6">
               We're sad to hear that you're unable to join us to our wedding. But that's totally
               fine! <br /> <br />
-              We hope to see you soon!
+              We hope to see you soon!—{' '}
+              <a
+                href="/"
+                className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent underline"
+              >
+                Check Our Website
+              </a>
             </p>
           </>
         )}
@@ -283,6 +289,8 @@ export default function RSVP() {
                   </label>
                   <input
                     type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     placeholder={`${noOfGuests}`}
                     id="noOfGuests"
                     min={1}

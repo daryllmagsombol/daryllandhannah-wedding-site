@@ -20,7 +20,7 @@ type Guest = {
   id: number
   familyName: string | null
   guests: Array<{
-    id: number
+    id?: number
     name: string
     familyInvitationId: number | null
     tableNumber: string | null
@@ -601,7 +601,6 @@ export default function GuestsAdmin() {
                     guests: [
                       ...(prev.guests || []),
                       {
-                        id: Date.now(), // Temporary unique id for the new guest
                         name: '',
                         familyInvitationId: null,
                         tableNumber: '',
@@ -620,6 +619,8 @@ export default function GuestsAdmin() {
               </label>
               <input
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 id="maxGuests"
                 value={newGuestData.maxGuests}
                 onChange={(e) =>
@@ -700,6 +701,8 @@ export default function GuestsAdmin() {
               </label>
               <input
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 id="maxGuests"
                 value={selectedGuest.maxGuests}
                 readOnly
@@ -804,7 +807,6 @@ export default function GuestsAdmin() {
                     guests: [
                       ...(prev.guests || []),
                       {
-                        id: Date.now(), // Temporary unique id for the new guest
                         name: '',
                         familyInvitationId: null,
                         tableNumber: '',
@@ -849,6 +851,8 @@ export default function GuestsAdmin() {
               </label>
               <input
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 id="noOfGuestsAttending"
                 value={newGuestData.noOfGuestsAttending || ''}
                 onChange={(e) =>
@@ -867,6 +871,8 @@ export default function GuestsAdmin() {
               </label>
               <input
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 id="maxGuests"
                 value={newGuestData.maxGuests || ''}
                 onChange={(e) =>

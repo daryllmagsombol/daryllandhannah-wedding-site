@@ -17,7 +17,7 @@ export default class FamilyInvitationGuest extends BaseModel {
   declare familyInvitation: BelongsTo<typeof FamilyInvitation>
 
   @column()
-  declare tableNumber: number | null
+  declare tableNumber: string | null
 
   @column()
   declare createdBy: string | null
