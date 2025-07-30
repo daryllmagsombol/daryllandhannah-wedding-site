@@ -83,9 +83,9 @@
     "react-router-dom": "^7.1.5",
     "react-select": "^5.10.1",
     "reflect-metadata": "^0.2.2",
+    "short-uuid": "^5.2.0",
     "sweetalert2": "^11.6.13",
-    "tailwind-merge": "^3.3.1",
-    "uuid": "^11.1.0"
+    "tailwind-merge": "^3.3.1"
   },
   "hotHook": {
     "boundaries": [

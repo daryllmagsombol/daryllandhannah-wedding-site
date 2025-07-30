@@ -50,11 +50,19 @@ export default function GuestsAdmin() {
   const [newGuestData, setNewGuestData] = useState<Partial<Guest>>(emptyGuest)
   const [globalFilter, setGlobalFilter] = useState('')
   const [inviteLink, setInviteLink] = useState<string | null>(null)
+  const [loaderMessage, setLoaderMessage] = useState<string>(
+    'Loading and processing, please wait...'
+  )
 
   const fetchGuests = async () => {
+    setLoaderMessage('Loading families, please wait...')
     setLoading(true)
     try {
       const res = await axios.get('/guest/lists')
+      if (res.data.error) {
+        Swal.fire('Error', res.data.error, 'error')
+        return
+      }
       const guestsData = res.data.map((guest: Guest) => ({
         ...guest,
         isAttending:
@@ -68,7 +76,7 @@ export default function GuestsAdmin() {
       }))
       setGuests(guestsData)
     } catch (err) {
-      setError(err.response?.data || err.message)
+      Swal.fire('Error', err.response.data.message || err.response.data.error, 'error')
     } finally {
       setLoading(false)
     }
@@ -148,15 +156,11 @@ export default function GuestsAdmin() {
         (guest) => guest.name?.toLowerCase().includes(lowerCaseFilter) // Ensure guest.name is not null or undefined
       )
 
-      guestNameMatch && console.log(guestNameMatch, 'guestNameMatch', f)
-
       return familyNameMatch || guestNameMatch
     })
 
     return fam
   }, [globalFilter, family])
-
-  console.log('Filtered Families:', filteredFamilies) // Debugging: Log the filtered families
 
   const table = useReactTable({
     data: filteredFamilies, // Use the filtered families
@@ -190,12 +194,16 @@ export default function GuestsAdmin() {
     setError(null)
     try {
       const res = await axios.post(`/guest/generate-invite-key/${guestId}`)
+      if (res.data.error) {
+        Swal.fire('Error', res.data.error, 'error')
+        return
+      }
       const baseUrl = window.location.origin
       const link = `${baseUrl}/rsvp?key=${res.data.code}`
       setInviteLink(link)
       setModalType('inviteLink') // Open the modal for the invite link
     } catch (err) {
-      setError(err.response?.data || err.message)
+      Swal.fire('Error', err.response.data.message || err.response.data.error, 'error')
     }
   }
 
@@ -226,18 +234,26 @@ export default function GuestsAdmin() {
         noOfGuestsAttending: newGuestData.noOfGuestsAttending,
         isAttending: newGuestData.isAttending,
         guests: newGuestData.guests?.map((guest) => ({
-          id: guest.id, // Include the guest ID for updates
+          id: guest.id,
           name: guest.name,
-          tableNumber: guest.tableNumber, // Updated field
+          tableNumber: guest.tableNumber,
         })),
       }
 
-      await axios.put('/guest/update-guest', payload)
+      const res = await axios.put('/guest/update-guest', payload)
+      if (res.data.error) {
+        Swal.fire('Error', res.data.error, 'error')
+        return
+      }
       fetchGuests()
       closeModal()
-      Swal.fire('Updated!', 'The family has been updated successfully.', 'success')
+      Swal.fire(
+        'Updated!',
+        `<strong>${newGuestData.familyName}</strong> has been updated successfully!`,
+        'success'
+      )
     } catch (err) {
-      setError(err.response?.data || err.message)
+      Swal.fire('Error', err.response.data.message || err.response.data.error, 'error')
     }
   }
 
@@ -264,16 +280,24 @@ export default function GuestsAdmin() {
         maxGuests: newGuestData.maxGuests,
         guests: newGuestData.guests?.map((guest) => ({
           name: guest.name,
-          tableNumber: guest.tableNumber, // Updated field
+          tableNumber: guest.tableNumber,
         })),
       }
 
-      await axios.post('/guest/create', payload)
+      const res = await axios.post('/guest/create', payload)
+      if (res.data.error) {
+        Swal.fire('Error', res.data.error, 'error')
+        return
+      }
       fetchGuests()
       closeModal()
-      Swal.fire('Created!', 'The family has been created successfully.', 'success')
+      Swal.fire(
+        'Created!',
+        `<strong>${newGuestData.familyName}</strong> has been created successfully!`,
+        'success'
+      )
     } catch (err) {
-      setError(err.response?.data || err.message)
+      Swal.fire('Error', err.response.data.message || err.response.data.error, 'error')
     }
   }
 
@@ -282,13 +306,22 @@ export default function GuestsAdmin() {
     if (!selectedGuest) return
     setError(null)
     try {
-      await axios.delete('/guest/delete-guest', {
+      const res = await axios.delete('/guest/delete-guest', {
         data: { id: selectedGuest.id },
       })
+      if (res.data.error) {
+        Swal.fire('Error', res.data.error, 'error')
+        return
+      }
       setGuests((prev) => prev.filter((g) => g.id !== selectedGuest.id))
       closeModal()
+      Swal.fire(
+        'Deleted!',
+        `<strong>${selectedGuest.familyName}</strong> has been deleted successfully!`,
+        'success'
+      )
     } catch (err) {
-      setError(err.response?.data || err.message)
+      Swal.fire('Error', err.response.data.message || err.response.data.error, 'error')
     }
   }
 
@@ -317,13 +350,18 @@ export default function GuestsAdmin() {
 
     if (!result.isConfirmed) return
 
-    setLoading(true) // Show loader
+    setLoaderMessage('Generating QR codes, please wait...')
+    setLoading(true)
+
     try {
-      const { data } = await axios.post('/guest/generate-all-invite-keys')
+      const res = await axios.post('/guest/generate-all-invite-keys')
+      if (res.data.error) {
+        Swal.fire('Error', res.data.error, 'error')
+        return
+      }
       const zip = new JSZip()
 
-      for (const qr of data) {
-        // Dynamically import qrcode library for node-canvas generation
+      for (const qr of res.data) {
         const QRCode = (await import('qrcode')).default
         const url = `${window.location.origin}/rsvp?key=${qr.inviteKey}`
         const dataUrl = await QRCode.toDataURL(url, {
@@ -334,7 +372,6 @@ export default function GuestsAdmin() {
         zip.file(`${qr.familyName || 'Family'}-QR.png`, base64Data, { base64: true })
       }
 
-      // Generate a timestamp for the filename
       const now = new Date()
       const timestamp = now
         .toLocaleString('en-US', {
@@ -346,16 +383,15 @@ export default function GuestsAdmin() {
           second: '2-digit',
           hour12: true,
         })
-        .replace(/[/:, ]/g, '_') // Replace invalid filename characters with underscores
+        .replace(/[/:, ]/g, '_')
 
       const zipBlob = await zip.generateAsync({ type: 'blob' })
-      saveAs(zipBlob, `Family_QR_Codes_${timestamp}.zip`) // Use the timestamp in the filename
-      Swal.fire('Success', 'All QR codes have been downloaded.', 'success')
-    } catch (error) {
-      console.error('Error generating QR codes:', error)
-      Swal.fire('Error', 'Failed to generate QR codes.', 'error')
+      saveAs(zipBlob, `Family_QR_Codes_${timestamp}.zip`)
+      Swal.fire('Success', 'All QR codes have been downloaded!', 'success')
+    } catch (err) {
+      Swal.fire('Error', err.response.data.message || err.response.data.error, 'error')
     } finally {
-      setLoading(false) // Hide loader
+      setLoading(false)
     }
   }
 
@@ -395,7 +431,7 @@ export default function GuestsAdmin() {
       </div>
 
       {loading ? (
-        <Loader message="Loading and processing, please wait..." noBG />
+        <Loader message={loaderMessage} noBG />
       ) : error ? (
         <div className="text-red-600 text-center">{error}</div>
       ) : (
@@ -850,8 +886,10 @@ export default function GuestsAdmin() {
         </Modal>
       )}
       {modalType === 'delete' && selectedGuest && (
-        <Modal title="Delete Guest" onClose={closeModal}>
-          <p>Are you sure you want to delete {selectedGuest.familyName}?</p>
+        <Modal title="Delete Guest" maxWidth="xl" onClose={closeModal}>
+          <p>
+            Are you sure you want to delete <strong>{selectedGuest.familyName}</strong>?
+          </p>
           <div className="mt-4 flex justify-end gap-2">
             <button
               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"

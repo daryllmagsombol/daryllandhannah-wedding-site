@@ -1,10 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { schema, rules } from '@adonisjs/validator'
 import FamilyInvitation from '#models/family_invitation'
+import FamilyInvitationGuest from '#models/family_invitation_guest'
 import InvitationKey from '#models/invitation_key'
-import { v4 as uuidv4 } from 'uuid'
+import shortuuid from 'short-uuid'
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
+import { isNullOrUndefined } from 'node:util'
 
 export default class GuestsController {
   async getGuestList({ response }: HttpContext) {
@@ -105,7 +107,11 @@ export default class GuestsController {
           .merge({
             familyName: payload.familyName,
             maxGuests: payload.maxGuests,
-            isAttending: Number(payload.isAttending),
+            isAttending: isNullOrUndefined(payload.isAttending)
+              ? null
+              : payload.isAttending
+                ? 1
+                : 0,
             noOfGuestsAttending: payload.isAttending ? payload.noOfGuestsAttending : 0, // Set to 0 if not attending
           })
           .useTransaction(trx)
@@ -145,40 +151,42 @@ export default class GuestsController {
         }
       })
 
-      return response.status(200).send({ message: 'Family and guests updated successfully' })
+      return response.status(200).send({ message: 'Family and guests updated successfully!' })
     } catch (error) {
-      console.error('Error updating family and guests:', error)
-      return response.status(500).send({ error: 'Failed to update family and guests' })
+      return response.status(500).send({ error: 'Failed to update family and guests.' })
     }
   }
 
   async deleteGuest({ request, response }: HttpContext) {
     const { id } = request.only(['id'])
 
-    const family = await FamilyInvitation.query().where('id', id).first()
+    const family = await FamilyInvitation.query().where('id', id).preload('guests').first()
     if (!family) {
       return response.status(404).send({ error: 'Family not found' })
     }
 
     try {
       // Start a transaction
-      await db.transaction(async (trx: any) => {
-        // Delete related guests
-        await family.related('guests').query().useTransaction(trx).delete()
+      await db.transaction(async (trx) => {
+        // Delete invitation keys related to guests
+        await InvitationKey.query()
+          .where('familyInvitationId', family.id)
+          .useTransaction(trx)
+          .delete()
 
-        // Delete the invitation key (if applicable)
-        await trx
-          .from('invitation_keys') // Replace with your actual table name for invitation keys
-          .where('family_invitation_id', id)
+        // Delete related guests
+        await FamilyInvitationGuest.query()
+          .where('familyInvitationId', family.id)
+          .useTransaction(trx)
           .delete()
 
         // Delete the family
         await family.useTransaction(trx).delete()
       })
 
-      return response.status(200).send({ message: 'Family and related data deleted successfully' })
+      return response.status(200).send({ message: 'Family and related data deleted successfully!' })
     } catch (error) {
-      return response.status(500).send({ error: 'Failed to delete family' })
+      return response.status(500).send({ error: 'Failed to delete family.' })
     }
   }
 
@@ -186,7 +194,7 @@ export default class GuestsController {
     const family = await FamilyInvitation.query().where('id', params.id).first()
 
     if (!family) {
-      return response.status(404).send({ error: 'Family not found' })
+      return response.status(404).send({ error: 'Family not found.' })
     }
 
     try {
@@ -215,9 +223,9 @@ export default class GuestsController {
         // Create a new key
         return await InvitationKey.create(
           {
-            code: uuidv4(), // Generate a unique key
+            code: shortuuid.generate(), // Generate a unique key
             familyInvitationId: family.id, // Associate the key with the family
-            validUntil: DateTime.now().plus({ days: 30 }), // Set expiration date
+            validUntil: DateTime.now().plus({ days: 35 }), // Set expiration date
           },
           { client: trx }
         )
@@ -228,8 +236,7 @@ export default class GuestsController {
         inviteLink: `${process.env.APP_URL}/rsvp?key=${newKey.code}`,
       })
     } catch (error) {
-      console.error('Error generating invite key:', error)
-      return response.status(500).send({ error: 'Failed to generate invite key' })
+      return response.status(500).send({ error: 'Failed to generate invite key.' })
     }
   }
 
@@ -257,9 +264,9 @@ export default class GuestsController {
             // Generate a new invite key
             const newKey = await InvitationKey.create(
               {
-                code: uuidv4(),
+                code: shortuuid.generate(),
                 familyInvitationId: family.id,
-                validUntil: DateTime.now().plus({ days: 30 }),
+                validUntil: DateTime.now().plus({ days: 33 }),
               },
               { client: trx }
             )
@@ -277,8 +284,7 @@ export default class GuestsController {
 
       return response.status(200).send(qrCodes)
     } catch (error) {
-      console.error('Error generating invite keys:', error)
-      return response.status(500).send({ error: 'Failed to generate invite keys' })
+      return response.status(500).send({ error: 'Failed to generate invite keys.' })
     }
   }
 }

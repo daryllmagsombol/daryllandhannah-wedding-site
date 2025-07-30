@@ -10,7 +10,9 @@ export default class extends BaseSchema {
       table
         .integer('family_invitation_id')
         .unsigned()
-        .references('family_invitation_guests.id')
+        .references('id')
+        .inTable('family_invitations')
+        .onDelete('CASCADE')
         .notNullable()
       table.timestamp('valid_until').notNullable()
       table.string('created_by')
