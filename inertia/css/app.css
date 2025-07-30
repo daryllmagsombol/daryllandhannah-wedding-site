@@ -1,7 +1,6 @@
 html,
 body {
   overflow-x: hidden;
-  font-family: 'Merriweather', serif;
 }
 .no-border {
   border: none !important;

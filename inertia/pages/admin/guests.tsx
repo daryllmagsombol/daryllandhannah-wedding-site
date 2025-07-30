@@ -495,7 +495,7 @@ export default function GuestsAdmin() {
               </label>
               {newGuestData.guests?.map((guest, index) => (
                 <div key={index} className="flex items-center gap-4 mb-2">
-                  <div className="w-1/2">
+                  <div className="w-3/4">
                     <label
                       className="block text-gray-700 text-md mb-1"
                       htmlFor={`guestName-${index}`}
@@ -518,7 +518,7 @@ export default function GuestsAdmin() {
                       required
                     />
                   </div>
-                  <div className="w-1/2">
+                  <div className="w-1/4">
                     <label
                       className="block text-gray-700 text mb-1"
                       htmlFor={`tableNumber-${index}`}
@@ -869,7 +869,7 @@ export default function GuestsAdmin() {
         </Modal>
       )}
       {modalType === 'inviteLink' && inviteLink && (
-        <Modal title="Invite Link" onClose={() => setModalType(null)}>
+        <Modal title="Invite Link" maxWidth="xl" onClose={() => setModalType(null)}>
           <div className="text-center">
             <p className="mb-4 text-gray-700">Share this invite link with your guest:</p>
             <div className="mb-4">
