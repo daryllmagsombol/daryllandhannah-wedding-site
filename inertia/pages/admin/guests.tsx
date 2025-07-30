@@ -13,6 +13,8 @@ import { QRCodeCanvas } from 'qrcode.react'
 import { Loader } from '../shared/loader'
 import axios from '~/shared/axios_config'
 import Swal from 'sweetalert2'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 
 type Guest = {
   id: number
@@ -53,7 +55,18 @@ export default function GuestsAdmin() {
     setLoading(true)
     try {
       const res = await axios.get('/guest/lists')
-      setGuests(res.data)
+      const guestsData = res.data.map((guest: Guest) => ({
+        ...guest,
+        isAttending:
+          typeof guest.isAttending === 'number'
+            ? guest.isAttending === 1
+              ? true
+              : guest.isAttending === 0
+                ? false
+                : null
+            : guest.isAttending,
+      }))
+      setGuests(guestsData)
     } catch (err) {
       setError(err.response?.data || err.message)
     } finally {
@@ -120,12 +133,34 @@ export default function GuestsAdmin() {
     [family]
   )
 
+  const filteredFamilies = useMemo(() => {
+    if (!globalFilter) return family
+
+    const lowerCaseFilter = globalFilter.toLowerCase()
+
+    const fam = family.filter((f) => {
+      // Check if the family name matches the filter
+      const familyNameMatch = f.familyName?.toLowerCase().includes(lowerCaseFilter)
+
+      // Check if any guest name matches the filter
+
+      const guestNameMatch = f.guests.some(
+        (guest) => guest.name?.toLowerCase().includes(lowerCaseFilter) // Ensure guest.name is not null or undefined
+      )
+
+      guestNameMatch && console.log(guestNameMatch, 'guestNameMatch', f)
+
+      return familyNameMatch || guestNameMatch
+    })
+
+    return fam
+  }, [globalFilter, family])
+
+  console.log('Filtered Families:', filteredFamilies) // Debugging: Log the filtered families
+
   const table = useReactTable({
-    data: family,
+    data: filteredFamilies, // Use the filtered families
     columns,
-    state: {
-      globalFilter,
-    },
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -188,6 +223,8 @@ export default function GuestsAdmin() {
         id: selectedGuest.id,
         familyName: newGuestData.familyName,
         maxGuests: newGuestData.maxGuests,
+        noOfGuestsAttending: newGuestData.noOfGuestsAttending,
+        isAttending: newGuestData.isAttending,
         guests: newGuestData.guests?.map((guest) => ({
           id: guest.id, // Include the guest ID for updates
           name: guest.name,
@@ -266,6 +303,62 @@ export default function GuestsAdmin() {
     }
   }
 
+  const generateAllQRs = async () => {
+    const result = await Swal.fire({
+      title: 'Generate All QR Codes',
+      text: 'Are you sure you want to generate QR codes for all families? This may take some time.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, generate them!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#007bff',
+      cancelButtonColor: '#dc3545',
+    })
+
+    if (!result.isConfirmed) return
+
+    setLoading(true) // Show loader
+    try {
+      const { data } = await axios.post('/guest/generate-all-invite-keys')
+      const zip = new JSZip()
+
+      for (const qr of data) {
+        // Dynamically import qrcode library for node-canvas generation
+        const QRCode = (await import('qrcode')).default
+        const url = `${window.location.origin}/rsvp?key=${qr.inviteKey}`
+        const dataUrl = await QRCode.toDataURL(url, {
+          width: 192,
+          margin: 2,
+        })
+        const base64Data = dataUrl.split(',')[1]
+        zip.file(`${qr.familyName || 'Family'}-QR.png`, base64Data, { base64: true })
+      }
+
+      // Generate a timestamp for the filename
+      const now = new Date()
+      const timestamp = now
+        .toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        })
+        .replace(/[/:, ]/g, '_') // Replace invalid filename characters with underscores
+
+      const zipBlob = await zip.generateAsync({ type: 'blob' })
+      saveAs(zipBlob, `Family_QR_Codes_${timestamp}.zip`) // Use the timestamp in the filename
+      Swal.fire('Success', 'All QR codes have been downloaded.', 'success')
+    } catch (error) {
+      console.error('Error generating QR codes:', error)
+      Swal.fire('Error', 'Failed to generate QR codes.', 'error')
+    } finally {
+      setLoading(false) // Hide loader
+    }
+  }
+
   return (
     <div className="max-w-7xl mx-auto mt-12 p-6">
       <div className="flex justify-between items-center mb-6">
@@ -277,26 +370,32 @@ export default function GuestsAdmin() {
           type="text"
           value={globalFilter || ''}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search families..."
-          className="border rounded px-4 py-2"
+          placeholder="Search families or guests..."
+          className="border rounded px-4 py-2 w-sm md:w-1/4"
         />
       </div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
         <div className="flex justify-start">
           <span className="text-2xl font-semibold text-gray-700">Family List</span>
         </div>
-        <div className="flex justify-end">
+        <div className="flex flex-col md:flex-row justify-end gap-4 w-full md:w-auto">
           <button
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full md:w-auto"
             onClick={() => openModal(emptyGuest, 'create')}
           >
             Create Family
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition w-full md:w-auto"
+            onClick={generateAllQRs}
+          >
+            Generate All QR
           </button>
         </div>
       </div>
 
       {loading ? (
-        <Loader message="Loading families..." noBG />
+        <Loader message="Loading and processing, please wait..." noBG />
       ) : error ? (
         <div className="text-red-600 text-center">{error}</div>
       ) : (
@@ -646,6 +745,7 @@ export default function GuestsAdmin() {
                       className="border rounded px-3 py-2 w-full"
                     />
                   </div>
+
                   <button
                     type="button"
                     onClick={() =>
@@ -680,6 +780,50 @@ export default function GuestsAdmin() {
               >
                 Add Guest
               </button>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="isAttending">
+                Attending
+              </label>
+              <select
+                id="isAttending"
+                value={
+                  newGuestData.isAttending === null || newGuestData.isAttending === undefined
+                    ? ''
+                    : String(newGuestData.isAttending)
+                }
+                onChange={(e) =>
+                  setNewGuestData((prev) => ({
+                    ...prev,
+                    isAttending:
+                      e.target.value === 'true' ? true : e.target.value === 'false' ? false : null, // Set to null for "No Response"
+                  }))
+                }
+                className="border rounded w-full px-3 py-2"
+              >
+                <option value="">No Response</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-lg" htmlFor="noOfGuestsAttending">
+                Number of Guests Attending
+              </label>
+              <input
+                type="number"
+                id="noOfGuestsAttending"
+                value={newGuestData.noOfGuestsAttending || ''}
+                onChange={(e) =>
+                  setNewGuestData((prev) => ({
+                    ...prev,
+                    noOfGuestsAttending: Number(e.target.value),
+                  }))
+                }
+                className="border rounded w-full px-3 py-2"
+                disabled={newGuestData.isAttending === false || newGuestData.isAttending === null} // Disable if not attending
+              />
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2 text-lg" htmlFor="maxGuests">

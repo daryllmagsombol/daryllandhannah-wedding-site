@@ -106,7 +106,7 @@ export default class GuestsController {
             familyName: payload.familyName,
             maxGuests: payload.maxGuests,
             isAttending: Number(payload.isAttending),
-            noOfGuestsAttending: payload.isAttending ? payload.noOfGuestsAttending : 0, // Set to 0 if not attending
+            noOfGuestsAttending: payload.isAttending ? payload.noOfGuestsAttending : 0,
           })
           .useTransaction(trx)
           .save()
@@ -161,18 +161,12 @@ export default class GuestsController {
     }
 
     try {
-      // Start a transaction
       await db.transaction(async (trx: any) => {
-        // Delete related guests
         await family.related('guests').query().useTransaction(trx).delete()
-
-        // Delete the invitation key (if applicable)
         await trx
-          .from('invitation_keys') // Replace with your actual table name for invitation keys
+          .from('invitation_keys')
           .where('family_invitation_id', id)
           .delete()
-
-        // Delete the family
         await family.useTransaction(trx).delete()
       })
 
@@ -190,72 +184,41 @@ export default class GuestsController {
     }
 
     try {
-      // Check if a valid invite key already exists
-      const existingKey = await InvitationKey.query()
-        .where('familyInvitationId', family.id)
-        .andWhere('validUntil', '>', DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss'))
-        .first()
-
-      if (existingKey) {
-        // Return the existing valid key
-        return response.status(200).send({
-          code: existingKey.code,
-          inviteLink: `${process.env.APP_URL}/rsvp?key=${existingKey.code}`,
-        })
-      }
-
-      // Generate a new invitation key if no valid key exists
-      const newKey = await db.transaction(async (trx) => {
-        // Invalidate any expired keys
+      await db.transaction(async (trx) => {
         await InvitationKey.query()
           .where('familyInvitationId', family.id)
           .useTransaction(trx)
           .update({ validUntil: DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss') })
 
-        // Create a new key
-        return await InvitationKey.create(
+        const newKey = await InvitationKey.create(
           {
-            code: uuidv4(), // Generate a unique key
-            familyInvitationId: family.id, // Associate the key with the family
-            validUntil: DateTime.now().plus({ days: 30 }), // Set expiration date
+            code: uuidv4(),
+            familyInvitationId: family.id,
+            validUntil: DateTime.now().plus({ days: 30 }),
           },
           { client: trx }
         )
-      })
 
-      return response.status(201).send({
-        code: newKey.code,
-        inviteLink: `${process.env.APP_URL}/rsvp?key=${newKey.code}`,
+        return response.status(201).send(newKey)
       })
     } catch (error) {
-      console.error('Error generating invite key:', error)
       return response.status(500).send({ error: 'Failed to generate invite key' })
     }
   }
 
   async generateAllInviteKeys({ response }: HttpContext) {
     try {
-      const families = await FamilyInvitation.query()
+      const families = await FamilyInvitation.query().preload('guests')
 
-      const qrCodes = await db.transaction(async (trx) => {
-        const results = []
-
+      await db.transaction(async (trx) => {
         for (const family of families) {
-          // Check if a valid invite key exists
           const existingKey = await InvitationKey.query()
             .where('familyInvitationId', family.id)
-            .andWhere('validUntil', '>', DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss'))
+            .where('validUntil', '>', DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss'))
             .first()
 
-          if (existingKey) {
-            results.push({
-              familyId: family.id,
-              familyName: family.familyName,
-              inviteKey: existingKey.code,
-            })
-          } else {
-            // Generate a new invite key
-            const newKey = await InvitationKey.create(
+          if (!existingKey) {
+            await InvitationKey.create(
               {
                 code: uuidv4(),
                 familyInvitationId: family.id,
@@ -263,22 +226,13 @@ export default class GuestsController {
               },
               { client: trx }
             )
-
-            results.push({
-              familyId: family.id,
-              familyName: family.familyName,
-              inviteKey: newKey.code,
-            })
           }
         }
-
-        return results
       })
 
-      return response.status(200).send(qrCodes)
+      return response.status(200).send({ message: 'All invitation keys generated or updated successfully' })
     } catch (error) {
-      console.error('Error generating invite keys:', error)
-      return response.status(500).send({ error: 'Failed to generate invite keys' })
+      return response.status(500).send({ error: 'Failed to generate all invitation keys' })
     }
   }
 }
