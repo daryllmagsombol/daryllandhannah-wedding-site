@@ -20,13 +20,14 @@ const Sparkle: React.FC<Sparkle> = ({ id, x, y, color, delay, scale }) => {
     <motion.svg
       key={id}
       className="pointer-events-none absolute z-20"
-      initial={{ opacity: 0, left: x, top: y }}
+      style={{ left: x, top: y }} // <-- Set random position here
+      initial={{ opacity: 0 }}
       animate={{
         opacity: [0, 1, 0],
         scale: [0, scale, 0],
         rotate: [75, 120, 150],
       }}
-      transition={{ duration: 2.25, repeat: Infinity, delay }} // Increased duration to 2.5 seconds
+      transition={{ duration: 2.25, repeat: Infinity, delay }}
       width="21"
       height="21"
       viewBox="0 0 21 21"
@@ -94,27 +95,55 @@ export const SparklesText: React.FC<SparklesTextProps> = ({
   const [sparkles, setSparkles] = useState<Sparkle[]>([])
 
   useEffect(() => {
-    const generateStar = (): Sparkle => {
-      const starX = `${Math.random() * 100}%`
-      const starY = `${Math.random() * 100}%`
+    // Helper to check if a point is in the center exclusion zone
+    const isInCenter = (x: number, y: number) => {
+      return x > 30 && x < 70 && y > 30 && y < 70
+    }
+
+    // Helper to check if a point is too close to others
+    const isTooClose = (x: number, y: number, others: Sparkle[], minDist = 10) => {
+      return others.some((star) => {
+        const ox = parseFloat(star.x)
+        const oy = parseFloat(star.y)
+        const dx = x - ox
+        const dy = y - oy
+        return Math.sqrt(dx * dx + dy * dy) < minDist
+      })
+    }
+
+    const generateStar = (others: Sparkle[]): Sparkle => {
+      let x: number, y: number
+      let tries = 0
+      do {
+        x = Math.random() * 100
+        y = Math.random() * 100
+        tries++
+        // Avoid infinite loop if too many sparkles
+        if (tries > 50) break
+      } while (isInCenter(x, y) || isTooClose(x, y, others))
       const color = Math.random() > 0.5 ? colors.first : colors.second
       const delay = Math.random() * 2
-      const scale = Math.random() * 1 + 0.8
-      const lifespan = Math.random() * 10 + 5
-      const id = `${starX}-${starY}-${Date.now()}`
-      return { id, x: starX, y: starY, color, delay, scale, lifespan }
+      const scale = Math.random() * 2 + 0.5
+      const lifespan = Math.random() * 8 + 5
+      const id = `${x}-${y}-${Date.now()}`
+      return { id, x: `${x}%`, y: `${y}%`, color, delay, scale, lifespan }
     }
 
     const initializeStars = () => {
-      const newSparkles = Array.from({ length: sparklesCount }, generateStar)
+      const newSparkles: Sparkle[] = []
+      for (let i = 0; i < sparklesCount; i++) {
+        newSparkles.push(generateStar(newSparkles))
+      }
       setSparkles(newSparkles)
     }
 
     const updateStars = () => {
       setSparkles((currentSparkles) =>
-        currentSparkles.map((star) => {
+        currentSparkles.map((star, idx, arr) => {
           if (star.lifespan <= 0) {
-            return generateStar()
+            // Regenerate, avoiding collisions with others
+            const others = arr.filter((_, i) => i !== idx)
+            return generateStar(others)
           } else {
             return { ...star, lifespan: star.lifespan - 0.1 }
           }
