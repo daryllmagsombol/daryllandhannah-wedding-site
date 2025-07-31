@@ -152,14 +152,14 @@ const MainHome = () => {
     <div className="overflow-y-hidden flex flex-col">
       <div className="relative">
         <img src={picture} alt={title} className="w-full h-80 object-cover rounded-lg" />
-        <div className="absolute top-4 right-4 bg-white rounded-md px-3 py-1 shadow text-sm font-bold text-gray-800">
+        <div className="absolute top-4 right-4 bg-white rounded-md px-3 py-1 shadow max-[400px]:text-xs text-sm font-bold text-gray-800">
           {reviews}
         </div>
       </div>
       <div className="py-6 flex flex-col justify-between">
         <div className="text-left">
           <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-          <p className="text-sm text-gray-600 mb-4">{content}</p>
+          <p className="max-[400px]:text-xs text-sm text-gray-600 mb-4">{content}</p>
         </div>
 
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between sm:text-left py-2 items-center sm:items-start">
@@ -167,14 +167,14 @@ const MainHome = () => {
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-purple-600 hover:underline mt-2 sm:mt-0"
+            className="max-[400px]:text-sm inline-flex items-center text-purple-600 hover:underline mt-2 sm:mt-0"
           >
             {/* <button className="bg-trasparent text-white px-4 py-2 rounded-full text-purple-600 hover:bg-purple-600 transition">
               &rarr;
             </button> */}
             <span>View in {type}</span>
           </a>
-          <div className="text-sm text-gray-500 flex flex-wrap gap-2 justify-center sm:justify-start">
+          <div className="max-[400px]:text-xs text-sm text-gray-500 flex flex-wrap gap-2 justify-center sm:justify-start">
             {guests && <span>{guests}</span>}
             {bedrooms && <span>{bedrooms}</span>}
             {beds && <span>{beds}</span>}
@@ -245,13 +245,13 @@ const MainHome = () => {
               transition={{ delay: 0.3, duration: 0.9, ease: 'easeInOut' }}
               viewport={{ once: false, amount: 0.3 }} // Ensure animation triggers when 50% of the section is in view
             >
-              <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+              <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
                 Two Souls, One Heart, One Beautiful Journey.
               </h2>
               <h1 className="text-3xl sm:text-6xl font-extrabold mb-6 bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
                 Daryll & Hannah
               </h1>
-              <p className="text-sm sm:text-lg text-gray-700 leading-relaxed">
+              <p className="max-[400px]:text-xs text-sm xs:text-xs sm:text-lg text-gray-700 leading-relaxed">
                 From the very beginning, we believed that love is not just about finding the right
                 person—it’s about discovering God’s perfect plan. Our journey together is a
                 testament to His faithfulness, timing, and grace.
@@ -278,7 +278,7 @@ const MainHome = () => {
                 transition={{ duration: 1, ease: 'easeInOut' }}
                 className="h-auto mb-6"
               >
-                <h2 className="text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wide mb-4">
+                <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wide mb-4">
                   A Glimpse Into Our Story
                 </h2>
                 <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
@@ -287,7 +287,7 @@ const MainHome = () => {
                     So Are We!
                   </span>
                 </h1>
-                <p className="text-sm sm:text-lg text-gray-700">
+                <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700">
                   Watch a glimpse of our beautiful journey together as we prepare for this special
                   day.
                 </p>
@@ -315,7 +315,7 @@ const MainHome = () => {
           <div className="snap-start w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex md:items-center md:relative">
             {/* Image on the left */}
             <motion.div
-              className="h-[50dvh] w-screen md:h-screen md:w-[70vw]" // 70% viewport width and 100% viewport height
+              className="h-[50dvh] w-screen md:h-screen md:w-[70dvw] max-[300px]:h-[30dvh]" // 70% viewport width and 100% viewport height
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 50 }} // Exit animation for smooth transition
@@ -340,12 +340,12 @@ const MainHome = () => {
 
             {/* Content overlay on the right */}
             <motion.div
-              className="w-screen h-[50dvh] md:absolute md:top-50 md:right-20 md:w-[45vw] md:h-[70vh] flex flex-col items-center md:items-start justify-center text-center md:text-left p-6 sm:p-12 bg-white bg-opacity-90 rounded-md shadow-md"
+              className="w-screen h-[50dvh] md:absolute md:top-50 md:right-20 md:w-[45dvw] md:h-[70dvh] max-[300px]:h-[70dvh] flex flex-col items-center md:items-start justify-center text-center md:text-left p-6 sm:p-12 bg-white bg-opacity-90 rounded-md shadow-md"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 1.3, ease: 'easeInOut' }}
             >
-              <h2 className="text-sm sm:text-lg font-bold text-gray-500 uppercase mb-2">
+              <h2 className="max-[400px]:text-xs text-sm sm:text-lg font-bold text-gray-500 uppercase mb-2">
                 Our Journey
               </h2>
               <h1 className="text-2xl sm:text-5xl font-bold text-gray-800 mb-4">
@@ -354,7 +354,7 @@ const MainHome = () => {
                   Lifetime Dance
                 </span>
               </h1>
-              <p className="text-sm sm:text-lg text-gray-700 mb-6">
+              <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 mb-6">
                 From the first glance to the first dance, our journey has been nothing short of
                 magical. Every moment we've shared has brought us closer, and now we stand on the
                 brink of forever.
@@ -388,7 +388,7 @@ const MainHome = () => {
                 transition={{ duration: 0.8, ease: 'easeInOut' }}
                 viewport={{ once: false, amount: 0.3 }}
               >
-                <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
                   Dress Code
                 </h2>
                 <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
@@ -397,7 +397,7 @@ const MainHome = () => {
                     Wedding Day
                   </span>
                 </h1>
-                <p className="text-sm sm:text-lg text-gray-700 mb-6">
+                <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 mb-6">
                   Please come dressed in <b>formal attire</b>. We can't wait to see you looking your
                   best!
                 </p>
@@ -427,7 +427,7 @@ const MainHome = () => {
                 transition={{ duration: 0.8, ease: 'easeInOut' }}
                 className="mb-6"
               >
-                <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
                   How to Get There
                 </h2>
                 <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
@@ -436,13 +436,13 @@ const MainHome = () => {
                     Starts Here
                   </span>
                 </h1>
-                <p className="text-sm sm:text-lg text-gray-700">
+                <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700">
                   Use the <b>Google Maps</b> below or open Waze for step-by-step directions straight
                   to our venue, <b>Crystal Palace of Aquila in the Sky</b>.
                 </p>
               </motion.div>
               <motion.div
-                className="w-full max-w-[85vw] h-[55vh] overflow-hidden rounded-lg shadow-lg"
+                className="w-full max-w-[85dvw] h-[55dvh] overflow-hidden rounded-lg shadow-lg"
                 initial={{ opacity: 0, y: -60 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: 'easeInOut' }}
@@ -461,7 +461,7 @@ const MainHome = () => {
                   <p className="text-md sm:text-2xl text-gray-700 font-bold mb-1">
                     Got a problem with Google Maps?
                   </p>
-                  <p className="text-sm sm:text-lg text-gray-700 mb-6">
+                  <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 mb-6">
                     Alternatively, you can use <b>Waze</b> for navigation.
                   </p>
                 </div>
@@ -469,10 +469,10 @@ const MainHome = () => {
                 {/* Button Section */}
                 <div className="md:w-1/3 flex justify-center md:justify-end">
                   <a
-                    href="https://ul.waze.com/ul?place=ChIJsScvEwB5vTMRaBhJU9-Urd0&ll=14.15829220%2C120.98055720&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
+                    href="https://ul.waze.com/ul?place=ChIJsScvEwB5vTMRaBhJU9-Urd0&ll=14.15829220%2C120.98055720&navigate=yes&utm_campaign=default"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow transition rounded-md font-bold"
+                    className="max-[400px]:text-xs bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow transition rounded-md font-bold"
                   >
                     View Directions using Waze
                   </a>
@@ -489,7 +489,7 @@ const MainHome = () => {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 1, ease: 'easeInOut' }}
             >
-              <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+              <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
                 Places to Stay
               </h2>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
@@ -498,7 +498,7 @@ const MainHome = () => {
                   Recommendations
                 </span>
               </h1>
-              <p className="text-sm sm:text-xl text-gray-700 mb-6">
+              <p className="max-[400px]:text-xs text-sm sm:text-xl text-gray-700 mb-6">
                 Here are some accommodations near the venue to make your stay comfortable and
                 memorable.
               </p>
@@ -584,7 +584,7 @@ const MainHome = () => {
                   href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-md font-bold"
+                  className="max-[400px]:text-xs bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-md font-bold"
                 >
                   View More on Airbnb
                 </a>
