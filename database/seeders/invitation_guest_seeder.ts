@@ -296,7 +296,15 @@ export default class extends BaseSeeder {
       },
       {
         familyName: 'Guest 37',
-        maxGuests: 4,
+        maxGuests: 3,
+        isAttending: null,
+        noOfGuestsAttending: 0,
+        createdBy: 'admin',
+        updatedBy: 'admin',
+      },
+      {
+        familyName: 'Panilio Family',
+        maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
         createdBy: 'admin',
@@ -1037,9 +1045,20 @@ export default class extends BaseSeeder {
         name: 'Guest 140',
         familyInvitationId: families.find((f) => f.familyName === 'Guest 37')?.id || null,
       },
+
+      //Panilio Family
       {
         name: 'Guest 141',
-        familyInvitationId: families.find((f) => f.familyName === 'Guest 37')?.id || null,
+        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
+      },
+      {
+        name: 'Guest 142',
+        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
+      },
+
+      {
+        name: 'Guest 143',
+        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
       },
 
       // Guest 39
