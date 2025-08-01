@@ -296,7 +296,15 @@ export default class extends BaseSeeder {
       },
       {
         familyName: 'Coronel Family',
-        maxGuests: 4,
+        maxGuests: 3,
+        isAttending: null,
+        noOfGuestsAttending: 0,
+        createdBy: 'admin',
+        updatedBy: 'admin',
+      },
+      {
+        familyName: 'Panilio Family',
+        maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
         createdBy: 'admin',
@@ -1037,9 +1045,20 @@ export default class extends BaseSeeder {
         name: 'Mrs. Venus Coronel',
         familyInvitationId: families.find((f) => f.familyName === 'Coronel Family')?.id || null,
       },
+
+      //Panilio Family
       {
         name: 'Mrs. Vivian Panlilio',
-        familyInvitationId: families.find((f) => f.familyName === 'Coronel Family')?.id || null,
+        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
+      },
+      {
+        name: 'Mr. Pedrian Panlilio',
+        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
+      },
+
+      {
+        name: 'Mrs. Darlette Panlilio',
+        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
       },
 
       // Sardiña Family
