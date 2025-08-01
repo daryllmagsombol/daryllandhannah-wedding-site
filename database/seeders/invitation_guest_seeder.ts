@@ -303,7 +303,7 @@ export default class extends BaseSeeder {
         updatedBy: 'admin',
       },
       {
-        familyName: 'Panilio Family',
+        familyName: 'Panlilio Family',
         maxGuests: 3,
         isAttending: null,
         noOfGuestsAttending: 0,
@@ -1046,19 +1046,19 @@ export default class extends BaseSeeder {
         familyInvitationId: families.find((f) => f.familyName === 'Coronel Family')?.id || null,
       },
 
-      //Panilio Family
+      //Panlilio Family
       {
         name: 'Mrs. Vivian Panlilio',
-        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
+        familyInvitationId: families.find((f) => f.familyName === 'Panlilio Family')?.id || null,
       },
       {
         name: 'Mr. Pedrian Panlilio',
-        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
+        familyInvitationId: families.find((f) => f.familyName === 'Panlilio Family')?.id || null,
       },
 
       {
         name: 'Mrs. Darlette Panlilio',
-        familyInvitationId: families.find((f) => f.familyName === 'Panilio Family')?.id || null,
+        familyInvitationId: families.find((f) => f.familyName === 'Panlilio Family')?.id || null,
       },
 
       // Sardiña Family
