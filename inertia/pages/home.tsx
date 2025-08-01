@@ -29,6 +29,7 @@ import attireSquare from '../assets/images/attire-square.jpg'
 
 import { Loader } from './shared/loader'
 import { SparklesText } from '~/components/magicui/sparkles-text'
+import { LazyIframe } from '~/components/common/LazyIframe/LazyIframe'
 
 export default function Home() {
   return (
@@ -151,7 +152,7 @@ const MainHome = () => {
   }: RecommendationBoxProps) => (
     <div className="overflow-y-hidden flex flex-col">
       <div className="relative">
-        <img src={picture} alt={title} className="w-full h-80 object-cover rounded-lg" />
+        <img loading="lazy" src={picture} alt={title} className="w-full h-80 object-cover rounded-lg" />
         <div className="absolute top-4 right-4 bg-white rounded-md px-3 py-1 shadow max-[400px]:text-xs text-sm font-bold text-gray-800">
           {reviews}
         </div>
@@ -219,7 +220,8 @@ const MainHome = () => {
                       playsInline
                       muted
                       controls={false} // Ensure controls are disabled
-                      poster={aiCoverPortrait}
+                      preload="none"
+                      poster={bgImage}
                       className="absolute top-0 left-0 w-full h-full object-cover hide-ios-play-button" // Add a custom class
                     >
                       <source src={aiCoverPortrait} type="video/mp4" />
@@ -303,15 +305,10 @@ const MainHome = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
                 >
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/Yv0a9U0IHks?si=BhzQhgYsVYUWM6N5"
-                    title="Daryll & Hannah - Save the Date"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
+                  <LazyIframe
                     className="w-full h-full"
+                    src="https://www.youtube.com/embed/Yv0a9U0IHks?"
+                    title="Daryll & Hannah - Save the Date"
                   />
                 </motion.div>
               </motion.div>
@@ -330,6 +327,7 @@ const MainHome = () => {
                   <motion.img
                     key={prenupiamges[currentImageIndex]} // Key ensures animation triggers on image change
                     src={prenupiamges[currentImageIndex]}
+                    loading="lazy"
                     alt="Slideshow"
                     className="w-full h-full object-cover"
                     initial={{
@@ -417,6 +415,7 @@ const MainHome = () => {
                   <img
                     src={isMobile ? attireSquare : attireLandscape}
                     alt="Attire Guidelines"
+                    loading="lazy"
                     className="w-full h-auto object-cover"
                   />
                 </motion.div>
@@ -452,12 +451,9 @@ const MainHome = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: 'easeInOut' }}
                 >
-                  <iframe
+                  <LazyIframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3868.6221609334757!2d120.97798227584663!3d14.158297387750922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd7900132f27b1%3A0xddad94df53491868!2sCrystal%20Palace%20of%20Aquila%20in%20the%20Sky!5e0!3m2!1sen!2sph!4v1752631463931!5m2!1sen!2sph"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
+                    title="Crystal Palace of Aquila in the Sky"
                   />
                 </motion.div>
                 <div className="mt-10 flex flex-col md:flex-row items-center md:items-start justify-between w-full md:max-w-[85vw]">
