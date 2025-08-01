@@ -39,6 +39,7 @@ router
     router.get('/fetch-guests', [SeatInquiriesController, 'fetchGuests'])
   })
   .prefix('/seat-inquiry')
+  .use(throttle)
 
 router
   .group(() => {
