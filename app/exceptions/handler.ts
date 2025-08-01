@@ -22,6 +22,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
     '404': (error, { inertia }) => inertia.render('errors/not_found', { error }),
+    '429': (error, { inertia }) => inertia.render('errors/server_error', { error }),
     '500..599': (error, { inertia }) => inertia.render('errors/server_error', { error }),
   }
 
@@ -29,7 +30,10 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * The method is used for handling errors and returning
    * response to the client
    */
-  async handle(error: unknown, ctx: HttpContext) {
+  async handle(error: any, ctx: HttpContext) {
+    // if (error.status === 429) {
+    //   ctx.inertia.render('errors/server_error')
+    // }
     return super.handle(error, ctx)
   }
 
