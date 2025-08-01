@@ -12,19 +12,24 @@ export default class RsvpsController {
       return response.status(400).send('Key is required')
     }
 
-    const guest = await InvitationGuest.query()
-      .select('id', 'familyName', 'isAttending', 'noOfGuestsAttending', 'maxGuests')
-      .preload('guests', (query) => {
-        query.select('name') // Fetch only the guest names
-      })
-      .where('id', InvitationKey.query().select('familyInvitationId').where('code', key).limit(1))
-      .first()
+    try {
+      const guest = await InvitationGuest.query()
+        .select('id', 'familyName', 'isAttending', 'noOfGuestsAttending', 'maxGuests')
+        .preload('guests', (query) => {
+          query.select('name') // Fetch only the guest names
+        })
+        .where('id', InvitationKey.query().select('familyInvitationId').where('code', key).limit(1))
+        .first()
 
-    if (!guest) {
-      return response.status(404).send('Guest not found')
+      if (!guest) {
+        return response.status(404).send('Guest not found')
+      }
+
+      return response.status(200).send(guest)
+    } catch (error) {
+      console.log('Error processing get guest invitation: ', error)
+      return response.status(500).send({ error: 'Internal Server Error' })
     }
-
-    return response.status(200).send(guest)
   }
 
   async saveGuestInvitation({ request, response }: HttpContext) {
@@ -40,6 +45,7 @@ export default class RsvpsController {
     try {
       payload = await request.validate({ schema: rsvpSchema })
     } catch (error) {
+      console.log('Error processing save invitation: ', error)
       return response.status(422).send({ error: error.messages })
     }
 
@@ -77,6 +83,7 @@ export default class RsvpsController {
 
       return response.status(200).send('Guest invitation updated successfully')
     } catch (error) {
+      console.log('Error processing save invitation: ', error)
       await trx.rollback()
       return response.status(500).send({ error: 'Internal Server Error' })
     }

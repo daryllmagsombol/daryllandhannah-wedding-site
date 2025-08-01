@@ -8,6 +8,7 @@
 */
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import { throttle } from '#start/limiter'
 
 const LoginController = () => import('#controllers/login_controller')
 
@@ -28,6 +29,7 @@ router
     router.post('/update-invitation', [RsvpsController, 'saveGuestInvitation'])
   })
   .prefix('/rsvp')
+  .use(throttle)
 
 router
   .group(() => {
@@ -61,4 +63,5 @@ router
 router
   .on('/login')
   .renderInertia('admin-login', { title: 'Admin Login - Daryll and Hannah Wedding' })
-router.post('/login', [LoginController, 'login'])
+  .use(throttle)
+router.post('/login', [LoginController, 'login']).use(throttle)

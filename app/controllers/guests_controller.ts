@@ -45,6 +45,7 @@ export default class GuestsController {
     try {
       payload = await request.validate({ schema: guestSchema })
     } catch (error) {
+      console.log('Error processing bbb: ', error)
       return response.status(422).send({ error: error.messages })
     }
 
@@ -69,6 +70,7 @@ export default class GuestsController {
 
       return response.status(201).send({ message: 'Family and guests created successfully' })
     } catch (error) {
+      console.log('Error processing creating guest: ', error)
       return response.status(500).send({ error: 'Failed to create family and guests' })
     }
   }
@@ -93,6 +95,7 @@ export default class GuestsController {
     try {
       payload = await request.validate({ schema: guestSchema })
     } catch (error) {
+      console.log('Error processing updating guest: ', error)
       return response.status(422).send({ error: error.messages })
     }
 
@@ -159,6 +162,7 @@ export default class GuestsController {
 
       return response.status(200).send({ message: 'Family and guests updated successfully!' })
     } catch (error) {
+      console.log('Error processing updating guest: ', error)
       return response.status(500).send({ error: 'Failed to update family and guests.' })
     }
   }
@@ -192,6 +196,7 @@ export default class GuestsController {
 
       return response.status(200).send({ message: 'Family and related data deleted successfully!' })
     } catch (error) {
+      console.log('Error processing deleting guest: ', error)
       return response.status(500).send({ error: 'Failed to delete family.' })
     }
   }
@@ -242,6 +247,7 @@ export default class GuestsController {
         inviteLink: `${process.env.APP_URL}/rsvp?key=${newKey.code}`,
       })
     } catch (error) {
+      console.log('Error processing generating invitation: ', error)
       return response.status(500).send({ error: 'Failed to generate invite key.' })
     }
   }
@@ -290,6 +296,7 @@ export default class GuestsController {
 
       return response.status(200).send(qrCodes)
     } catch (error) {
+      console.log('Error processing generating all invitations: ', error)
       return response.status(500).send({ error: 'Failed to generate invite keys.' })
     }
   }
