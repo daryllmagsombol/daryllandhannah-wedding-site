@@ -24,6 +24,7 @@ export const http = defineConfig({
    * from anywhere inside your application.
    */
   useAsyncLocalStorage: false,
+  trustProxy: true,
 
   /**
    * Manage cookies configuration. The settings for the session id cookie are

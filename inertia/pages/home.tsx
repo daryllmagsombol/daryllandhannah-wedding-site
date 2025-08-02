@@ -152,7 +152,12 @@ const MainHome = () => {
   }: RecommendationBoxProps) => (
     <div className="overflow-y-hidden flex flex-col">
       <div className="relative">
-        <img loading="lazy" src={picture} alt={title} className="w-full h-80 object-cover rounded-lg" />
+        <img
+          loading="lazy"
+          src={picture}
+          alt={title}
+          className="w-full h-80 object-cover rounded-lg"
+        />
         <div className="absolute top-4 right-4 bg-white rounded-md px-3 py-1 shadow max-[400px]:text-xs text-sm font-bold text-gray-800">
           {reviews}
         </div>
@@ -311,6 +316,40 @@ const MainHome = () => {
                     title="Daryll & Hannah - Save the Date"
                   />
                 </motion.div>
+              </motion.div>
+            </div>
+            {/* Venue Description Section */}
+            <div className="snap-start w-screen h-screen bg-gradient-to-b from-indigo-50 to-purple-100 flex items-center justify-center text-center">
+              <motion.div
+                className="h-screen flex flex-col items-center justify-center max-w-3xl px-6 sm:px-12"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.9, ease: 'easeInOut' }}
+                viewport={{ once: false, amount: 0.3 }}
+              >
+                <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                  Our Venue
+                </h2>
+                <h1 className="text-3xl sm:text-5xl font-extrabold mb-6 bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                  Crystal Palace of Aquila in the Sky
+                </h1>
+                <img
+                  src="https://i.ibb.co/zH4xsqM8/cover-invitation.jpg"
+                  alt="Crystal Palace of Aquila in the Sky"
+                  className="w-full max-w-lg rounded-lg shadow-lg mb-6"
+                  loading="lazy"
+                />
+                <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 leading-relaxed">
+                  Nestled in the heart of Tagaytay, the Crystal Palace of Aquila in the Sky offers
+                  breathtaking views, elegant architecture, and a serene atmosphere perfect for
+                  celebrating love. With its spacious halls, lush gardens, and panoramic vistas, our
+                  venue promises an unforgettable experience for all our guests.
+                  <br />
+                  <br />
+                  We chose this beautiful location to reflect the grandeur and joy of our special
+                  day. Join us as we create cherished memories in a place as magical as our love
+                  story.
+                </p>
               </motion.div>
             </div>
             {/* Third Section */}

@@ -16,6 +16,7 @@ const RsvpsController = () => import('#controllers/rsvps_controller')
 const GuestsController = () => import('#controllers/guests_controller')
 
 const SeatInquiriesController = () => import('#controllers/seat_inquiries_controller')
+const StatisticsController = () => import('#controllers/statistics_controller')
 
 router.on('/').renderInertia('home', { title: 'The Wedding of Hannah and Daryll' })
 router
@@ -66,3 +67,22 @@ router
   .renderInertia('admin-login', { title: 'Admin Login - Daryll and Hannah Wedding' })
   .use(throttle)
 router.post('/login', [LoginController, 'login']).use(throttle)
+
+// Admin statistics route
+router
+  .group(() => {
+    // router.on('/').renderInertia('admin/statistics', {
+    //   title: 'Statistics - Daryll and Hannah Wedding',
+    // })
+    router.get('/lists', [StatisticsController, 'getStatistics'])
+  })
+  .prefix('/statistics')
+  .use(
+    middleware.auth({
+      guards: ['api'],
+    })
+  )
+
+router.on('/statistics').renderInertia('admin/statistics', {
+  title: 'Statistics - Daryll and Hannah Wedding',
+})

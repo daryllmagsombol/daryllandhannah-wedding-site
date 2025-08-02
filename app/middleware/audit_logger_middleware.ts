@@ -15,7 +15,10 @@ export default class AuditLoggerMiddleware {
     try {
       await AuditLog.create({
         userId: auth.user?.id,
-        ipAddress: request.ip(),
+        ipAddress:
+          request.ip() ||
+          request.header('cf-connecting-ip') ||
+          request.header('x-forwarded-for')?.split(',')[0]?.trim(),
         userAgent: request.header('user-agent'),
         requestMethod: request.method(),
         requestUrl: request.url(),
@@ -24,7 +27,7 @@ export default class AuditLoggerMiddleware {
         responseBody: response.lazyBody,
         errorMessage:
           response.response.statusCode >= 400 ? JSON.stringify(response.lazyBody) : null,
-        createdBy: auth.user?.username,
+        createdBy: auth?.user ? auth?.user?.username : null,
       })
     } catch (error) {
       // Optionally log error to console, but do not send to user or stop request
