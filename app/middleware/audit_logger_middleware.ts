@@ -14,7 +14,7 @@ export default class AuditLoggerMiddleware {
 
     try {
       await AuditLog.create({
-        userId: auth.user?.id,
+        userId: auth?.user && auth?.user?.id,
         ipAddress:
           request.ip() ||
           request.header('cf-connecting-ip') ||
