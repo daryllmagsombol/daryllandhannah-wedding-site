@@ -321,7 +321,7 @@ const MainHome = () => {
             {/* Venue Description Section */}
             <div className="snap-start w-screen h-screen bg-gradient-to-b from-indigo-50 to-purple-100 flex items-center justify-center text-center">
               <motion.div
-                className="h-screen flex flex-col items-center justify-center max-w-3xl "
+                className="h-screen flex flex-col items-center justify-center max-w-3xl px-6"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.9, ease: 'easeInOut' }}
@@ -337,16 +337,15 @@ const MainHome = () => {
                   </span>
                 </h1>
                 <div
-                  className="flex justify-center w-full mb-6"
+                  className="flex justify-center w-full mb-6 iframe-flip-book"
                   style={{
                     width: !isMobile ? '70dvw' : '90dvw',
-                    height: !isMobile ? '62dvh' : '50dvh',
                   }}
                 >
                   <LazyIframe
                     src="https://heyzine.com/flip-book/86adc568af.html"
                     title="Crystal Palace Flipbook"
-                    className="rounded-lg shadow-lg iframe-img"
+                    className="rounded-lg shadow-lg"
                     allow="clipboard-write"
                     allowFullScreen
                     scrolling="no"
