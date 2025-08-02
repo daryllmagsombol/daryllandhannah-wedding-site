@@ -19,3 +19,7 @@ body {
 .hide-ios-play-button::-webkit-media-controls-start-playback-button {
   display: none !important; /* Specifically hide the play button */
 }
+
+.iframe-img img {
+  display: none !important;
+}

@@ -321,31 +321,34 @@ const MainHome = () => {
             {/* Venue Description Section */}
             <div className="snap-start w-screen h-screen bg-gradient-to-b from-indigo-50 to-purple-100 flex items-center justify-center text-center">
               <motion.div
-                className="h-screen flex flex-col items-center justify-center max-w-3xl px-6 sm:px-12"
+                className="h-screen flex flex-col items-center justify-center max-w-3xl "
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.9, ease: 'easeInOut' }}
                 viewport={{ once: false, amount: 0.3 }}
               >
                 <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
-                  Invitation
+                  Digital Invitation
                 </h2>
                 <h1 className="text-3xl sm:text-5xl font-extrabold mb-6 bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
-                  Crystal Palace of Aquila in the Sky
+                  Wedding Details at a Glance
                 </h1>
-                <div className="flex justify-center w-full mb-6 w-[70dvw] max-w-screen h-[70dvh]">
+                <div
+                  className="flex justify-center w-full mb-6"
+                  style={{ width: '70dvw', height: !isMobile ? '70dvh' : '35dvh' }}
+                >
                   <LazyIframe
                     src="https://heyzine.com/flip-book/86adc568af.html"
                     title="Crystal Palace Flipbook"
-                    className="rounded-lg shadow-lg"
-                    style={{ border: '1px solid lightgray' }}
+                    className="rounded-lg shadow-lg iframe-img"
                     allow="clipboard-write"
                     allowFullScreen
                     scrolling="no"
                   />
                 </div>
                 <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 leading-relaxed">
-                  Tap to arrows on the side or swipe to navigate our flipbook invitation
+                  Tap to arrows on the side or swipe to navigate our flipbook invitation. Music
+                  starts playing when you flip the page.
                 </p>
               </motion.div>
             </div>
