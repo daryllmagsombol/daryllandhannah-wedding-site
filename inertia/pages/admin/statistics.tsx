@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import axiosInstance from '~/shared/axios_config'
+import { Loader } from '../shared/loader'
 
 type FamilyGroup = {
   noOfGuestsAttending: number
@@ -157,6 +158,7 @@ export default function StatisticsPage() {
         .attr('font-size', 16)
         .attr('font-weight', 'bold')
         .attr('fill', '#333')
+        .attr('font-family', 'Sofia Pro') // Use current website font
 
       // Bar chart race animation
       const bars = svg
@@ -192,10 +194,9 @@ export default function StatisticsPage() {
         .attr('fill', '#fff')
         .attr('font-weight', 'bold')
         .attr('text-anchor', 'start')
+        .attr('font-family', 'Sofia Pro') // Use current website font
         .text((d) =>
-          sortType === 'attending'
-            ? `${d.family} (${d.attending} attending)`
-            : `${d.family} (${d.count})`
+          sortType === 'attending' ? `${d.attending} attending` : ` ${d.count} guest(s)`
         )
         .attr('opacity', 0)
         .transition()
@@ -212,20 +213,29 @@ export default function StatisticsPage() {
   }, [stats, sortType])
 
   if (!stats) {
-    return <div className="p-8">Loading statistics...</div>
+    return <Loader message="Loading statistics..." />
   }
 
   return (
     <div className="p-8">
       <h1 className="text-4xl font-bold mb-6">Wedding Statistics</h1>
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Expected Visitors</h2>
+        <h2 className="text-2xl font-semibold mb-2">Expected Visitors</h2>
         <div className="text-4xl font-extrabold text-indigo-600">
-          {totalAttending} out of {stats.expectedVisitors}
+          {totalAttending} out of {stats.expectedVisitors} (
+          {Math.round((totalAttending / stats.expectedVisitors) * 100)}%)
         </div>
       </div>
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Seating Arrangement</h2>
+        <h2 className="text-2xl font-semibold mb-2">
+          Seating Arrangement{' '}
+          {stats.seating && stats.seating.length > 0
+            ? `(${stats.seating.length} tables, ${stats.seating.reduce(
+                (sum, t) => sum + t.guests.length,
+                0
+              )} assigned seat)`
+            : ''}
+        </h2>
         {stats.seating && stats.seating.length > 0 ? (
           <svg ref={seatingRef}></svg>
         ) : (
@@ -233,8 +243,11 @@ export default function StatisticsPage() {
         )}
       </div>
       <div>
-        <h2 className="text-xl font-semibold mb-2 flex items-center gap-4">
-          Family Groups
+        <h2 className="text-2xl font-semibold mb-2 flex items-center gap-4">
+          Family Groups{' '}
+          {sortType === 'total'
+            ? ` (${stats.familyGroups.length} families)`
+            : `(${totalAttending} confirmed attending)`}
           <select
             className="ml-4 px-2 py-1 border rounded text-base"
             value={sortType}

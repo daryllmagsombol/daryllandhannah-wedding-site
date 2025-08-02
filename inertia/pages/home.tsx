@@ -318,45 +318,7 @@ const MainHome = () => {
                 </motion.div>
               </motion.div>
             </div>
-            {/* Venue Description Section */}
-            <div className="snap-start w-screen h-screen bg-gradient-to-b from-indigo-50 to-purple-100 flex items-center justify-center text-center">
-              <motion.div
-                className="h-screen flex flex-col items-center justify-center max-w-3xl px-6"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.9, ease: 'easeInOut' }}
-                viewport={{ once: false, amount: 0.3 }}
-              >
-                <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
-                  Digital Invitation
-                </h2>
-                <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
-                  Wedding Details —{' '}
-                  <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
-                    At a Glance
-                  </span>
-                </h1>
-                <div
-                  className="flex justify-center w-full mb-6 iframe-flip-book"
-                  style={{
-                    width: !isMobile ? '70dvw' : '90dvw',
-                  }}
-                >
-                  <LazyIframe
-                    src="https://heyzine.com/flip-book/86adc568af.html"
-                    title="Crystal Palace Flipbook"
-                    className="rounded-lg shadow-lg"
-                    allow="clipboard-write"
-                    allowFullScreen
-                    scrolling="no"
-                  />
-                </div>
-                <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 leading-relaxed">
-                  Tap the arrows on the side or swipe to navigate our flipbook invitation. Music
-                  starts playing when you flip the page.
-                </p>
-              </motion.div>
-            </div>
+
             {/* Third Section */}
             <div className="snap-start w-screen h-screen bg-gradient-to-r from-purple-50 to-indigo-100 md:flex md:items-center md:relative">
               {/* Image on the left */}
@@ -423,6 +385,46 @@ const MainHome = () => {
                     &#8250; {/* Right arrow */}
                   </button>
                 </div>
+              </motion.div>
+            </div>
+
+            {/* Digital Invitation Section */}
+            <div className="snap-start w-screen h-screen bg-gradient-to-b from-indigo-50 to-purple-100 flex items-center justify-center text-center">
+              <motion.div
+                className="h-screen flex flex-col items-center justify-center max-w-3xl px-6"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.9, ease: 'easeInOut' }}
+                viewport={{ once: false, amount: 0.3 }}
+              >
+                <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                  Digital Invitation
+                </h2>
+                <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
+                  Wedding Details —{' '}
+                  <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                    At a Glance
+                  </span>
+                </h1>
+                <div
+                  className="flex justify-center w-full mb-6 iframe-flip-book"
+                  style={{
+                    width: !isMobile ? '70dvw' : '90dvw',
+                  }}
+                >
+                  <LazyIframe
+                    src="https://heyzine.com/flip-book/86adc568af.html"
+                    title="Crystal Palace Flipbook"
+                    className="rounded-lg shadow-lg"
+                    allow="clipboard-write"
+                    allowFullScreen
+                    scrolling="no"
+                  />
+                </div>
+                <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 leading-relaxed">
+                  Tap the arrows on the side or swipe to navigate our flipbook invitation. Music
+                  starts playing when you flip the page.
+                </p>
               </motion.div>
             </div>
 
@@ -626,7 +628,7 @@ const MainHome = () => {
                 </div>
                 <div className="mt-8 mb-4">
                   <a
-                    href="https://www.airbnb.com/s/Aquila-Crystal-Palace-Tagaytay--Tagaytay-City--Cavite/homes?place_id=ChIJOfyGcNx5vTMRuzCliwxp2VY&refinement_paths%5B%5D=%2Fhomes&checkin=2025-09-05&checkout=2025-09-06&date_picker_type=calendar&search_type=unknown&query=Aquila%20Crystal%20Palace%20Tagaytay%2C%20Tagaytay%20City%2C%20Cavite&flexible_trip_lengths%5B%5D=one_week&monthly_start_date=2025-08-01&monthly_length=3&monthly_end_date=2025-11-01&search_mode=regular_search&price_filter_input_type=2&price_filter_num_nights=1&channel=EXPLORE&adults=4&source=structured_search_input_header"
+                    href="https://www.airbnb.com/s/Crystal-Palace-of-Aquila-in-the-Sky--Silang--Cavite/homes?refinement_paths%5B%5D=%2Fhomes&place_id=ChIJsScvEwB5vTMRaBhJU9-Urd0&location_bb=QWKOdULx9yBBYoNoQvH1vg%3D%3D&acp_id=t-g-ChIJsScvEwB5vTMRaBhJU9-Urd0&date_picker_type=calendar&checkin=2025-09-05&checkout=2025-09-06&source=structured_search_input_header&search_type=autocomplete_click"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="max-[400px]:text-xs bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-md font-bold"
@@ -637,7 +639,7 @@ const MainHome = () => {
               </motion.div>
               <footer className="w-full bg-white text-center py-4 shrink-0">
                 <p className="max-[400px]:text-xs text-sm text-gray-500 px-2">
-                  Coded by yours truly &copy; Daryll Joshua Magsombol - 2025
+                  Coded by yours truly &copy; Daryll 2025
                 </p>
               </footer>
             </div>
