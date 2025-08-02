@@ -330,12 +330,18 @@ const MainHome = () => {
                 <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
                   Digital Invitation
                 </h2>
-                <h1 className="text-3xl sm:text-5xl font-extrabold mb-6 bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
-                  Wedding Details at a Glance
+                <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
+                  Wedding Details —{' '}
+                  <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                    At a Glance
+                  </span>
                 </h1>
                 <div
                   className="flex justify-center w-full mb-6"
-                  style={{ width: '70dvw', height: !isMobile ? '70dvh' : '35dvh' }}
+                  style={{
+                    width: !isMobile ? '70dvw' : '90dvw',
+                    height: !isMobile ? '62dvh' : '50dvh',
+                  }}
                 >
                   <LazyIframe
                     src="https://heyzine.com/flip-book/86adc568af.html"
@@ -347,7 +353,7 @@ const MainHome = () => {
                   />
                 </div>
                 <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 leading-relaxed">
-                  Tap to arrows on the side or swipe to navigate our flipbook invitation. Music
+                  Tap the arrows on the side or swipe to navigate our flipbook invitation. Music
                   starts playing when you flip the page.
                 </p>
               </motion.div>

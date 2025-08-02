@@ -62,7 +62,7 @@ export default class GuestsController {
         await family.related('guests').createMany(
           payload.guests.map((guest) => ({
             ...guest,
-            tableNumber: guest.tableNumber,
+            tableNumber: guest.tableNumber ?? null,
           })),
           { client: trx }
         )
@@ -145,14 +145,14 @@ export default class GuestsController {
               .where('id', guest.id)
               .update({
                 name: guest.name,
-                tableNumber: guest.tableNumber,
+                tableNumber: guest.tableNumber ?? null,
               })
           } else {
             // Create new guest
             await family.related('guests').create(
               {
                 name: guest.name,
-                tableNumber: guest.tableNumber,
+                tableNumber: guest.tableNumber ?? null,
               },
               { client: trx }
             )
