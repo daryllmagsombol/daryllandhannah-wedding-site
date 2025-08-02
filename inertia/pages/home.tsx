@@ -328,27 +328,24 @@ const MainHome = () => {
                 viewport={{ once: false, amount: 0.3 }}
               >
                 <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
-                  Our Venue
+                  Invitation
                 </h2>
                 <h1 className="text-3xl sm:text-5xl font-extrabold mb-6 bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
                   Crystal Palace of Aquila in the Sky
                 </h1>
-                <img
-                  src="https://i.ibb.co/zH4xsqM8/cover-invitation.jpg"
-                  alt="Crystal Palace of Aquila in the Sky"
-                  className="w-full max-w-lg rounded-lg shadow-lg mb-6"
-                  loading="lazy"
-                />
+                <div className="flex justify-center w-full mb-6 w-[70dvw] max-w-screen h-[70dvh]">
+                  <LazyIframe
+                    src="https://heyzine.com/flip-book/86adc568af.html"
+                    title="Crystal Palace Flipbook"
+                    className="rounded-lg shadow-lg"
+                    style={{ border: '1px solid lightgray' }}
+                    allow="clipboard-write"
+                    allowFullScreen
+                    scrolling="no"
+                  />
+                </div>
                 <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 leading-relaxed">
-                  Nestled in the heart of Tagaytay, the Crystal Palace of Aquila in the Sky offers
-                  breathtaking views, elegant architecture, and a serene atmosphere perfect for
-                  celebrating love. With its spacious halls, lush gardens, and panoramic vistas, our
-                  venue promises an unforgettable experience for all our guests.
-                  <br />
-                  <br />
-                  We chose this beautiful location to reflect the grandeur and joy of our special
-                  day. Join us as we create cherished memories in a place as magical as our love
-                  story.
+                  Tap to arrows on the side or swipe to navigate our flipbook invitation
                 </p>
               </motion.div>
             </div>

@@ -28,6 +28,7 @@ export default class StatisticsController {
     const familyGroups = families.map((family) => ({
       familyName: family.familyName,
       isAttending: family.isAttending, // <-- Add this line
+      noOfGuestsAttending: family.noOfGuestsAttending,
       guests: family.guests.map((g) => ({
         name: g.name,
         tableNumber: g.tableNumber,

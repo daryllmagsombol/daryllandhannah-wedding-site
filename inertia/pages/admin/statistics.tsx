@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import axiosInstance from '~/shared/axios_config'
 
 type FamilyGroup = {
+  noOfGuestsAttending: number
   familyName: string
   guests: { name: string; tableNumber?: string }[]
   isAttending?: number | null
@@ -26,10 +27,10 @@ export default function StatisticsPage() {
 
   const totalAttending = useMemo(
     () =>
-      stats?.familyGroups.reduce(
-        (sum, group) => sum + (group.isAttending ? group.guests.length : 0),
+      (stats?.familyGroups ?? []).reduce(
+        (sum, guest) => sum + (guest.isAttending ? guest.noOfGuestsAttending : 0),
         0
-      ) || 0,
+      ),
     [stats]
   )
 
@@ -123,10 +124,9 @@ export default function StatisticsPage() {
       let data = stats.familyGroups.map((f) => ({
         family: f.familyName,
         count: f.guests.length,
-        attending: f.isAttending === 1 ? f.guests.length : 0,
+        attending: f.isAttending === 1 ? (f.noOfGuestsAttending ?? 0) : 0, // Use noOfGuestsAttending
         isAttending: f.isAttending,
       }))
-
       if (sortType === 'attending') {
         data = data.filter((d) => d.isAttending === 1).sort((a, b) => b.attending - a.attending)
       } else {
@@ -193,7 +193,9 @@ export default function StatisticsPage() {
         .attr('font-weight', 'bold')
         .attr('text-anchor', 'start')
         .text((d) =>
-          sortType === 'attending' ? `${d.family} (${d.attending})` : `${d.family} (${d.count})`
+          sortType === 'attending'
+            ? `${d.family} (${d.attending} attending)`
+            : `${d.family} (${d.count})`
         )
         .attr('opacity', 0)
         .transition()
@@ -215,7 +217,7 @@ export default function StatisticsPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Event Statistics</h1>
+      <h1 className="text-4xl font-bold mb-6">Wedding Statistics</h1>
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Expected Visitors</h2>
         <div className="text-4xl font-extrabold text-indigo-600">
