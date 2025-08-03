@@ -8,6 +8,7 @@ type FamilyGroup = {
   familyName: string
   guests: { name: string; tableNumber?: string }[]
   isAttending?: number | null
+  updatedAt?: string
 }
 
 type StatisticsProps = {
@@ -133,6 +134,10 @@ export default function StatisticsPage() {
       } else {
         data = data.sort((a, b) => b.count - a.count)
       }
+      // Ensure data is always an array of objects with 'family' property
+      if (!Array.isArray(data) || typeof data[0]?.family !== 'string') {
+        data = []
+      }
 
       const width = 1400,
         height = Math.max(300, data.length * 60) // <-- Use data.length instead of stats.familyGroups.length
@@ -174,7 +179,77 @@ export default function StatisticsPage() {
         .attr('width', 0)
         .attr('fill', (d, i) => d3.schemeCategory10[i % 10])
 
+      // Tooltip setup
+      let tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any> | null = null
+      const parentNode = svg.node() ? (svg.node()!.parentNode as HTMLElement) : null
+      if (parentNode) {
+        // Remove any existing tooltip
+        d3.select(parentNode).selectAll('.family-tooltip').remove()
+        tooltip = d3
+          .select(parentNode)
+          .append('div')
+          .attr('class', 'family-tooltip')
+          .style('position', 'absolute')
+          .style('background', '#fff')
+          .style('border', '1px solid #ccc')
+          .style('padding', '8px 12px')
+          .style('border-radius', '8px')
+          .style('pointer-events', 'none')
+          .style('font-size', '14px')
+          .style('box-shadow', '0 2px 8px rgba(0,0,0,0.15)')
+          .style('opacity', 0) as unknown as d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
+      }
+
       bars
+        .on('mouseover', function (event, d) {
+          if (sortType === 'attending' && tooltip) {
+            // Find the family group to get updatedAt
+            const familyGroup = stats.familyGroups.find((f) => f.familyName === d.family)
+            tooltip
+              .html(
+                `<strong>${d.family}</strong><br/>
+                 Last updated:<br/>
+                 ${
+                   familyGroup && familyGroup.updatedAt
+                     ? new Date(familyGroup.updatedAt).toLocaleString('en-US', {
+                         month: 'short',
+                         day: '2-digit',
+                         year: 'numeric',
+                         hour: '2-digit',
+                         minute: '2-digit',
+                         hour12: true,
+                       })
+                     : '<em>Unknown</em>'
+                 }`
+              )
+              .style('left', `${event.pageX + 10}px`)
+              .style('top', `${event.pageY - 10}px`)
+              .style('opacity', 1)
+          }
+          // ...existing tooltip for 'total' mode...
+          else if (sortType === 'total' && tooltip) {
+            const familyGroup = stats.familyGroups.find((f) => f.familyName === d.family)
+            tooltip
+              .html(
+                `<strong>${d.family}</strong><br/>Guests:<br/>${
+                  familyGroup && familyGroup.guests.length > 0
+                    ? familyGroup.guests.map((g) => g.name).join('<br/>')
+                    : '<em>No guests</em>'
+                }`
+              )
+              .style('left', `${event.pageX + 10}px`)
+              .style('top', `${event.pageY - 10}px`)
+              .style('opacity', 1)
+          }
+        })
+        .on('mousemove', function (event) {
+          if (tooltip) {
+            tooltip.style('left', `${event.pageX + 10}px`).style('top', `${event.pageY - 10}px`)
+          }
+        })
+        .on('mouseout', function () {
+          if (tooltip) tooltip.style('opacity', 0)
+        })
         .transition()
         .duration(1500)
         .attr('width', (d) => x(sortType === 'attending' ? d.attending : d.count))

@@ -27,8 +27,9 @@ export default class StatisticsController {
     const families = await FamilyInvitation.query().preload('guests')
     const familyGroups = families.map((family) => ({
       familyName: family.familyName,
-      isAttending: family.isAttending, // <-- Add this line
+      isAttending: family.isAttending,
       noOfGuestsAttending: family.noOfGuestsAttending,
+      updatedAt: family.updatedAt,
       guests: family.guests.map((g) => ({
         name: g.name,
         tableNumber: g.tableNumber,

@@ -15,6 +15,7 @@ import axios from '~/shared/axios_config'
 import Swal from 'sweetalert2'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
+import { format } from 'date-fns'
 
 type Guest = {
   id: number
@@ -113,6 +114,22 @@ export default function GuestsAdmin() {
       accessorKey: 'maxGuests',
       header: 'Max Guests',
     },
+
+    {
+      accessorKey: 'updatedAt',
+      header: 'Updated At',
+      cell: ({ getValue }: { getValue: () => string | null }) => {
+        const value = getValue()
+        if (!value) return '-'
+        // Try to parse and format, fallback to raw if parsing fails
+        try {
+          const date = new Date(value)
+          return format(date, 'MMM-dd-yyyy hh:mm a')
+        } catch {
+          return value
+        }
+      },
+    },
     {
       accessorKey: 'id',
       header: 'Actions',
@@ -163,7 +180,7 @@ export default function GuestsAdmin() {
   }, [globalFilter, family])
 
   const table = useReactTable({
-    data: filteredFamilies, // Use the filtered families
+    data: filteredFamilies,
     columns,
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
@@ -174,6 +191,9 @@ export default function GuestsAdmin() {
       pagination: {
         pageSize: 10,
       },
+      sorting: [
+        { id: 'updatedAt', desc: true }, // Default sort by updatedAt descending
+      ],
     },
   })
 
@@ -396,7 +416,7 @@ export default function GuestsAdmin() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto mt-12 p-6">
+    <div className="max-w-7xl md:max-w-[90dvw] mx-auto mt-12 p-6">
       <div className="flex justify-between items-center mb-6">
         <div className="text-lg font-semibold text-blue-700">
           Total Attending Guests:{' '}

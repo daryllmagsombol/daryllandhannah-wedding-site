@@ -123,6 +123,20 @@ export default function RSVP() {
           confirmButtonText: 'OK',
           confirmButtonColor: '#786cf3',
         })
+
+        // Show Tailwind notification 5 seconds before redirect
+        setTimeout(() => {
+          const notification = document.createElement('div')
+          notification.className =
+            'fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md z-50 text-center text-sm sm:text-base max-w-[80vw] w-[80vw] sm:w-auto animate-fade-in'
+          notification.innerText = 'Redirecting to the main page in 5 seconds...'
+          document.body.appendChild(notification)
+
+          setTimeout(() => {
+            notification.remove()
+            window.location.href = '/'
+          }, 5000)
+        }, 10000)
       } else {
         const errorMessage = await res.text()
         setError(errorMessage)

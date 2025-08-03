@@ -12,7 +12,7 @@ export default class GuestsController {
   async getGuestList({ response }: HttpContext) {
     const families = await FamilyInvitation.query()
       .preload('guests')
-      .select('id', 'familyName', 'isAttending', 'noOfGuestsAttending', 'maxGuests')
+      .select('id', 'familyName', 'isAttending', 'noOfGuestsAttending', 'maxGuests', 'updatedAt')
     return response.status(200).send(families)
   }
 
