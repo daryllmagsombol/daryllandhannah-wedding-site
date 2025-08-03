@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import AuditLog from '#models/audit_log'
-
+import { UAParser } from 'ua-parser-js'
 export default class AuditLoggerMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     await next()
@@ -13,13 +13,20 @@ export default class AuditLoggerMiddleware {
     }
 
     try {
+      const userAgentString = request.header('user-agent')
+      const parser = new UAParser(userAgentString)
+      const device = parser.getResult()
+
       await AuditLog.create({
         userId: auth?.user && auth?.user?.id,
         ipAddress:
           request.ip() ||
           request.header('cf-connecting-ip') ||
           request.header('x-forwarded-for')?.split(',')[0]?.trim(),
-        userAgent: request.header('user-agent'),
+        userAgent: JSON.stringify({
+          device,
+          userAgentString,
+        }),
         requestMethod: request.method(),
         requestUrl: request.url(),
         requestBody: request.all(),
