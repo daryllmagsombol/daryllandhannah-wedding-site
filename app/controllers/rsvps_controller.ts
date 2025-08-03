@@ -77,7 +77,18 @@ export default class RsvpsController {
 
       await InvitationGuest.query({ client: trx })
         .where('id', id)
-        .update({ isAttending, noOfGuestsAttending })
+        .update({
+          isAttending,
+          noOfGuestsAttending,
+          updatedBy: JSON.stringify({
+            ipAddress:
+              request.ip() ||
+              request.header('cf-connecting-ip') ||
+              request.header('x-forwarded-for')?.split(',')[0]?.trim(),
+            userAgent: request.header('user-agent'),
+          }),
+          updatedAt: new Date(),
+        })
 
       await trx.commit()
 
