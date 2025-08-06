@@ -25,6 +25,7 @@ export default function RSVP() {
   const [noOfGuests, setNoOfGuests] = useState<number>(1)
   const [success, setSuccess] = useState<string | null>(null)
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
+  const [noOfGuestsTouched, setNoOfGuestsTouched] = useState(false)
 
   useEffect(() => {
     if (!key) {
@@ -310,10 +311,25 @@ export default function RSVP() {
                     min={1}
                     max={guest?.maxGuests}
                     value={noOfGuests || ''}
-                    onChange={(e) => setNoOfGuests(Number(e.target.value))}
+                    onChange={(e) => {
+                      setNoOfGuests(Number(e.target.value))
+                      setNoOfGuestsTouched(true)
+                    }}
+                    onBlur={() => setNoOfGuestsTouched(true)}
                     required
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                   />
+                  {noOfGuestsTouched && noOfGuests < 1 && (
+                    <div className="text-red-600 text-xs mt-1">
+                      Please enter a valid number of guests.
+                    </div>
+                  )}
+                  {noOfGuestsTouched && noOfGuests > (guest?.maxGuests ?? 0) && (
+                    <div className="text-red-600 text-xs mt-1">
+                      You cannot RSVP for more than {guest?.maxGuests} guest
+                      {guest?.maxGuests !== 1 ? 's' : ''}.
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-row gap-4">

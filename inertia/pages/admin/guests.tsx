@@ -17,6 +17,10 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { format } from 'date-fns'
 
+import '../../css/guests.css'
+import qrTemplate from '~/assets/images/RSVP-qr-template.png'
+import NavigationBar from '~/components/common/NavigationBar/navigation-bar'
+
 type Guest = {
   id: number
   familyName: string | null
@@ -51,9 +55,11 @@ export default function GuestsAdmin() {
   const [newGuestData, setNewGuestData] = useState<Partial<Guest>>(emptyGuest)
   const [globalFilter, setGlobalFilter] = useState('')
   const [inviteLink, setInviteLink] = useState<string | null>(null)
+  const [inviteImage, setInviteImage] = useState<string | null>(null)
   const [loaderMessage, setLoaderMessage] = useState<string>(
     'Loading and processing, please wait...'
   )
+  const [totalKidsBelow7, setTotalKidsBelow7] = useState<number>(0)
 
   const fetchGuests = async () => {
     setLoaderMessage('Loading families, please wait...')
@@ -85,6 +91,10 @@ export default function GuestsAdmin() {
 
   useEffect(() => {
     fetchGuests()
+    // Fetch total kids below 7/yo
+    axios.get('/guest/total-kids-below-7').then((res) => {
+      setTotalKidsBelow7(Number(res.data.count))
+    })
   }, [])
 
   const columns = [
@@ -140,7 +150,7 @@ export default function GuestsAdmin() {
             onView={() => openModal(family.find((f) => f.id === value)!, 'view')}
             onUpdate={() => openModal(family.find((f) => f.id === value)!, 'update')}
             onDelete={() => openModal(family.find((f) => f.id === value)!, 'delete')}
-            onGenerateKey={() => generateInviteKey(value)}
+            onGenerateKey={() => generateInviteKey(family.find((f) => f.id === value))}
           />
         )
       },
@@ -210,10 +220,12 @@ export default function GuestsAdmin() {
     setNewGuestData(emptyGuest)
   }
 
-  const generateInviteKey = async (guestId: number) => {
+  const generateInviteKey = async (g?: Guest) => {
+    if (!g) return
     setError(null)
+    setSelectedGuest(g)
     try {
-      const res = await axios.post(`/guest/generate-invite-key/${guestId}`)
+      const res = await axios.post(`/guest/generate-invite-key/${g.id}`)
       if (res.data.error) {
         Swal.fire('Error', res.data.error, 'error')
         return
@@ -221,6 +233,12 @@ export default function GuestsAdmin() {
       const baseUrl = window.location.origin
       const link = `${baseUrl}/rsvp?key=${res.data.code}`
       setInviteLink(link)
+      // Generate the invite image with QR and family name
+      const guest = family.find((f) => f.id === g.id)
+      if (guest) {
+        const img = await drawQRWithTemplate(link, guest.familyName || 'Family')
+        setInviteImage(img)
+      }
       setModalType('inviteLink') // Open the modal for the invite link
     } catch (err) {
       Swal.fire('Error', err.response.data.message || err.response.data.error, 'error')
@@ -351,7 +369,7 @@ export default function GuestsAdmin() {
       const imageURL = canvas.toDataURL('image/png') // Convert canvas to image URL
       const link = document.createElement('a')
       link.href = imageURL
-      link.download = 'invite-qr-code.png' // Set the filename
+      link.download = `${selectedGuest?.familyName || 'Family'}-QR.png` // Set the filename
       link.click() // Trigger download
     }
   }
@@ -382,14 +400,18 @@ export default function GuestsAdmin() {
       const zip = new JSZip()
 
       for (const qr of res.data) {
-        const QRCode = (await import('qrcode')).default
         const url = `${window.location.origin}/rsvp?key=${qr.inviteKey}`
-        const dataUrl = await QRCode.toDataURL(url, {
-          width: 192,
-          margin: 2,
-        })
-        const base64Data = dataUrl.split(',')[1]
-        zip.file(`${qr.familyName || 'Family'}-QR.png`, base64Data, { base64: true })
+
+        // Generate QR Invite template image
+        const inviteDataUrl = await drawQRWithTemplate(url, qr.familyName || 'Family')
+        const inviteBase64 = inviteDataUrl.split(',')[1]
+        zip.file(`${qr.familyName || 'Family'}-Invite.png`, inviteBase64, { base64: true })
+
+        // Generate plain QR code image (no template)
+        const QRCode = (await import('qrcode')).default
+        const qrDataUrl = await QRCode.toDataURL(url, { width: 423, margin: 0 })
+        const qrBase64 = qrDataUrl.split(',')[1]
+        zip.file(`${qr.familyName || 'Family'}-QR.png`, qrBase64, { base64: true })
       }
 
       const now = new Date()
@@ -415,12 +437,103 @@ export default function GuestsAdmin() {
     }
   }
 
+  async function drawQRWithTemplate(qrUrl: string, familyName: string): Promise<string> {
+    // Load template image
+    const template = await new Promise<HTMLImageElement>((resolve) => {
+      const img = new window.Image()
+      img.src = qrTemplate
+      img.onload = () => resolve(img)
+    })
+
+    // Generate QR code as image
+    const QRCode = (await import('qrcode')).default
+    // The placeholder is about 320x320px, so generate QR at that size
+    const qrDataUrl = await QRCode.toDataURL(qrUrl, { width: 320, margin: 0 })
+    const qrImg = await new Promise<HTMLImageElement>((resolve) => {
+      const img = new window.Image()
+      img.src = qrDataUrl
+      img.onload = () => resolve(img)
+    })
+
+    // Create canvas
+    const canvas = document.createElement('canvas')
+    canvas.width = template.width
+    canvas.height = template.height
+    const ctx = canvas.getContext('2d')!
+
+    // Draw template
+    ctx.drawImage(template, 0, 0, canvas.width, canvas.height)
+
+    // Draw QR code in the placeholder (centered horizontally, positioned for new template)
+    // For 768x922px, placeholder is at x=224, y=410, size=320x320
+    const qrX = (canvas.width - 423) / 2
+    const qrY = 636
+    ctx.drawImage(qrImg, qrX, qrY, 423, 423)
+
+    // Draw family name centered below the QR code
+    let fontSize = 48
+    const maxWidth = canvas.width - 70 // leave some padding
+    ctx.textAlign = 'center'
+    ctx.fillStyle = '#404040'
+
+    // Dynamically shrink font size if text is too wide
+    let text = familyName.toUpperCase()
+    ctx.font = `${fontSize}px Quincy, Sofia Pro, sans-serif`
+    let letterSpacing = 6
+    function getTextWidthWithSpacing(
+      context: CanvasRenderingContext2D,
+      text: string,
+      spacing: number
+    ) {
+      return context.measureText(text).width + spacing * (text.length - 1)
+    }
+    while (getTextWidthWithSpacing(ctx, text, letterSpacing) > maxWidth && fontSize > 18) {
+      fontSize -= 2
+      ctx.font = `${fontSize}px Quincy, sans-serif`
+    }
+
+    // Draw with letter spacing
+    function drawTextWithLetterSpacing(
+      context: CanvasRenderingContext2D,
+      text: string,
+      x: number,
+      y: number,
+      letterSpacing: number
+    ) {
+      const totalWidth = context.measureText(text).width + letterSpacing * (text.length - 1)
+      let currentX = x - totalWidth / 2
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i]
+        context.fillText(char, currentX + context.measureText(char).width / 2, y)
+        currentX += context.measureText(char).width + letterSpacing
+      }
+    }
+
+    drawTextWithLetterSpacing(ctx, text, canvas.width / 2, qrY + 465 + fontSize, letterSpacing)
+
+    return canvas.toDataURL('image/png')
+  }
+
   return (
-    <div className="max-w-7xl md:max-w-[90dvw] mx-auto mt-12 p-6">
+    <div className="max-w-7xl md:max-w-[90dvw] mx-auto mt-5 p-6">
+      <NavigationBar />
       <div className="flex justify-between items-center mb-6">
-        <div className="text-lg font-semibold text-blue-700">
-          Total Attending Guests:{' '}
-          <span className="text-green-600">{`${totalAttending} out of ${totalMaxGuests}`}</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-blue-50 rounded-lg p-4 shadow flex flex-col items-center">
+            <span className="text-2xl font-bold text-blue-700">{totalAttending}</span>
+            <span className="text-gray-600">Attending Guests</span>
+            <span className="text-xs text-gray-400">{`out of ${totalMaxGuests}`}</span>
+          </div>
+          <div className="bg-green-50 rounded-lg p-4 shadow flex flex-col items-center">
+            <span className="text-2xl font-bold text-green-700">{family.length}</span>
+            <span className="text-gray-600">Families</span>
+            <span className="text-xs text-gray-400">Total</span>
+          </div>
+          <div className="bg-yellow-50 rounded-lg p-4 shadow flex flex-col items-center">
+            <span className="text-2xl font-bold text-yellow-700">{totalKidsBelow7}</span>
+            <span className="text-gray-600">Kids</span>
+            <span className="text-xs text-gray-400">Below 7 years old</span>
+          </div>
         </div>
         <input
           type="text"
@@ -449,7 +562,6 @@ export default function GuestsAdmin() {
           </button>
         </div>
       </div>
-
       {loading ? (
         <Loader message={loaderMessage} noBG />
       ) : error ? (
@@ -953,21 +1065,39 @@ export default function GuestsAdmin() {
                 Copy Link
               </button>
             </div>
-            <div className="flex flex-col items-center mt-4">
-              <QRCodeCanvas value={inviteLink} size={192} />
-              <p className="mt-2 text-gray-500 text-center">
-                Scan the QR code to access the invite link.
-              </p>
-              <button
-                onClick={() => downloadQRCode()}
-                className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-              >
-                Download QR Code
-              </button>
+            <div className="flex flex-col items-center mt-2">
+              {inviteImage && (
+                <div className="mt-2">
+                  <img
+                    src={inviteImage}
+                    alt="Invite Template"
+                    className="max-w-full rounded shadow-md border"
+                    style={{ width: 350, margin: '0 auto' }}
+                  />
+                  <div className="inline-flex flex-col items-center mt-1">
+                    <a
+                      href={inviteImage}
+                      download={`${selectedGuest?.familyName || 'Family'}-Invite.png`}
+                      className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+                    >
+                      Download Invite Template
+                    </a>
+                    <QRCodeCanvas value={inviteLink} size={192} style={{ display: 'none' }} />
+                    <button
+                      onClick={() => downloadQRCode()}
+                      className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                    >
+                      Download QR Code
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </Modal>
       )}
+      {/* work around to load the font when generate */}
+      <p style={{ fontFamily: 'Quincy, sans-serif' }}>‎</p>
       {error && (
         <div className="mt-4 text-red-600 bg-red-50 border border-red-200 rounded px-4 py-2 text-center">
           {error}

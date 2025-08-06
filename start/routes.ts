@@ -18,7 +18,7 @@ const GuestsController = () => import('#controllers/guests_controller')
 const SeatInquiriesController = () => import('#controllers/seat_inquiries_controller')
 const StatisticsController = () => import('#controllers/statistics_controller')
 
-router.on('/').renderInertia('home', { title: "The Wedding of Hannah and Daryll" })
+router.on('/').renderInertia('home', { title: 'The Wedding of Hannah and Daryll' })
 router
   .on('/valentines')
   .renderInertia('valentines', { title: 'Valentines 2025 - Daryll and Hannah' })
@@ -45,6 +45,7 @@ router
 router
   .group(() => {
     router.get('/lists', [GuestsController, 'getGuestList'])
+    router.get('/total-kids-below-7', [GuestsController, 'getTotalKidsBelow7'])
     router.get('/id', [GuestsController, 'getGuestById'])
     router.post('/create', [GuestsController, 'createGuest'])
     router.put('/update-guest', [GuestsController, 'updateGuest'])

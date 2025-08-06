@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import axiosInstance from '~/shared/axios_config'
 import { Loader } from '../shared/loader'
+import NavigationBar from '~/components/common/NavigationBar/navigation-bar'
 
 type FamilyGroup = {
   noOfGuestsAttending: number
@@ -20,11 +21,16 @@ type StatisticsProps = {
 export default function StatisticsPage() {
   const [stats, setStats] = useState<StatisticsProps | null>(null)
   const [sortType, setSortType] = useState<'total' | 'attending'>('total')
+  const [totalKidsBelow7, setTotalKidsBelow7] = useState<number>(0)
   const seatingRef = useRef<SVGSVGElement>(null)
   const familyRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
     axiosInstance.get<StatisticsProps>('/statistics/lists').then((res) => setStats(res.data))
+    // Fetch total kids below 7
+    axiosInstance.get('/guest/total-kids-below-7').then((res) => {
+      setTotalKidsBelow7(Number(res.data.count))
+    })
   }, [])
 
   const totalAttending = useMemo(
@@ -293,12 +299,16 @@ export default function StatisticsPage() {
 
   return (
     <div className="p-8">
+      <NavigationBar />
       <h1 className="text-4xl font-bold mb-6">Wedding Statistics</h1>
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-2">Expected Visitors</h2>
         <div className="text-4xl font-extrabold text-indigo-600">
           {totalAttending} out of {stats.expectedVisitors} (
           {Math.round((totalAttending / stats.expectedVisitors) * 100)}%)
+        </div>
+        <div className="text-sm text-gray-600 mt-1">
+          Total kids below 7 years old: <span className="font-semibold">{totalKidsBelow7}</span>
         </div>
       </div>
       <div className="mb-8">

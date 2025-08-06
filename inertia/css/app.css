@@ -3,6 +3,15 @@ body {
   overflow-x: hidden;
 }
 
+@font-face {
+  font-family: 'Quincy';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local('Quincy'),
+    url('https://fonts.cdnfonts.com/s/99344/QuincyRegular-OV678.woff') format('woff');
+}
+
 .h-screen {
   height: 100vh;
   height: 100dvh !important;

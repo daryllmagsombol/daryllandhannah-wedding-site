@@ -29,6 +29,13 @@ export default class GuestsController {
     return response.status(200).send(guest)
   }
 
+  async getTotalKidsBelow7({ response }: HttpContext) {
+    const total = await FamilyInvitationGuest.query()
+      .where('name', 'LIKE', '%below 7%')
+      .count('* as count')
+    return response.status(200).send({ count: total[0].$extras.count })
+  }
+
   async createGuest({ request, response }: HttpContext) {
     const guestSchema = schema.create({
       familyName: schema.string({ trim: true }, [rules.maxLength(255)]),
@@ -99,6 +106,10 @@ export default class GuestsController {
       return response.status(422).send({ error: error.messages })
     }
 
+    if (payload.isAttending && payload.noOfGuestsAttending > payload.maxGuests) {
+      return response.status(422).send({ error: 'Number of guests attending exceeds max allowed.' })
+    }
+
     const family = await FamilyInvitation.query().where('id', payload.id).preload('guests').first()
     if (!family) {
       return response.status(404).send({ error: 'Family not found.' })
@@ -117,6 +128,7 @@ export default class GuestsController {
                 ? 1
                 : 0,
             noOfGuestsAttending: payload.isAttending ? payload.noOfGuestsAttending : 0,
+            updatedAt: new Date() as any,
           })
           .useTransaction(trx)
           .save()
@@ -146,6 +158,7 @@ export default class GuestsController {
               .update({
                 name: guest.name,
                 tableNumber: guest.tableNumber ?? null,
+                updatedAt: new Date() as any,
               })
           } else {
             // Create new guest
