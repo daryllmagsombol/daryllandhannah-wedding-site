@@ -135,7 +135,7 @@ export default function RSVP() {
 
           setTimeout(() => {
             notification.remove()
-            window.location.href = '/'
+            window.location.href = `/?key=${key}&redirected=true`
           }, 5000)
         }, 10000)
       } else {
@@ -201,7 +201,7 @@ export default function RSVP() {
               <br /> <br /> <br />
               More details and updates will be shared soon —{' '}
               <a
-                href="/"
+                href={`/?key=${key}&visited=true`}
                 className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent underline"
               >
                 Visit Our Website

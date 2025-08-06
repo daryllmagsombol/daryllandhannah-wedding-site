@@ -202,7 +202,8 @@ export default function GuestsAdmin() {
         pageSize: 10,
       },
       sorting: [
-        { id: 'updatedAt', desc: true }, // Default sort by updatedAt descending
+        { id: 'isAttending', desc: true },
+        { id: 'updatedAt', desc: true },
       ],
     },
   })
