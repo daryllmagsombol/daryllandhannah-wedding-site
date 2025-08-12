@@ -52,6 +52,7 @@ router
     router.delete('/delete-guest', [GuestsController, 'deleteGuest'])
     router.post('/generate-invite-key/:id', [GuestsController, 'generateInviteKey'])
     router.post('/generate-all-invite-keys', [GuestsController, 'generateAllInviteKeys'])
+    router.get('/audit-logs/:id', [GuestsController, 'getAuditLogs']) // Add this new endpoint
   })
   .prefix('/guest')
   .use(

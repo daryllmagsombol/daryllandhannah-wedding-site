@@ -20,6 +20,7 @@ import { format } from 'date-fns'
 import '../../css/guests.css'
 import qrTemplate from '~/assets/images/RSVP-qr-template.png'
 import NavigationBar from '~/components/common/NavigationBar/navigation-bar'
+import { getUrlAction, getUserAgentInfo } from '~/shared/util'
 
 type Guest = {
   id: number
@@ -60,6 +61,8 @@ export default function GuestsAdmin() {
     'Loading and processing, please wait...'
   )
   const [totalKidsBelow7, setTotalKidsBelow7] = useState<number>(0)
+  const [auditLogs, setAuditLogs] = useState<any[]>([])
+  const [auditLogsLoading, setAuditLogsLoading] = useState<boolean>(false)
 
   const fetchGuests = async () => {
     setLoaderMessage('Loading families, please wait...')
@@ -208,11 +211,25 @@ export default function GuestsAdmin() {
     },
   })
 
-  const openModal = (guest: Guest, type: ModalType) => {
+  const openModal = async (guest: Guest, type: ModalType) => {
     setSelectedGuest(guest)
     setModalType(type)
 
     if (type === 'update') setNewGuestData(guest)
+
+    if (type === 'view') {
+      // Fetch audit logs for this guest
+      setAuditLogsLoading(true)
+      try {
+        const res = await axios.get(`/guest/audit-logs/${guest.id}`)
+        setAuditLogs(res.data || [])
+      } catch (err) {
+        console.error('Error fetching audit logs:', err)
+        setAuditLogs([])
+      } finally {
+        setAuditLogsLoading(false)
+      }
+    }
   }
 
   const closeModal = () => {
@@ -841,6 +858,65 @@ export default function GuestsAdmin() {
                 readOnly
                 className="border rounded w-full px-3 py-2 bg-gray-100"
               />
+            </div>
+
+            {/* Audit Logs Section */}
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold mb-2">Audit Logs</h2>
+              {auditLogs.length > 0 ? (
+                <div className="max-h-60 overflow-y-auto border rounded">
+                  <table className="min-w-full">
+                    <thead className="bg-gray-50 sticky top-0">
+                      <tr>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                          Date/Time
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                          IP Address
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                          Device
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                          Action
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase w-[20vw]">
+                          Request
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {auditLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-gray-50">
+                          <td className="px-3 py-2 text-xs text-gray-900">
+                            {format(new Date(log.created_at), 'MMM dd, yyyy hh:mm a')}
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-900">{log.ip_address}</td>
+                          <td
+                            className="px-3 py-2 text-xs text-gray-500 max-w-[30vw] truncate"
+                            title={log.user_agent}
+                          >
+                            {getUserAgentInfo(log.user_agent)}
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-900 max-w-[40vw]">
+                            {getUrlAction(log.request_url)}
+                          </td>
+                          <td
+                            className="px-3 py-2 text-xs text-gray-900 max-w-[20vw] truncate"
+                            title={log.request_body}
+                          >
+                            {log.request_body}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : auditLogsLoading ? (
+                <p className="text-gray-500 text-center py-4">Loading audit logs...</p>
+              ) : (
+                <p className="text-gray-500 text-center py-4">No audit logs available</p>
+              )}
             </div>
           </form>
         </Modal>

@@ -313,4 +313,31 @@ export default class GuestsController {
       return response.status(500).send({ error: 'Failed to generate invite keys.' })
     }
   }
+
+  async getAuditLogs({ params, response }: HttpContext) {
+    const familyId = params.id
+
+    if (!familyId) {
+      return response.status(400).send({ error: 'Family ID is required' })
+    }
+
+    try {
+      // Use the provided SQL query to get audit logs
+      const logs = await db.rawQuery(
+        `
+        SELECT al.id, fi.family_name, al.ip_address, al.user_agent, al.request_url, al.request_body, al.created_at 
+        FROM audit_logs as al
+        INNER JOIN invitation_keys as ik ON al.request_body LIKE CONCAT('%', ik.code, '%')
+        INNER JOIN family_invitations as fi ON ik.family_invitation_id = fi.id
+        WHERE fi.id = ? ORDER BY al.created_at DESC
+      `,
+        [familyId]
+      )
+
+      return response.status(200).send(logs[0])
+    } catch (error) {
+      console.log('Error fetching audit logs:', error)
+      return response.status(500).send({ error: 'Failed to fetch audit logs' })
+    }
+  }
 }
