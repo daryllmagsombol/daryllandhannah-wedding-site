@@ -308,6 +308,10 @@ export default function StatisticsPage() {
           {Math.round((totalAttending / stats.expectedVisitors) * 100)}%)
         </div>
         <div className="text-sm text-gray-600 mt-1">
+          Total Adults:{' '}
+          <span className="font-semibold">{stats.expectedVisitors - totalKidsBelow7}</span>
+        </div>
+        <div className="text-sm text-gray-600 mt-1">
           Total kids below 7 years old: <span className="font-semibold">{totalKidsBelow7}</span>
         </div>
       </div>
