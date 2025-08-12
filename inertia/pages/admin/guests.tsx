@@ -886,29 +886,35 @@ export default function GuestsAdmin() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {auditLogs.map((log) => (
-                        <tr key={log.id} className="hover:bg-gray-50">
-                          <td className="px-3 py-2 text-xs text-gray-900">
-                            {format(new Date(log.created_at), 'MMM dd, yyyy hh:mm a')}
-                          </td>
-                          <td className="px-3 py-2 text-xs text-gray-900">{log.ip_address}</td>
-                          <td
-                            className="px-3 py-2 text-xs text-gray-500 max-w-[30vw] truncate"
-                            title={log.user_agent}
-                          >
-                            {getUserAgentInfo(log.user_agent)}
-                          </td>
-                          <td className="px-3 py-2 text-xs text-gray-900 max-w-[40vw]">
-                            {getUrlAction(log.request_url)}
-                          </td>
-                          <td
-                            className="px-3 py-2 text-xs text-gray-900 max-w-[20vw] truncate"
-                            title={log.request_body}
-                          >
-                            {log.request_body}
-                          </td>
-                        </tr>
-                      ))}
+                      {auditLogs.map((log) => {
+                        const requestBody =
+                          typeof log.request_body === 'string'
+                            ? log.request_body
+                            : JSON.stringify(log.request_body)
+                        return (
+                          <tr key={log.id} className="hover:bg-gray-50">
+                            <td className="px-3 py-2 text-xs text-gray-900">
+                              {format(new Date(log.created_at), 'MMM dd, yyyy hh:mm a')}
+                            </td>
+                            <td className="px-3 py-2 text-xs text-gray-900">{log.ip_address}</td>
+                            <td
+                              className="px-3 py-2 text-xs text-gray-500 max-w-[30vw] truncate"
+                              title={log.user_agent}
+                            >
+                              {getUserAgentInfo(log.user_agent)}
+                            </td>
+                            <td className="px-3 py-2 text-xs text-gray-900 max-w-[40vw]">
+                              {getUrlAction(log.request_url)}
+                            </td>
+                            <td
+                              className="px-3 py-2 text-xs text-gray-900 max-w-[20vw] truncate"
+                              title={requestBody}
+                            >
+                              {requestBody}
+                            </td>
+                          </tr>
+                        )
+                      })}
                     </tbody>
                   </table>
                 </div>
