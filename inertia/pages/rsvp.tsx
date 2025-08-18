@@ -123,6 +123,8 @@ export default function RSVP() {
           icon: isAttending ? 'success' : 'warning',
           confirmButtonText: 'OK',
           confirmButtonColor: '#786cf3',
+          timer: 3000,
+          timerProgressBar: true,
         })
 
         // Show Tailwind notification 5 seconds before redirect
@@ -137,7 +139,7 @@ export default function RSVP() {
             notification.remove()
             window.location.href = `/?key=${key}&redirected=true`
           }, 5000)
-        }, 10000)
+        }, 6000)
       } else {
         const errorMessage = await res.text()
         setError(errorMessage)
@@ -199,7 +201,7 @@ export default function RSVP() {
               Having you there to share in our joy means so much. We’re counting down the days and
               can’t wait to celebrate this special moment together with you.
               <br /> <br /> <br />
-              More details and updates will be shared soon —{' '}
+              All the wedding details are on our Website so check it out! —{' '}
               <a
                 href={`/?key=${key}&visited=true`}
                 className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent underline"
@@ -277,7 +279,7 @@ export default function RSVP() {
             </p>
             <div className="mb-6 text-center">
               <span className="block text-md sm:text-lg font-medium text-gray-800">
-                Please RSVP by August 15, 2025 so we can prepare for your attendance.
+                Please RSVP by August 21, 2025 so we can prepare for your attendance.
               </span>
             </div>
             <div className="mb-6 text-center overflow-visible h-auto">

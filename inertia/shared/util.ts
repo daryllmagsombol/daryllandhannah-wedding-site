@@ -16,7 +16,9 @@ export const getUserAgentInfo = (userAgent: string) => {
   else if (userAgent.includes('Linux')) device = 'Linux'
 
   // Browser detection
-  if (userAgent.includes('Edge') || userAgent.includes('Edg/')) browser = 'Edge'
+  if (userAgent.includes('FBAN') || userAgent.includes('FB_IAB')) browser = 'Facebook'
+  else if (userAgent.includes('Instagram')) browser = 'Instagram'
+  else if (userAgent.includes('Edge') || userAgent.includes('Edg/')) browser = 'Edge'
   else if (userAgent.includes('Chrome') && !userAgent.includes('Chromium')) browser = 'Chrome'
   else if (userAgent.includes('Firefox') && !userAgent.includes('Seamonkey')) browser = 'Firefox'
   else if (
@@ -35,8 +37,8 @@ export const getUserAgentInfo = (userAgent: string) => {
 }
 
 export const getUrlAction = (action: string) => {
-  if (action === '/') return 'Visited Home'
-  if (action === '/rsvp') return 'Visited RSVP'
+  if (action === '/') return 'Home'
+  if (action === '/rsvp') return 'RSVP'
   if (action === '/rsvp/view-invitation') return 'Fetched Invitation Data'
   if (action === '/rsvp/update-invitation') return 'Updated Invitation'
   return action
