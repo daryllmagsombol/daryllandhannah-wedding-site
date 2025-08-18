@@ -206,7 +206,7 @@ export default function RSVP() {
                 href={`/?key=${key}&visited=true`}
                 className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent underline"
               >
-                Visit Our Website
+                Our Website
               </a>
             </p>
           </>

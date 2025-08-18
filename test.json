@@ -54,7 +54,7 @@
     "prettier": "^3.6.2",
     "ts-node-maintained": "^10.9.6",
     "typescript": "~5.9.2",
-    "vite": "^6.2.7"
+    "vite": "^7.1.2"
   },
   "dependencies": {
     "@adonisjs/auth": "^9.4.2",
@@ -97,6 +97,20 @@
       "./app/controllers/**/*.ts",
       "./app/middleware/*.ts"
     ]
+  },
+  "overrides": {
+    "@inertiajs/core": "2.0.0",
+    "strtok3": "8.0.1"
+  },
+  "resolutions": {
+    "@inertiajs/core": "2.0.0",
+    "strtok3": "8.0.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@inertiajs/core": "2.0.0",
+      "strtok3": "8.0.1"
+    }
   },
   "prettier": "@adonisjs/prettier-config"
 }
