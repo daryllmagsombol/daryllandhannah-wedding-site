@@ -129,14 +129,36 @@ export default function RSVP() {
 
         // Show Tailwind notification 5 seconds before redirect
         setTimeout(() => {
-          const notification = document.createElement('div')
-          notification.className =
-            'fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md z-50 text-center text-sm sm:text-base max-w-[80vw] w-[80vw] sm:w-auto animate-fade-in'
-          notification.innerText = 'Redirecting to the main page in 5 seconds...'
-          document.body.appendChild(notification)
+          const notificationContainer = document.createElement('div')
+          notificationContainer.className =
+            'fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md z-50 text-center text-sm sm:text-base max-w-[80vw] w-[80vw] sm:w-auto animate-fade-in flex items-center justify-between gap-3'
 
-          setTimeout(() => {
-            notification.remove()
+          const messageSpan = document.createElement('span')
+          messageSpan.innerText = 'Redirecting to the main page in 5 seconds...'
+
+          const stopButton = document.createElement('button')
+          stopButton.innerText = 'Stay Here'
+          stopButton.className =
+            'bg-white text-purple-600 px-2 py-1 rounded text-xs sm:text-sm font-medium hover:bg-gray-100 transition-colors'
+          stopButton.onclick = () => {
+            clearTimeout(redirectTimer)
+            notificationContainer.remove()
+
+            // Show brief confirmation toast
+            const stayingToast = document.createElement('div')
+            stayingToast.className =
+              'fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md z-50 text-center text-sm animate-fade-in'
+            stayingToast.innerText = 'Redirect cancelled'
+            document.body.appendChild(stayingToast)
+            setTimeout(() => stayingToast.remove(), 2000)
+          }
+
+          notificationContainer.appendChild(messageSpan)
+          notificationContainer.appendChild(stopButton)
+          document.body.appendChild(notificationContainer)
+
+          const redirectTimer = setTimeout(() => {
+            notificationContainer.remove()
             window.location.href = `/?key=${key}&redirected=true`
           }, 5000)
         }, 6000)

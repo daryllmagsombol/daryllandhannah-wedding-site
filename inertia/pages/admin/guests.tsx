@@ -577,10 +577,19 @@ export default function GuestsAdmin() {
               </svg>
             </div>
             <span className="text-3xl font-bold text-green-700">
-              {totalMaxGuests - totalKidsBelow7}
+              {totalMaxGuests -
+                totalKidsBelow7 -
+                family
+                  .filter((g) => g.isAttending === false)
+                  .reduce((sum, g) => sum + g.maxGuests, 0) -
+                family
+                  .filter((g) => g.isAttending === true && g.maxGuests > g.noOfGuestsAttending)
+                  .reduce((sum, g) => sum + (g.maxGuests - g.noOfGuestsAttending), 0)}
             </span>
-            <span className="text-gray-700 font-medium">Adults</span>
-            <span className="text-sm text-gray-500 mt-1">Total</span>
+            <span className="text-gray-700 font-medium">Expected Adults</span>
+            <span className="text-sm text-gray-500 mt-1">
+              out of {totalMaxGuests - totalKidsBelow7}
+            </span>{' '}
           </div>
 
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col items-center transform hover:scale-105">
