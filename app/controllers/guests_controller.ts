@@ -6,7 +6,7 @@ import InvitationKey from '#models/invitation_key'
 import shortuuid from 'short-uuid'
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
-import { isNullOrUndefined } from 'node:util'
+// import { isNullOrUndefined } from 'node:util'
 
 export default class GuestsController {
   async getGuestList({ response }: HttpContext) {
@@ -122,11 +122,12 @@ export default class GuestsController {
           .merge({
             familyName: payload.familyName,
             maxGuests: payload.maxGuests,
-            isAttending: isNullOrUndefined(payload.isAttending)
-              ? null
-              : payload.isAttending
-                ? 1
-                : 0,
+            isAttending:
+              payload.isAttending === null || payload.isAttending === undefined
+                ? null
+                : payload.isAttending
+                  ? 1
+                  : 0,
             noOfGuestsAttending: payload.isAttending ? payload.noOfGuestsAttending : 0,
             updatedAt: new Date() as any,
           })
