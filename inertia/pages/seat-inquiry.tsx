@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 export default function SeatInquiry() {
   const [guestList, setGuestList] = useState<
-    { label: string; value: string; seatNumber: string }[]
+    { label: string; value: string; tableNumber: string }[]
   >([])
   const [selectedGuest, setSelectedGuest] = useState<{
     label: string
@@ -36,7 +36,7 @@ export default function SeatInquiry() {
   }, [])
 
   const handleSelect = (
-    selectedOption: { label: string; value: string; seatNumber: string } | null
+    selectedOption: { label: string; value: string; tableNumber: string } | null
   ) => {
     setSelectedGuest(selectedOption)
     setError(null)

@@ -93,7 +93,7 @@ export default class GuestsController {
         schema.object().members({
           id: schema.number.optional(),
           name: schema.string({ trim: true }, [rules.maxLength(255)]),
-          tableNumber: schema.string.optional({ trim: true }, [rules.maxLength(10)]),
+          tableNumber: schema.string.optional({ trim: true }),
         })
       ),
     })
@@ -102,7 +102,7 @@ export default class GuestsController {
     try {
       payload = await request.validate({ schema: guestSchema })
     } catch (error) {
-      console.log('Error processing updating guest: ', error)
+      console.log('Error processing updating guest: ', error.messages)
       return response.status(422).send({ error: error.messages })
     }
 
@@ -176,7 +176,7 @@ export default class GuestsController {
 
       return response.status(200).send({ message: 'Family and guests updated successfully!' })
     } catch (error) {
-      console.log('Error processing updating guest: ', error)
+      console.log('Error processing updating guest: ', error.messages)
       return response.status(500).send({ error: 'Failed to update family and guests.' })
     }
   }
