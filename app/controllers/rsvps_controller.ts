@@ -1,7 +1,7 @@
 import InvitationGuest from '#models/family_invitation'
 import InvitationKey from '#models/invitation_key'
 import type { HttpContext } from '@adonisjs/core/http'
-import { schema, rules } from '@adonisjs/validator'
+import vine from '@vinejs/vine'
 import db from '@adonisjs/lucid/services/db'
 
 export default class RsvpsController {
@@ -27,26 +27,27 @@ export default class RsvpsController {
 
       return response.status(200).send(guest)
     } catch (error) {
-      console.log('Error processing get guest invitation: ', error)
+      console.log('Error processing get guest invitation: ', error instanceof Error ? error.message : error)
       return response.status(500).send({ error: 'Internal Server Error' })
     }
   }
 
   async saveGuestInvitation({ request, response }: HttpContext) {
     // Validation schema
-    const rsvpSchema = schema.create({
-      id: schema.number(),
-      isAttending: schema.boolean(),
-      noOfGuestsAttending: schema.number([rules.unsigned()]),
-      code: schema.string(),
+    const rsvpSchema = vine.object({
+      id: vine.number(),
+      isAttending: vine.boolean(),
+      noOfGuestsAttending: vine.number().withoutDecimals().min(0),
+      code: vine.string(),
     })
 
     let payload
     try {
-      payload = await request.validate({ schema: rsvpSchema })
+      payload = await vine.validate({ schema: rsvpSchema, data: request.all() })
     } catch (error) {
-      console.log('Error processing save invitation: ', error)
-      return response.status(422).send({ error: error.messages })
+      const messages = error instanceof Error ? (error as any).messages : error
+      console.log('Error processing save invitation: ', messages)
+      return response.status(422).send({ error: messages })
     }
 
     const { id, isAttending, noOfGuestsAttending, code } = payload
@@ -94,7 +95,7 @@ export default class RsvpsController {
 
       return response.status(200).send('Guest invitation updated successfully')
     } catch (error) {
-      console.log('Error processing save invitation: ', error)
+      console.log('Error processing save invitation: ', error instanceof Error ? error.message : error)
       await trx.rollback()
       return response.status(500).send({ error: 'Internal Server Error' })
     }

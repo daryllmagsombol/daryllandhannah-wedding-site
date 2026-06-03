@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
       {
-        name: 'daryllandadmin1',
+        name: 'daryllandhannah',
         script: 'bin/server.js',
         instances: 'max',
         exec_mode: 'cluster',

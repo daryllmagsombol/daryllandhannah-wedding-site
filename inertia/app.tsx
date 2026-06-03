@@ -1,7 +1,7 @@
-/// <reference path="../../adonisrc.ts" />
-/// <reference path="../../config/inertia.ts" />
+/// <reference path="../adonisrc.ts" />
+/// <reference path="../config/inertia.ts" />
 
-import '../css/app.css'
+import './css/app.css'
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
@@ -94,7 +94,7 @@ createInertiaApp({
   title: (title) => `${title} || Daryll and Hannah - Wedding`,
 
   resolve: (name) => {
-    return resolvePageComponent(`../pages/${name}.tsx`, import.meta.glob('../pages/**/*.tsx'))
+    return resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx'))
   },
 
   setup({ el, App, props }) {

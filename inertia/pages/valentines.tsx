@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 const gifs = [
   'https://media4.giphy.com/media/6Uqa3vLCikV1yNRmdU/200w.gif?cid=6c09b9524tkptnxju5gduqo5i161d7uvycabdp9hinnq1upt&ep=v1_gifs_search&rid=200w.gif&ct=g',

@@ -1,12 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { schema, rules } from '@adonisjs/validator'
+import vine from '@vinejs/vine'
 import FamilyInvitation from '#models/family_invitation'
 import FamilyInvitationGuest from '#models/family_invitation_guest'
 import InvitationKey from '#models/invitation_key'
 import shortuuid from 'short-uuid'
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
-// import { isNullOrUndefined } from 'node:util'
 
 export default class GuestsController {
   async getGuestList({ response }: HttpContext) {
@@ -37,23 +36,24 @@ export default class GuestsController {
   }
 
   async createGuest({ request, response }: HttpContext) {
-    const guestSchema = schema.create({
-      familyName: schema.string({ trim: true }, [rules.maxLength(255)]),
-      maxGuests: schema.number([rules.unsigned(), rules.range(1, 20)]),
-      guests: schema.array().members(
-        schema.object().members({
-          name: schema.string({ trim: true }, [rules.maxLength(255)]),
-          tableNumber: schema.string.optional({ trim: true }),
+    const createGuestSchema = vine.object({
+      familyName: vine.string().trim().maxLength(255),
+      maxGuests: vine.number().withoutDecimals().min(1).max(20),
+      guests: vine.array(
+        vine.object({
+          name: vine.string().trim().maxLength(255),
+          tableNumber: vine.string().trim().optional(),
         })
       ),
     })
 
     let payload
     try {
-      payload = await request.validate({ schema: guestSchema })
+      payload = await vine.validate({ schema: createGuestSchema, data: request.all() })
     } catch (error) {
-      console.log('Error processing bbb: ', error)
-      return response.status(422).send({ error: error.messages })
+      const messages = error instanceof Error ? (error as any).messages : error
+      console.log('Error processing bbb: ', messages)
+      return response.status(422).send({ error: messages })
     }
 
     try {
@@ -77,33 +77,34 @@ export default class GuestsController {
 
       return response.status(201).send({ message: 'Family and guests created successfully' })
     } catch (error) {
-      console.log('Error processing creating guest: ', error)
+      console.log('Error processing creating guest: ', error instanceof Error ? error.message : error)
       return response.status(500).send({ error: 'Failed to create family and guests' })
     }
   }
 
   async updateGuest({ request, response }: HttpContext) {
-    const guestSchema = schema.create({
-      id: schema.number(),
-      familyName: schema.string({ trim: true }, [rules.maxLength(255)]),
-      maxGuests: schema.number([rules.unsigned(), rules.range(1, 20)]),
-      isAttending: schema.boolean.optional(),
-      noOfGuestsAttending: schema.number([rules.unsigned()]),
-      guests: schema.array().members(
-        schema.object().members({
-          id: schema.number.optional(),
-          name: schema.string({ trim: true }, [rules.maxLength(255)]),
-          tableNumber: schema.string.optional({ trim: true }),
+    const updateGuestSchema = vine.object({
+      id: vine.number(),
+      familyName: vine.string().trim().maxLength(255),
+      maxGuests: vine.number().withoutDecimals().min(1).max(20),
+      isAttending: vine.boolean().optional(),
+      noOfGuestsAttending: vine.number().withoutDecimals().min(0),
+      guests: vine.array(
+        vine.object({
+          id: vine.number().optional(),
+          name: vine.string().trim().maxLength(255),
+          tableNumber: vine.string().trim().optional(),
         })
       ),
     })
 
     let payload
     try {
-      payload = await request.validate({ schema: guestSchema })
+      payload = await vine.validate({ schema: updateGuestSchema, data: request.all() })
     } catch (error) {
-      console.log('Error processing updating guest: ', error.messages)
-      return response.status(422).send({ error: error.messages })
+      const messages = error instanceof Error ? (error as any).messages : error
+      console.log('Error processing updating guest: ', messages)
+      return response.status(422).send({ error: messages })
     }
 
     if (payload.isAttending && payload.noOfGuestsAttending > payload.maxGuests) {
@@ -176,7 +177,8 @@ export default class GuestsController {
 
       return response.status(200).send({ message: 'Family and guests updated successfully!' })
     } catch (error) {
-      console.log('Error processing updating guest: ', error.messages)
+      const msg = error instanceof Error ? (error as any).messages : error
+      console.log('Error processing updating guest: ', msg)
       return response.status(500).send({ error: 'Failed to update family and guests.' })
     }
   }
@@ -210,7 +212,7 @@ export default class GuestsController {
 
       return response.status(200).send({ message: 'Family and related data deleted successfully!' })
     } catch (error) {
-      console.log('Error processing deleting guest: ', error)
+      console.log('Error processing deleting guest: ', error instanceof Error ? error.message : error)
       return response.status(500).send({ error: 'Failed to delete family.' })
     }
   }
@@ -261,7 +263,7 @@ export default class GuestsController {
         inviteLink: `${process.env.APP_URL}/rsvp?key=${newKey.code}`,
       })
     } catch (error) {
-      console.log('Error processing generating invitation: ', error)
+      console.log('Error processing generating invitation: ', error instanceof Error ? error.message : error)
       return response.status(500).send({ error: 'Failed to generate invite key.' })
     }
   }
@@ -310,7 +312,7 @@ export default class GuestsController {
 
       return response.status(200).send(qrCodes)
     } catch (error) {
-      console.log('Error processing generating all invitations: ', error)
+      console.log('Error processing generating all invitations: ', error instanceof Error ? error.message : error)
       return response.status(500).send({ error: 'Failed to generate invite keys.' })
     }
   }
@@ -337,7 +339,7 @@ export default class GuestsController {
 
       return response.status(200).send(logs[0])
     } catch (error) {
-      console.log('Error fetching audit logs:', error)
+      console.log('Error fetching audit logs:', error instanceof Error ? error.message : error)
       return response.status(500).send({ error: 'Failed to fetch audit logs' })
     }
   }

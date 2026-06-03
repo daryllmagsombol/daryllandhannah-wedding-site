@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Select from 'react-select'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 export default function SeatInquiry() {
   const [guestList, setGuestList] = useState<

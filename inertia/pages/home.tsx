@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-import darylladmin1alt from '../assets/images/daryllandadmin1-logo-alt.png'
+import daryllhannahalt from '../assets/images/daryllandhannah-logo-alt.png'
 
 import mainImage from '../assets/images/sampleBG2.webp'
 import mobileBg from '../assets/images/mobileBG.webp'
@@ -65,7 +65,7 @@ const MainHome = () => {
   const [loading, setLoading] = useState(true) // State for loader
 
   const backgroundImages = [
-    darylladmin1alt,
+    daryllhannahalt,
     mainImage,
     mobileBg,
     aiCoverPortrait,
@@ -234,7 +234,7 @@ const MainHome = () => {
                   )}
 
                   <motion.img
-                    src={darylladmin1alt}
+                    src={daryllhannahalt}
                     alt="Daryll & Hannah"
                     className="relative w-3/4 sm:w-1/3 h-auto mt-4 rounded-full"
                     style={{

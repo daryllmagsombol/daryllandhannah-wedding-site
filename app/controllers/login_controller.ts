@@ -20,7 +20,7 @@ export default class LoginController {
       }
       return response.status(401).send({ error: 'Invalid credentials' })
     } catch (error) {
-      if (error.code === 'E_INVALID_CREDENTIALS') {
+      if (error instanceof Error && (error as any).code === 'E_INVALID_CREDENTIALS') {
         return response.status(401).send({ error: 'Invalid credentials' })
       }
       return response.status(500).send({ error: 'Server error' })
