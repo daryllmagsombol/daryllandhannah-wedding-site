@@ -9,6 +9,7 @@ tmp
 .env.production.local
 .env.development.local
 app.config
+azure-app-settings.json
 
 # Frontend assets compiled code
 public/assets
