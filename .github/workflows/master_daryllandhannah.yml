@@ -26,6 +26,19 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        env:
+          NODE_ENV: test
+          PORT: 3333
+          HOST: 0.0.0.0
+          LOG_LEVEL: silent
+          SESSION_DRIVER: memory
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_DATABASE: app
+          LIMITER_STORE: memory
+          APP_KEY: $(node -e "console.log(require('crypto').randomBytes(16).toString('hex'))")
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
