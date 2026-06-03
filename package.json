@@ -5,7 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "cp app.config build/.env && cd build && npm ci --omit=dev && pm2 --no-daemon start ../ecosystem.config.cjs",
+    "start": "node bin/generate-env.js && cd build && npm ci --omit=dev && pm2 --no-daemon start ../ecosystem.config.cjs",
     "build": "node ace build",
     "dev": "node ace serve --hmr",
     "test": "node ace test",

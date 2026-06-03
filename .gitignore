@@ -4,9 +4,11 @@ build
 tmp
 
 # Secrets
+.env
 .env.local
 .env.production.local
 .env.development.local
+app.config
 
 # Frontend assets compiled code
 public/assets

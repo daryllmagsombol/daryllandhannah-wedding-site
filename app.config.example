@@ -1,0 +1,25 @@
+# =============================================
+# App Configuration Template
+# =============================================
+# Copy to app.config for local production-like testing
+# In Azure App Service, set these as App Settings instead
+# =============================================
+
+TZ=Asia/Manila
+PORT=8080
+HOST=0.0.0.0
+LOG_LEVEL=info
+APP_KEY=your-app-key-here
+NODE_ENV=production
+SESSION_DRIVER=cookie
+
+# Database
+DB_HOST=your-db-host
+DB_PORT=3306
+DB_USER=your-db-user
+DB_PASSWORD=your-db-password
+DB_DATABASE=your-db-name
+
+# App
+VITE_APP_NAME="Your App Name"
+LIMITER_STORE=memory
