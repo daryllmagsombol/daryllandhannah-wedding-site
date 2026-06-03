@@ -20,5 +20,8 @@ yarn-error.log
 .idea
 .vscode
 
+# Database seeders (contain PII - keep local only)
+database/seeders/*
+
 # Platform specific
 .DS_Store
