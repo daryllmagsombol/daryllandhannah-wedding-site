@@ -558,7 +558,7 @@ const MainHome = () => {
                     <RecommendationBox
                       title="Elegant Studio Unit with FREE Parking"
                       content="Classy interior, tricolor vanity mirror for your make up and clothes rack for your gown/suit. Located just behind Ayala Serin Mall."
-                      picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/dcd16063-8106-42b8-b1f1-3104080316e5.jpeg"
+                      picture="https://a0.muscache.com/im/pictures/hosting/Hosting-1451791930757818211/original/86558de8-b76c-4364-b645-4f33ac6573bb.jpeg?im_w=1200"
                       link="https://www.airbnb.com/l/noxSkITw"
                       type="Airbnb"
                       reviews="4.67 Reviews"
