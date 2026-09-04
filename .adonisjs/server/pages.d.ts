@@ -18,6 +18,7 @@ declare module '@adonisjs/inertia/types' {
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
+    'memory-lane': ExtractProps<(typeof import('../../inertia/pages/memory-lane.tsx'))['default']>
     'rsvp': ExtractProps<(typeof import('../../inertia/pages/rsvp.tsx'))['default']>
     'seat-inquiry': ExtractProps<(typeof import('../../inertia/pages/seat-inquiry.tsx'))['default']>
     'shared/loader': ExtractProps<(typeof import('../../inertia/pages/shared/loader.tsx'))['default']>
