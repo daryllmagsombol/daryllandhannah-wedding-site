@@ -22,6 +22,9 @@ router.on('/').renderInertia('home', { title: 'The Wedding of Hannah and Daryll'
 router
   .on('/valentines')
   .renderInertia('valentines', { title: 'Valentines 2025 - Daryll and Hannah' })
+router
+  .on('/memory-lane')
+  .renderInertia('memory-lane', { title: 'Memory Lane - Daryll and Hannah Wedding' })
 
 router
   .group(() => {

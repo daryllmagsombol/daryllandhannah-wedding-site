@@ -388,6 +388,36 @@ const MainHome = () => {
               </motion.div>
             </div>
 
+            {/* Memory Lane Teaser Section */}
+            <div className="snap-start w-screen h-screen bg-white flex items-center justify-center text-center">
+              <motion.div
+                className="h-screen flex flex-col items-center justify-center max-w-3xl px-6 sm:px-12"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.9, ease: 'easeInOut' }}
+                viewport={{ once: false, amount: 0.3 }}
+              >
+                <h2 className="max-[400px]:text-xs text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
+                  Memory Lane
+                </h2>
+                <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4">
+                  Relive the Moments{' '}
+                  <span className="bg-gradient-to-r from-[#8388F8] to-[#A559F7] bg-clip-text text-transparent">
+                    With Us
+                  </span>
+                </h1>
+                <p className="max-[400px]:text-xs text-sm sm:text-lg text-gray-700 mb-6">
+                  View photos & videos from our journey.
+                </p>
+                <a
+                  href="/memory-lane"
+                  className="max-[400px]:text-xs bg-gradient-to-r from-indigo-400 to-purple-500 text-white px-6 py-3 shadow hover:bg-purple-600 transition rounded-md font-bold"
+                >
+                  Open Memory Lane
+                </a>
+              </motion.div>
+            </div>
+
             {/* Digital Invitation Section */}
             <div className="snap-start w-screen h-screen bg-gradient-to-b from-indigo-50 to-purple-100 flex items-center justify-center text-center">
               <motion.div
